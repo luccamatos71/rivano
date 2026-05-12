@@ -27,11 +27,11 @@ const { filters, activeFilter = "all", group = "audience", small = false } = Ast
           data-filter-group={group}
           data-filter={filter.value}
           class:list={[
-            "filter-btn whitespace-nowrap border px-4 py-2 font-['DM_Sans'] font-normal uppercase transition-colors duration-200",
+            "filter-btn whitespace-nowrap border px-4 py-2 font-['DM_Sans'] font-normal uppercase transition-colors duration-normal",
             small ? "text-[11px] tracking-[0.16em]" : "text-[12px] tracking-[0.12em]",
             isActive
-              ? "active border-[#6e5542] bg-[#6e5542] text-[#f5f1e8]"
-              : "border-[#3f3028] bg-transparent text-[#3f3028] hover:border-[#6e5542]",
+              ? "active border-[var(--rivano-brown-mid)] bg-[var(--rivano-brown-mid)] text-[var(--rivano-off-white)]"
+              : "border-[var(--rivano-brown)] bg-transparent text-[var(--rivano-brown)] hover:border-[var(--rivano-brown-mid)]",
           ]}
           aria-pressed={isActive ? "true" : "false"}
         >

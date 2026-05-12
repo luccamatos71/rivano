@@ -9,17 +9,17 @@
 <style>
   .announcement-bar {
     align-items: center;
-    background: #3f3028;
+    background: var(--rivano-brown);
     color: var(--rivano-off-white);
     display: flex;
     flex-wrap: wrap;
-    font-family: "DM Sans", sans-serif;
+    font-family: var(--font-sans);
     font-size: 11px;
     font-weight: 400;
     justify-content: center;
     letter-spacing: 0.12em;
     line-height: 1.35;
-    min-height: var(--announcement-bar-height);
+    min-height: 48px;
     padding: 7px 20px;
     position: sticky;
     text-align: center;
@@ -30,5 +30,11 @@
 
   .announcement-separator {
     padding: 0 10px;
+  }
+
+  @media (min-width: 640px) {
+    .announcement-bar {
+      min-height: 32px;
+    }
   }
 </style>

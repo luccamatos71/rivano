@@ -3,7 +3,7 @@ const pathname = Astro.url.pathname;
 const isModelos = pathname.startsWith("/catalogo") || pathname.startsWith("/produtos/");
 ---
 
-<header class="sticky top-0 z-50 border-b border-[var(--rivano-areia)] bg-[#f5f1e8]/95 backdrop-blur">
+<header class="sticky top-0 z-50 border-b border-[var(--rivano-beige)] bg-[color-mix(in_srgb,var(--rivano-off-white)_95%,transparent)] backdrop-blur">
   <div class="page-wrap">
     <div class="flex items-center justify-between py-4 md:hidden">
       <button
@@ -25,7 +25,7 @@ const isModelos = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
         <a
           href="/catalogo"
           class:list={[
-            "nav-link transition-colors duration-200 hover:text-[var(--rivano-brown)]",
+            "nav-link transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]",
             isModelos && "text-[var(--rivano-brown)]",
           ]}
         >
@@ -38,7 +38,7 @@ const isModelos = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
       </div>
 
       <div class="flex justify-end">
-        <a href="/#sobre" class="nav-link transition-colors duration-200 hover:text-[var(--rivano-brown)]">
+        <a href="/#sobre" class="nav-link transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
           Sobre
         </a>
       </div>
@@ -47,10 +47,10 @@ const isModelos = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
 
   <div
     id="mobile-nav"
-    class="fixed inset-0 z-40 hidden bg-[rgba(63,48,40,0.18)] md:hidden"
+    class="fixed inset-0 z-40 hidden bg-[color-mix(in_srgb,var(--rivano-brown)_18%,transparent)] md:hidden"
     aria-hidden="true"
   >
-    <div class="ml-auto h-full w-[78%] max-w-[330px] bg-[#f5f1e8] px-6 py-7 shadow-[0_8px_24px_rgba(63,48,40,0.12)]">
+    <div class="ml-auto h-full w-[78%] max-w-[330px] bg-[var(--rivano-off-white)] px-6 py-7 shadow-[0_8px_24px_color-mix(in_srgb,var(--rivano-brown)_12%,transparent)]">
       <div class="mb-8 flex items-center justify-between">
         <span class="logo-wordmark text-[24px]">Rivano</span>
         <button id="menu-close" type="button" class="nav-link">Fechar</button>

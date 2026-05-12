@@ -46,7 +46,7 @@ const vibeFilters = [
       <p class="editorial-label">Catálogo</p>
     </div>
 
-    <div class="border-b border-[#d8c7ae] px-5 py-6 sm:px-10">
+    <div class="border-b border-[var(--rivano-beige)] px-5 py-6 sm:px-10">
       <ProductFilter filters={filters} activeFilter={activeAudience} group="audience" />
       <ProductFilter filters={faceShapeFilters} activeFilter={activeFaceShape} group="face" small />
       <ProductFilter filters={vibeFilters} activeFilter={activeVibe} group="vibe" small />
@@ -121,12 +121,12 @@ const vibeFilters = [
         const selected = button.getAttribute("data-filter") === activeFilters[group];
         button.setAttribute("aria-pressed", selected ? "true" : "false");
         button.classList.toggle("active", selected);
-        button.classList.toggle("border-[#6e5542]", selected);
-        button.classList.toggle("bg-[#6e5542]", selected);
-        button.classList.toggle("text-[#f5f1e8]", selected);
-        button.classList.toggle("border-[#3f3028]", !selected);
+        button.classList.toggle("border-[var(--rivano-brown-mid)]", selected);
+        button.classList.toggle("bg-[var(--rivano-brown-mid)]", selected);
+        button.classList.toggle("text-[var(--rivano-off-white)]", selected);
+        button.classList.toggle("border-[var(--rivano-brown)]", !selected);
         button.classList.toggle("bg-transparent", !selected);
-        button.classList.toggle("text-[#3f3028]", !selected);
+        button.classList.toggle("text-[var(--rivano-brown)]", !selected);
       });
     };
 

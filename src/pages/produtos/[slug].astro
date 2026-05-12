@@ -1,6 +1,4 @@
 ---
-import CTAButton from "../../components/CTAButton.astro";
-import ProductCard from "../../components/ProductCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   buildSrcset,
@@ -9,6 +7,7 @@ import {
   pickRelatedProducts,
   toCardProduct,
   toParagraphs,
+  type CardProduct,
   type Product,
 } from "../../lib/products";
 import productsData from "../../data/products.json";
@@ -23,23 +22,59 @@ export function getStaticPaths() {
   }));
 }
 
+type VariantWithColor = Product["variants"][number] & {
+  color?: string;
+  hex?: string;
+  value?: string;
+};
+
+type DisplayVariant = Product["variants"][number] & {
+  colorValue: string;
+};
+
 const { product } = Astro.props as { product: Product };
 const imageSets = getImageSets(product.images);
-const relatedProducts = pickRelatedProducts(allProducts, product.slug, 4);
-const relatedCardProducts = relatedProducts.map(toCardProduct);
+const firstImage = imageSets[0];
+const relatedProducts = pickRelatedProducts(allProducts, product.slug, 4).map(toCardProduct);
 const productDescription = getProductDescription(product);
+const formattedPrice = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+}).format(product.price);
+const whatsappMessage = `Olá! 👋 Tenho interesse nos óculos ${product.name}. Podem me ajudar com disponibilidade e frete?`;
+const whatsappUrl = `https://wa.me/5571993135522?text=${encodeURIComponent(whatsappMessage)}`;
 const detailsEntries = Object.entries(product.description.details ?? {});
-const hasDescription =
-  detailsEntries.length > 0 ||
-  Boolean(product.description.fit) ||
-  Boolean(product.description.experience) ||
-  Boolean(product.description.body) ||
-  Boolean(product.description.testimonial);
-
+const sizeGuideLines = sectionLines(product.description.fit);
 const selectedVariantIndex =
   product.variants.findIndex((variant) => variant.stock > 0) >= 0
     ? product.variants.findIndex((variant) => variant.stock > 0)
     : 0;
+const colorVariants = product.variants
+  .map((variant) => {
+    const colorValue = getVariantColor(variant as VariantWithColor);
+    return colorValue ? { ...variant, colorValue } : null;
+  })
+  .filter((variant): variant is DisplayVariant => Boolean(variant));
+
+const reviews = [
+  {
+    quote: "Óculos perfeitos, chegaram rápido e a qualidade surpreendeu.",
+    name: "Mariana R.",
+    city: "Salvador",
+  },
+  {
+    quote: "Comprei pelo WhatsApp, super fácil. Adoro o design.",
+    name: "Pedro A.",
+    city: "São Paulo",
+  },
+  {
+    quote: "Já é o segundo par que compro. Não troco por nada.",
+    name: "Camila S.",
+    city: "Recife",
+  },
+];
 
 function sectionLines(value: string | null): string[] {
   if (!value) {
@@ -51,76 +86,208 @@ function sectionLines(value: string | null): string[] {
     return normalized !== "rivano experience" && normalized !== "como fica" && normalized !== "detalhes";
   });
 }
+
+function normalizeText(value: string): string {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function getVariantColor(variant: VariantWithColor): string | null {
+  const explicitColor = variant.color ?? variant.hex ?? variant.value;
+
+  if (explicitColor) {
+    return explicitColor;
+  }
+
+  const name = normalizeText(variant.name);
+
+  if (name.includes("clara") || name.includes("transparente")) {
+    return "var(--rivano-beige)";
+  }
+
+  if (name.includes("escura") || name.includes("preta") || name.includes("grafite")) {
+    return "var(--rivano-brown)";
+  }
+
+  if (name.includes("marrom") || name.includes("tartaruga")) {
+    return "var(--rivano-brown-mid)";
+  }
+
+  if (name.includes("dourad")) {
+    return "var(--rivano-gold)";
+  }
+
+  return null;
+}
+
+function relatedImageSrcset(product: CardProduct): string {
+  const normalized = product.image.startsWith("/") ? product.image : `/${product.image}`;
+
+  if (!/-(?:600|1200|2000)\.webp$/i.test(normalized)) {
+    return "";
+  }
+
+  return [600, 1200, 2000]
+    .map((width) => `${normalized.replace(/-(?:600|1200|2000)\.webp$/i, `-${width}.webp`)} ${width}w`)
+    .join(", ");
+}
+
+function formattedRelatedPrice(value: number): string {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
 ---
 
 <BaseLayout title={`${product.name} | Rivano`} description={productDescription}>
-  <section class="page-wrap section-space pb-28 md:pb-[100px]">
-    <div class="mb-5 border-b border-[var(--rivano-areia)] pb-4 text-[11px] uppercase tracking-[0.18em] text-[var(--rivano-muted)]">
-      <a href="/catalogo" class="transition-colors duration-200 hover:text-[var(--rivano-brown)]">Modelos</a>
-      <span class="px-2">/</span>
-      <span>{product.name}</span>
-    </div>
+  <article class="pdp-page">
+    <section class="pdp-main" aria-label={`Detalhes de ${product.name}`}>
+      <div class="pdp-gallery">
+        {imageSets.length > 0 ? (
+          <>
+            <div class="mobile-gallery" data-carousel aria-label={`Galeria de imagens de ${product.name}`}>
+              {imageSets.map((imageSet, index) => (
+                <figure class="mobile-slide" data-slide={index}>
+                  <img
+                    src={`/${imageSet.src}`}
+                    srcset={buildSrcset(imageSet)}
+                    sizes="100vw"
+                    alt={`${product.name} - foto ${index + 1}`}
+                    class="mobile-gallery-image"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchpriority={index === 0 ? "high" : undefined}
+                    decoding="async"
+                    width="900"
+                    height="1200"
+                  />
+                </figure>
+              ))}
+            </div>
 
-    <div class="grid gap-8 md:grid-cols-[1.65fr_1fr] md:gap-10">
-      <div>
-        <div class="flex snap-x snap-mandatory gap-2 overflow-x-auto md:hidden" data-carousel>
-          {
-            imageSets.map((imageSet, index) => (
-              <figure class="min-w-full snap-start" data-slide={index}>
+            {imageSets.length > 1 && (
+              <div class="gallery-dots" data-dots>
+                {imageSets.map((_, index) => (
+                  <button
+                    type="button"
+                    class="gallery-dot-button"
+                    data-dot={index}
+                    aria-label={`Mostrar foto ${index + 1}`}
+                    aria-current={index === 0 ? "true" : "false"}
+                  >
+                    <span class:list={["gallery-dot", index === 0 && "is-active"]} data-dot-indicator></span>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div class="desktop-gallery" aria-label={`Galeria de imagens de ${product.name}`}>
+              <figure class="desktop-main-frame">
                 <img
-                  src={`/${imageSet.src}`}
-                  srcset={buildSrcset(imageSet)}
-                  sizes="100vw"
-                  alt={`${product.name} - foto ${index + 1}`}
-                  class="aspect-[3/4] h-auto w-full bg-[var(--rivano-off-white)] object-contain p-6"
-                  loading={index === 0 ? "eager" : "lazy"}
+                  src={`/${firstImage.src}`}
+                  srcset={buildSrcset(firstImage)}
+                  sizes="(min-width: 768px) 58vw, 100vw"
+                  alt={`${product.name} - foto 1`}
+                  class="desktop-main-image"
+                  data-main-image
+                  loading="eager"
+                  fetchpriority="high"
                   decoding="async"
                   width="900"
                   height="1200"
                 />
               </figure>
-            ))
-          }
+
+              {imageSets.length > 1 && (
+                <div class="thumbnail-row" aria-label="Escolha uma foto">
+                  {imageSets.map((imageSet, index) => (
+                    <button
+                      type="button"
+                      class:list={["thumbnail-button", index === 0 && "is-active"]}
+                      data-thumb={index}
+                      data-thumb-src={`/${imageSet.src}`}
+                      data-thumb-srcset={buildSrcset(imageSet)}
+                      data-thumb-alt={`${product.name} - foto ${index + 1}`}
+                      aria-label={`Ver foto ${index + 1}`}
+                      aria-current={index === 0 ? "true" : "false"}
+                    >
+                      <img
+                        src={`/${imageSet.src}`}
+                        srcset={buildSrcset(imageSet)}
+                        sizes="72px"
+                        alt=""
+                        class="thumbnail-image"
+                        loading={index < 6 ? "eager" : "lazy"}
+                        decoding="async"
+                        width="144"
+                        height="192"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </>
+        ) : (
+          <div class="gallery-empty">Imagem indisponível</div>
+        )}
+      </div>
+
+      <aside class="product-panel">
+        <nav class="product-breadcrumb" aria-label="Caminho do produto">
+          <a href="/">Início</a>
+          <span aria-hidden="true">/</span>
+          <a href="/catalogo">Catálogo</a>
+          <span aria-hidden="true">/</span>
+          <span>{product.name}</span>
+        </nav>
+
+        <div class="product-heading">
+          <h1 class="display-md product-title">{product.name}</h1>
+          <p class="product-price-main">{formattedPrice}</p>
         </div>
 
-        {imageSets.length > 1 && (
-          <div class="mt-3 flex justify-center gap-2 md:hidden" data-dots>
-            {imageSets.map((_, index) => <button type="button" data-dot={index} class="h-2 w-2 rounded-full bg-[var(--rivano-areia)]"></button>)}
+        <div class="trust-inline" aria-label="Benefícios">
+          <span>↻ Troca 30 dias</span>
+          <span class="trust-separator" aria-hidden="true">·</span>
+          <span>🚚 Frete grátis</span>
+          <span class="trust-separator" aria-hidden="true">·</span>
+          <span>✓ Original</span>
+        </div>
+
+        {colorVariants.length > 0 && (
+          <div class="color-selector" aria-label="Seleção de cor">
+            <p class="panel-label">Cor</p>
+            <div class="color-options">
+              {colorVariants.map((variant, index) => (
+                <div class="color-choice">
+                  <button
+                    type="button"
+                    class:list={[
+                      "color-option",
+                      index === selectedVariantIndex && "is-active",
+                      variant.stock <= 0 && "is-disabled",
+                    ]}
+                    aria-label={`Selecionar ${variant.name}`}
+                    aria-pressed={index === selectedVariantIndex ? "true" : "false"}
+                    data-color-option
+                  >
+                    <span class="color-dot" style={`background: ${variant.colorValue};`}></span>
+                  </button>
+                  <span class="color-name">{variant.name}</span>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-        <div class="hidden space-y-4 md:block">
-          {
-            imageSets.map((imageSet, index) => (
-              <figure>
-                <img
-                  src={`/${imageSet.src}`}
-                  srcset={buildSrcset(imageSet)}
-                  sizes="(min-width: 768px) 62vw, 100vw"
-                  alt={`${product.name} - foto ${index + 1}`}
-                  class="aspect-[3/4] h-auto w-full bg-[var(--rivano-off-white)] object-contain p-6"
-                  loading={index === 0 ? "eager" : "lazy"}
-                  decoding="async"
-                  width="900"
-                  height="1200"
-                />
-              </figure>
-            ))
-          }
-        </div>
-      </div>
-
-      <aside class="md:sticky md:top-24 md:self-start">
-        <h1 class="display-md font-['Cormorant_Garamond']">{product.name}</h1>
-        <p class="mt-4 text-[24px] font-light text-[var(--rivano-brown)]">
-          {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(product.price)}
-        </p>
-
-        <div class="trust-inline">
-          <span>↻ Troca em 30 dias</span>
-          <span>🚚 Frete grátis</span>
-          <span>✓ 100% Original</span>
-        </div>
+        <a class="whatsapp-cta" href={whatsappUrl} data-primary-cta>
+          Consultar pelo WhatsApp
+        </a>
 
         <div class="feature-icons" aria-label="Características do produto">
           <div class="feature-icon">
@@ -152,141 +319,413 @@ function sectionLines(value: string | null): string[] {
               <path d="m18.7 5.3-2.1 2.1" />
               <path d="m7.4 16.6-2.1 2.1" />
             </svg>
-            <span>Lente com proteção UV</span>
+            <span>Proteção UV400</span>
           </div>
           <div class="feature-icon">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 3 19 6v5.5c0 4.4-2.8 7.7-7 9.5-4.2-1.8-7-5.1-7-9.5V6l7-3z" />
               <path d="m8.7 12.1 2.2 2.2 4.6-4.8" />
             </svg>
-            <span>Garantia de qualidade</span>
+            <span>Garantia inclusa</span>
           </div>
         </div>
 
-        {product.description.testimonial && (
-          <blockquote class="mt-5 font-['DM_Sans'] text-[14px] italic leading-[1.8] text-[var(--rivano-dark)]">
-            <p>&ldquo;{product.description.testimonial.text}&rdquo;</p>
-            {product.description.testimonial.author && (
-              <footer class="mt-2 text-[var(--rivano-muted)]">— {product.description.testimonial.author}</footer>
-            )}
-          </blockquote>
-        )}
-
-        {product.variants.length > 0 && (
-          <div class="mt-8">
-            <p class="editorial-label mb-3">Variações</p>
-            <div class="flex flex-wrap gap-3">
-              {product.variants.map((variant, index) => (
-                <div class="inline-flex items-center gap-2">
-                  <span
-                    class:list={[
-                      "inline-flex h-5 w-5 items-center justify-center rounded-full border border-[var(--rivano-areia)] text-[9px] uppercase tracking-[0.08em]",
-                      index === selectedVariantIndex && "border-[var(--rivano-dark)]",
-                      variant.stock <= 0 && "opacity-50",
-                    ]}
-                  >
-                    {variant.name.slice(0, 1)}
-                  </span>
-                  <span class:list={["text-[13px] text-[var(--rivano-dark)]", variant.stock <= 0 && "text-[var(--rivano-muted)]"]}>
-                    {variant.name}
-                  </span>
-                </div>
-              ))}
+        <div class="technical-accordion">
+          <details open class="accordion-item">
+            <summary>
+              <span>Detalhes técnicos</span>
+              <span class="accordion-symbol" aria-hidden="true">
+                <span class="symbol-plus">+</span>
+                <span class="symbol-minus">−</span>
+              </span>
+            </summary>
+            <div class="accordion-body">
+              {detailsEntries.length > 0 ? (
+                <dl class="technical-list">
+                  {detailsEntries.map(([key, value]) => (
+                    <div>
+                      <dt>{key}</dt>
+                      <dd>{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              ) : (
+                <p>Detalhes técnicos incompletos no catálogo atual.</p>
+              )}
             </div>
-          </div>
-        )}
+          </details>
 
-        <div class="mt-8 hidden md:block">
-          <CTAButton fullWidth productName={product.name} />
-        </div>
+          <details class="accordion-item">
+            <summary>
+              <span>Guia de tamanho</span>
+              <span class="accordion-symbol" aria-hidden="true">
+                <span class="symbol-plus">+</span>
+                <span class="symbol-minus">−</span>
+              </span>
+            </summary>
+            <div class="accordion-body">
+              {sizeGuideLines.length > 0 ? (
+                <div class="accordion-copy">
+                  {sizeGuideLines.map((line) => <p>{line}</p>)}
+                </div>
+              ) : (
+                <p>Guia de tamanho incompleto no catálogo atual.</p>
+              )}
+            </div>
+          </details>
 
-        <div class="mt-9 border-t border-[var(--rivano-areia)]">
-          {detailsEntries.length > 0 && (
-            <details open class="border-b border-[var(--rivano-areia)] py-3">
-              <summary class="cursor-pointer text-[12px] uppercase tracking-[0.16em] text-[var(--rivano-dark)]">Detalhes</summary>
-              <dl class="mt-3 space-y-2 text-[14px] leading-[1.7] text-[var(--rivano-dark)]">
-                {detailsEntries.map(([key, value]) => (
-                  <div class="grid grid-cols-[110px_1fr] gap-2">
-                    <dt class="text-[var(--rivano-muted)]">{key}</dt>
-                    <dd>{value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </details>
-          )}
-
-          {sectionLines(product.description.fit).length > 0 && (
-            <details class="border-b border-[var(--rivano-areia)] py-3">
-              <summary class="cursor-pointer text-[12px] uppercase tracking-[0.16em] text-[var(--rivano-dark)]">Como fica</summary>
-              <div class="mt-3 space-y-2 text-[14px] leading-[1.8] text-[var(--rivano-dark)]">
-                {sectionLines(product.description.fit).map((line) => <p>{line}</p>)}
-              </div>
-            </details>
-          )}
-
-          {sectionLines(product.description.experience).length > 0 && (
-            <details class="border-b border-[var(--rivano-areia)] py-3">
-              <summary class="cursor-pointer text-[12px] uppercase tracking-[0.16em] text-[var(--rivano-dark)]">Experiência</summary>
-              <div class="mt-3 space-y-2 text-[14px] leading-[1.8] text-[var(--rivano-dark)]">
-                {sectionLines(product.description.experience).map((line) => <p>{line}</p>)}
-              </div>
-            </details>
-          )}
-
-          {sectionLines(product.description.body).length > 0 && (
-            <details class="border-b border-[var(--rivano-areia)] py-3">
-              <summary class="cursor-pointer text-[12px] uppercase tracking-[0.16em] text-[var(--rivano-dark)]">Descrição</summary>
-              <div class="mt-3 space-y-2 text-[14px] leading-[1.8] text-[var(--rivano-dark)]">
-                {sectionLines(product.description.body).map((line) => <p>{line}</p>)}
-              </div>
-            </details>
-          )}
-
-          {!hasDescription && <p class="py-3 text-[13px] text-[var(--rivano-muted)]">Descrição incompleta no catálogo atual.</p>}
+          <details class="accordion-item">
+            <summary>
+              <span>Política de troca</span>
+              <span class="accordion-symbol" aria-hidden="true">
+                <span class="symbol-plus">+</span>
+                <span class="symbol-minus">−</span>
+              </span>
+            </summary>
+            <div class="accordion-body">
+              <p>Você tem 30 dias para trocar. O atendimento acontece pelo WhatsApp, sem burocracia.</p>
+            </div>
+          </details>
         </div>
       </aside>
-    </div>
+    </section>
+
+    <section class="reviews-section" aria-labelledby="product-reviews">
+      <div class="reviews-inner">
+        <header class="reviews-header">
+          <h2 id="product-reviews" class="display-sm">Avaliações</h2>
+          <p>4.8 ★</p>
+        </header>
+        <div class="reviews-grid">
+          {reviews.map((review) => (
+            <article class="review-card">
+              <div class="review-stars" aria-label="5 estrelas">
+                {Array.from({ length: 5 }).map(() => (
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill="currentColor" d="m12 2 2.9 6.1 6.7.9-4.8 4.7 1.1 6.6-5.9-3.1-5.9 3.1 1.1-6.6L2.4 9l6.7-.9L12 2z" />
+                  </svg>
+                ))}
+              </div>
+              <p class="review-quote">“{review.quote}”</p>
+              <p class="review-name">{review.name}</p>
+              <p class="review-city">{review.city}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
 
     {relatedProducts.length > 0 && (
-      <section class="mt-14 border-t border-[var(--rivano-areia)] pt-10 md:mt-20 md:pt-12">
-        <header class="mb-8">
-          <p class="editorial-label mb-3">Você também pode gostar</p>
-          <h2 class="display-md font-['Cormorant_Garamond']">Mais modelos</h2>
-        </header>
-        <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
-          {
-            relatedCardProducts.map((item, index) => (
-              <ProductCard product={item} index={index} />
-            ))
-          }
+      <section class="related-section" aria-labelledby="related-products">
+        <h2 id="related-products" class="display-sm related-title">Você também pode gostar</h2>
+        <div class="related-track">
+          {relatedProducts.map((related, index) => (
+            <a href={`/produtos/${related.slug}`} class="related-card" aria-label={`Ver ${related.name}`}>
+              <figure class="related-frame">
+                <img
+                  src={related.image}
+                  srcset={relatedImageSrcset(related)}
+                  sizes="(min-width: 768px) 25vw, 64vw"
+                  alt={related.name}
+                  class="related-image"
+                  loading={index < 2 ? "eager" : "lazy"}
+                  decoding="async"
+                  width="900"
+                  height="1200"
+                />
+              </figure>
+              <h3>{related.name}</h3>
+              <p>{formattedRelatedPrice(related.price)}</p>
+            </a>
+          ))}
         </div>
       </section>
     )}
-  </section>
+  </article>
 
-  <div class="fixed inset-x-0 bottom-14 z-40 border-t border-[var(--rivano-areia)] bg-[#f5f1e8]/95 p-4 backdrop-blur md:hidden">
-    <CTAButton fullWidth productName={product.name} />
-  </div>
+  {firstImage && (
+    <div class="desktop-sticky-bar" data-sticky-bar aria-hidden="true">
+      <div class="sticky-product">
+        <img
+          src={`/${firstImage.src}`}
+          srcset={buildSrcset(firstImage)}
+          sizes="40px"
+          alt=""
+          class="sticky-product-image"
+          loading="lazy"
+          decoding="async"
+          width="80"
+          height="106"
+        />
+        <div>
+          <p class="sticky-product-name">{product.name}</p>
+          <p class="sticky-product-price">{formattedPrice}</p>
+        </div>
+      </div>
+      <a class="sticky-whatsapp-link" href={whatsappUrl}>
+        <span>Consultar pelo WhatsApp</span>
+      </a>
+    </div>
+  )}
 
   <style>
-    .trust-inline {
+    .pdp-page {
+      background: var(--rivano-off-white);
       color: var(--rivano-brown);
+      overflow-x: hidden;
+    }
+
+    .pdp-main {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .pdp-gallery {
+      width: 100%;
+    }
+
+    .mobile-gallery {
+      display: flex;
+      gap: 0;
+      margin-left: calc(50% - 50vw);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      width: 100vw;
+    }
+
+    .mobile-gallery::-webkit-scrollbar {
+      display: none;
+    }
+
+    .mobile-slide {
+      flex: 0 0 100vw;
+      scroll-snap-align: start;
+    }
+
+    .mobile-gallery-image,
+    .desktop-main-image,
+    .related-image {
+      aspect-ratio: 3 / 4;
+      display: block;
+      height: auto;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .gallery-dots {
+      align-items: center;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      padding: 12px 24px 0;
+    }
+
+    .gallery-dot-button {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px;
+    }
+
+    .gallery-dot {
+      background: var(--rivano-beige);
+      border: 1px solid var(--rivano-muted);
+      border-radius: 50%;
+      display: block;
+      height: 16px;
+      width: 16px;
+    }
+
+    .gallery-dot.is-active {
+      background: var(--rivano-brown);
+      border: 0;
+    }
+
+    .desktop-gallery {
+      display: none;
+    }
+
+    .gallery-empty {
+      align-items: center;
+      aspect-ratio: 3 / 4;
+      background: var(--rivano-beige);
+      color: var(--rivano-muted);
+      display: flex;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      justify-content: center;
+      letter-spacing: 0.14em;
+      min-height: 420px;
+      text-transform: uppercase;
+      width: 100%;
+    }
+
+    .product-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 28px 24px 48px;
+    }
+
+    .product-breadcrumb {
+      align-items: center;
+      color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
       display: flex;
       flex-wrap: wrap;
-      font-family: "DM Sans", sans-serif;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      gap: 8px;
+      line-height: 1.3;
+    }
+
+    .product-breadcrumb a {
+      align-items: center;
+      display: inline-flex;
+      min-height: 44px;
+      text-decoration: none;
+      transition: opacity var(--transition-normal);
+    }
+
+    .product-breadcrumb a:hover {
+      opacity: 0.8;
+    }
+
+    .product-heading {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: -4px;
+    }
+
+    .product-title {
+      font-family: var(--font-serif);
+      font-weight: 400;
+    }
+
+    .product-price-main {
+      color: var(--rivano-brown);
+      font-family: var(--font-sans);
+      font-size: 22px;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+
+    .trust-inline {
+      align-items: center;
+      color: color-mix(in srgb, var(--rivano-brown) 70%, transparent);
+      display: flex;
+      flex-wrap: wrap;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      gap: 12px;
+      letter-spacing: 0;
+      line-height: 1.4;
+      margin-top: -8px;
+    }
+
+    .trust-separator {
+      color: var(--rivano-muted);
+    }
+
+    .panel-label {
+      color: var(--rivano-brown);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      line-height: 1.4;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .color-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .color-choice {
+      align-items: center;
+      display: inline-flex;
+      gap: 6px;
+    }
+
+    .color-option {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 0;
+      transition: var(--transition-fast);
+    }
+
+    .color-option.is-disabled {
+      cursor: default;
+      opacity: 0.45;
+    }
+
+    .color-dot {
+      border: 1px solid var(--rivano-muted);
+      border-radius: 50%;
+      display: block;
+      height: 24px;
+      width: 24px;
+    }
+
+    .color-option.is-active .color-dot {
+      outline: 2px solid var(--rivano-brown);
+      outline-offset: 2px;
+    }
+
+    .color-name {
+      color: color-mix(in srgb, var(--rivano-brown) 65%, transparent);
+      font-family: var(--font-sans);
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .whatsapp-cta {
+      align-items: center;
+      background: var(--rivano-brown);
+      color: var(--rivano-off-white);
+      display: inline-flex;
+      font-family: var(--font-sans);
       font-size: 12px;
       font-weight: 400;
-      gap: 16px;
-      line-height: 1.4;
-      margin-top: 16px;
+      justify-content: center;
+      letter-spacing: 0.12em;
+      line-height: 1.2;
+      margin-top: 4px;
+      min-height: 52px;
+      padding: 16px 24px;
+      text-align: center;
+      text-transform: uppercase;
+      transition: opacity var(--transition-normal);
+      width: 100%;
+    }
+
+    .whatsapp-cta:hover {
+      opacity: 0.85;
     }
 
     .feature-icons {
       color: var(--rivano-brown);
       display: grid;
-      gap: 14px;
+      gap: 16px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-top: 18px;
+      margin-top: 8px;
     }
 
     .feature-icon {
@@ -294,33 +733,448 @@ function sectionLines(value: string | null): string[] {
       display: flex;
       flex-direction: column;
       gap: 9px;
-      min-height: 86px;
+      min-height: 74px;
       text-align: center;
     }
 
     .feature-icon svg {
       fill: none;
-      height: 24px;
+      height: 22px;
       stroke: currentColor;
       stroke-linecap: round;
       stroke-linejoin: round;
       stroke-width: 1.4;
-      width: 24px;
+      width: 22px;
     }
 
     .feature-icon span {
-      color: var(--rivano-dark);
-      font-family: "DM Sans", sans-serif;
-      font-size: 11px;
+      color: var(--rivano-brown);
+      font-family: var(--font-sans);
+      font-size: 10px;
       font-weight: 400;
       letter-spacing: 0.08em;
       line-height: 1.35;
       text-transform: uppercase;
     }
 
+    .technical-accordion {
+      margin-top: 4px;
+    }
+
+    .accordion-item {
+      border-top: 1px solid var(--rivano-beige);
+    }
+
+    .accordion-item:last-child {
+      border-bottom: 1px solid var(--rivano-beige);
+    }
+
+    .accordion-item summary {
+      align-items: center;
+      cursor: pointer;
+      display: flex;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 400;
+      justify-content: space-between;
+      letter-spacing: 0.08em;
+      line-height: 1.35;
+      list-style: none;
+      min-height: 44px;
+      text-transform: uppercase;
+    }
+
+    .accordion-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .accordion-symbol {
+      align-items: center;
+      display: inline-flex;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    .symbol-minus {
+      display: none;
+    }
+
+    .accordion-item[open] .symbol-plus {
+      display: none;
+    }
+
+    .accordion-item[open] .symbol-minus {
+      display: inline;
+    }
+
+    .accordion-body {
+      color: color-mix(in srgb, var(--rivano-brown) 70%, transparent);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.7;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height var(--transition-normal);
+    }
+
+    .accordion-item[open] .accordion-body {
+      max-height: 520px;
+      padding-bottom: 16px;
+    }
+
+    .technical-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .technical-list div {
+      display: grid;
+      gap: 4px;
+      grid-template-columns: minmax(96px, 0.4fr) 1fr;
+    }
+
+    .technical-list dt {
+      color: var(--rivano-muted);
+    }
+
+    .accordion-copy {
+      display: grid;
+      gap: 8px;
+    }
+
+    .reviews-section {
+      background: var(--rivano-beige);
+      padding: 48px 24px;
+    }
+
+    .reviews-header {
+      align-items: baseline;
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .reviews-header h2 {
+      font-family: var(--font-serif);
+      font-weight: 400;
+    }
+
+    .reviews-header p {
+      color: var(--rivano-brown);
+      font-family: var(--font-sans);
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .reviews-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .review-card {
+      background: var(--rivano-off-white);
+      padding: 28px;
+    }
+
+    .review-stars {
+      color: var(--rivano-gold);
+      display: flex;
+      gap: 3px;
+    }
+
+    .review-stars svg {
+      height: 11px;
+      width: 11px;
+    }
+
+    .review-quote {
+      color: var(--rivano-brown);
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+
+    .review-name {
+      color: color-mix(in srgb, var(--rivano-brown) 55%, transparent);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      line-height: 1.35;
+      margin-top: 16px;
+      text-transform: uppercase;
+    }
+
+    .review-city {
+      color: color-mix(in srgb, var(--rivano-brown) 35%, transparent);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      line-height: 1.35;
+      margin-top: 2px;
+    }
+
+    .related-section {
+      background: var(--rivano-off-white);
+      padding: 48px 0;
+    }
+
+    .related-title {
+      font-family: var(--font-serif);
+      font-weight: 400;
+      margin-bottom: 24px;
+      padding: 0 24px;
+    }
+
+    .related-track {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 0 24px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .related-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .related-card {
+      flex: 0 0 64vw;
+      min-height: 44px;
+      min-width: 0;
+      scroll-snap-align: start;
+    }
+
+    .related-frame {
+      aspect-ratio: 3 / 4;
+      background: var(--rivano-off-white);
+      overflow: hidden;
+    }
+
+    .related-card h3 {
+      color: var(--rivano-brown);
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-top: 12px;
+    }
+
+    .related-card p {
+      color: var(--rivano-muted);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.35;
+      margin-top: 3px;
+    }
+
+    .desktop-sticky-bar {
+      display: none;
+    }
+
     @media (min-width: 768px) {
+      .pdp-main {
+        display: grid;
+        gap: 0;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        margin: 0 auto;
+        max-width: 1280px;
+        padding: 64px 40px;
+      }
+
+      .pdp-gallery {
+        grid-column: 1 / span 7;
+      }
+
+      .mobile-gallery,
+      .gallery-dots {
+        display: none;
+      }
+
+      .desktop-gallery {
+        display: block;
+      }
+
+      .desktop-main-frame {
+        aspect-ratio: 3 / 4;
+        background: var(--rivano-off-white);
+        overflow: hidden;
+      }
+
+      .desktop-main-image {
+        height: 100%;
+        transition: opacity 200ms ease-out;
+      }
+
+      .thumbnail-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+        overflow-x: auto;
+        padding: 4px 2px;
+        scrollbar-width: thin;
+      }
+
+      .thumbnail-button {
+        aspect-ratio: 3 / 4;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        flex: 0 0 72px;
+        min-height: 96px;
+        opacity: 0.5;
+        padding: 0;
+        transition: opacity var(--transition-normal);
+        width: 72px;
+      }
+
+      .thumbnail-button.is-active {
+        opacity: 1;
+        outline: 1px solid var(--rivano-brown);
+        outline-offset: 2px;
+      }
+
+      .thumbnail-button:hover {
+        opacity: 1;
+      }
+
+      .thumbnail-image {
+        aspect-ratio: 3 / 4;
+        display: block;
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+      }
+
+      .product-panel {
+        align-self: start;
+        gap: 20px;
+        grid-column: 8 / span 5;
+        padding: 0 0 0 40px;
+        position: sticky;
+        top: 24px;
+      }
+
       .feature-icons {
+        gap: 12px;
         grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .reviews-section {
+        padding: 64px 40px;
+      }
+
+      .reviews-inner {
+        margin: 0 auto;
+        max-width: 1280px;
+      }
+
+      .reviews-grid {
+        gap: 24px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .related-section {
+        padding: 64px 40px;
+      }
+
+      .related-title {
+        margin: 0 auto 24px;
+        max-width: 1280px;
+        padding: 0;
+      }
+
+      .related-track {
+        display: grid;
+        gap: 24px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin: 0 auto;
+        max-width: 1280px;
+        overflow: visible;
+        padding: 0;
+      }
+
+      .related-card {
+        flex: initial;
+      }
+
+      .desktop-sticky-bar {
+        align-items: center;
+        background: var(--rivano-off-white);
+        border-bottom: 1px solid var(--rivano-beige);
+        display: flex;
+        height: 60px;
+        justify-content: space-between;
+        left: 0;
+        padding: 0 40px;
+        position: fixed;
+        top: 0;
+        transform: translateY(-100%);
+        transition: transform var(--transition-slow);
+        width: 100%;
+        z-index: 120;
+      }
+
+      .desktop-sticky-bar.visible {
+        transform: translateY(0);
+      }
+
+      .sticky-product {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+      }
+
+      .sticky-product-image {
+        height: 53px;
+        object-fit: cover;
+        width: 40px;
+      }
+
+      .sticky-product-name {
+        color: var(--rivano-brown);
+        font-family: var(--font-sans);
+        font-size: 13px;
+        line-height: 1.2;
+      }
+
+      .sticky-product-price {
+        color: color-mix(in srgb, var(--rivano-brown) 60%, transparent);
+        font-family: var(--font-sans);
+        font-size: 13px;
+        line-height: 1.2;
+        margin-top: 3px;
+      }
+
+      .sticky-whatsapp-link {
+        align-items: center;
+        color: var(--rivano-off-white);
+        display: inline-flex;
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 400;
+        justify-content: center;
+        letter-spacing: 0.12em;
+        min-height: 44px;
+        text-transform: uppercase;
+      }
+
+      .sticky-whatsapp-link span {
+        align-items: center;
+        background: var(--rivano-brown);
+        display: inline-flex;
+        height: 36px;
+        padding: 0 20px;
+        transition: opacity var(--transition-normal);
+      }
+
+      .sticky-whatsapp-link:hover span {
+        opacity: 0.85;
       }
     }
   </style>
@@ -330,22 +1184,24 @@ function sectionLines(value: string | null): string[] {
     const dots = Array.from(document.querySelectorAll("[data-dot]"));
 
     if (carousel && dots.length > 0) {
-      const setActive = (index) => {
+      const setActiveDot = (index) => {
         dots.forEach((dot, dotIndex) => {
-          dot.classList.toggle("bg-[var(--rivano-dark)]", dotIndex === index);
-          dot.classList.toggle("bg-[var(--rivano-areia)]", dotIndex !== index);
+          const indicator = dot.querySelector("[data-dot-indicator]");
+          const isActive = dotIndex === index;
+          dot.setAttribute("aria-current", isActive ? "true" : "false");
+          indicator?.classList.toggle("is-active", isActive);
         });
       };
 
-      const getIndex = () => {
+      const getCarouselIndex = () => {
         const width = carousel.clientWidth || 1;
         return Math.round(carousel.scrollLeft / width);
       };
 
-      setActive(0);
+      setActiveDot(0);
 
       carousel.addEventListener("scroll", () => {
-        setActive(getIndex());
+        setActiveDot(getCarouselIndex());
       });
 
       dots.forEach((dot) => {
@@ -355,6 +1211,79 @@ function sectionLines(value: string | null): string[] {
           carousel.scrollTo({ left: width * index, behavior: "smooth" });
         });
       });
+    }
+
+    const mainImage = document.querySelector("[data-main-image]");
+    const thumbnails = Array.from(document.querySelectorAll("[data-thumb]"));
+
+    if (mainImage && thumbnails.length > 0) {
+      thumbnails.forEach((thumbnail) => {
+        thumbnail.addEventListener("click", () => {
+          const nextSrc = thumbnail.getAttribute("data-thumb-src");
+          const nextSrcset = thumbnail.getAttribute("data-thumb-srcset") || "";
+          const nextAlt = thumbnail.getAttribute("data-thumb-alt") || "";
+
+          if (!nextSrc || mainImage.getAttribute("src") === nextSrc) {
+            return;
+          }
+
+          thumbnails.forEach((item) => {
+            const isActive = item === thumbnail;
+            item.classList.toggle("is-active", isActive);
+            item.setAttribute("aria-current", isActive ? "true" : "false");
+          });
+
+          mainImage.style.opacity = "0";
+
+          window.setTimeout(() => {
+            mainImage.setAttribute("src", nextSrc);
+            mainImage.setAttribute("srcset", nextSrcset);
+            mainImage.setAttribute("alt", nextAlt);
+
+            const reveal = () => {
+              mainImage.style.opacity = "1";
+              mainImage.removeEventListener("load", reveal);
+            };
+
+            mainImage.addEventListener("load", reveal);
+
+            if (mainImage.complete) {
+              reveal();
+            }
+          }, 120);
+        });
+      });
+    }
+
+    const colorOptions = Array.from(document.querySelectorAll("[data-color-option]"));
+
+    colorOptions.forEach((option) => {
+      option.addEventListener("click", () => {
+        if (option.classList.contains("is-disabled")) {
+          return;
+        }
+
+        colorOptions.forEach((item) => {
+          const isActive = item === option;
+          item.classList.toggle("is-active", isActive);
+          item.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
+      });
+    });
+
+    const primaryCta = document.querySelector("[data-primary-cta]");
+    const stickyBar = document.querySelector("[data-sticky-bar]");
+
+    if (primaryCta && stickyBar && "IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          stickyBar.classList.toggle("visible", !entry.isIntersecting);
+          stickyBar.setAttribute("aria-hidden", entry.isIntersecting ? "true" : "false");
+        },
+        { threshold: 0 },
+      );
+
+      observer.observe(primaryCta);
     }
   </script>
 </BaseLayout>

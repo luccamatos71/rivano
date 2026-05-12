@@ -26,10 +26,10 @@ const href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMes
   target="_blank"
   rel="noopener noreferrer"
   class:list={[
-    "cta-button inline-flex items-center gap-2 px-8 py-4 font-['DM_Sans'] text-[13px] font-normal uppercase tracking-[0.1em] no-underline transition-colors duration-200 ease-out",
+    "cta-button inline-flex items-center gap-2 px-8 py-4 font-['DM_Sans'] text-[13px] font-normal uppercase tracking-[0.1em] no-underline transition-colors duration-normal",
     variant === "primary"
-      ? "btn-primary border border-[#6e5542] bg-[#6e5542] text-[#f5f1e8] hover:border-[#3f3028] hover:bg-[#3f3028]"
-      : "btn-secondary border border-[#3f3028] bg-transparent text-[#3f3028] hover:bg-[#3f3028] hover:text-[#f5f1e8]",
+      ? "btn-primary border border-[var(--rivano-brown-mid)] bg-[var(--rivano-brown-mid)] text-[var(--rivano-off-white)] hover:border-[var(--rivano-brown)] hover:bg-[var(--rivano-brown)]"
+      : "btn-secondary border border-[var(--rivano-brown)] bg-transparent text-[var(--rivano-brown)] hover:bg-[var(--rivano-brown)] hover:text-[var(--rivano-off-white)]",
     fullWidth && "w-full justify-center",
   ]}
   aria-label={label}

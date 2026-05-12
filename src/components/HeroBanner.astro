@@ -23,9 +23,9 @@ const { imageUrl, title, subtitle, ctas = [] } = Astro.props as Props;
     loading="eager"
     decoding="async"
   />
-  <div class="hero-overlay absolute inset-0 z-[2] bg-[rgba(63,48,40,0.3)]"></div>
-  <div class="hero-content page-wrap relative z-[3] text-center text-[#f5f1e8]">
-    <h1 class="display-xl font-['Cormorant_Garamond'] font-normal text-[#f5f1e8]">
+  <div class="hero-overlay absolute inset-0 z-[2] bg-[color-mix(in_srgb,var(--rivano-brown)_30%,transparent)]"></div>
+  <div class="hero-content page-wrap relative z-[3] text-center text-[var(--rivano-off-white)]">
+    <h1 class="display-xl font-['Cormorant_Garamond'] font-normal text-[var(--rivano-off-white)]">
       {title}
     </h1>
     {subtitle && <p class="mx-auto mt-4 max-w-[560px] text-[16px] font-light leading-[1.8]">{subtitle}</p>}
@@ -36,10 +36,10 @@ const { imageUrl, title, subtitle, ctas = [] } = Astro.props as Props;
             <a
               href={cta.href}
               class:list={[
-                "btn inline-flex min-h-[54px] items-center justify-center px-8 py-4 text-[13px] font-normal uppercase tracking-[0.1em] transition-colors duration-200",
+                "btn inline-flex min-h-[54px] items-center justify-center px-8 py-4 text-[13px] font-normal uppercase tracking-[0.1em] transition-colors duration-normal",
                 cta.variant === "primary"
-                  ? "btn-primary bg-[#6e5542] text-[#f5f1e8] hover:bg-[#3f3028]"
-                  : "btn-secondary border border-[#f5f1e8] bg-transparent text-[#f5f1e8] hover:bg-[#f5f1e8] hover:text-[#3f3028]",
+                  ? "btn-primary bg-[var(--rivano-brown-mid)] text-[var(--rivano-off-white)] hover:bg-[var(--rivano-brown)]"
+                  : "btn-secondary border border-[var(--rivano-off-white)] bg-transparent text-[var(--rivano-off-white)] hover:bg-[var(--rivano-off-white)] hover:text-[var(--rivano-brown)]",
               ]}
             >
               {cta.label}

@@ -3,14 +3,21 @@
 @tailwind utilities;
 
 :root {
-  --rivano-off-white: #f5f1e8;
-  --rivano-areia: #d8c7ae;
-  --rivano-nude: #c9a98b;
-  --rivano-brown: #6e5542;
-  --rivano-dark: #3f3028;
-  --rivano-gold: #b89b63;
-  --rivano-muted: #a8a29a;
-  --announcement-bar-height: 48px;
+  --rivano-off-white: #f5f0e8;
+  --rivano-beige:     #e8dcc8;
+  --rivano-brown:     #3f3028;
+  --rivano-brown-mid: #6e5542;
+  --rivano-gold:      #c4a882;
+  --rivano-muted:     #a8a29a;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans:  "DM Sans", sans-serif;
+  --transition-fast:   150ms ease-out;
+  --transition-normal: 200ms ease-out;
+  --transition-slow:   300ms ease-out;
+}
+
+* {
+  transition-timing-function: ease-out;
 }
 
 @layer base {
@@ -20,8 +27,8 @@
 
   body {
     background: var(--rivano-off-white);
-    color: var(--rivano-dark);
-    font-family: "DM Sans", sans-serif;
+    color: var(--rivano-brown);
+    font-family: var(--font-sans);
     font-size: 15px;
     font-weight: 300;
     line-height: 1.8;
@@ -30,12 +37,12 @@
   h1,
   h2,
   h3 {
-    color: var(--rivano-dark);
+    color: var(--rivano-brown);
     font-weight: 400;
   }
 
   h1 {
-    font-family: "Cormorant Garamond", serif;
+    font-family: var(--font-serif);
     letter-spacing: -0.015em;
     line-height: 0.95;
   }
@@ -68,7 +75,7 @@
   }
 
   .nav-link {
-    color: var(--rivano-dark);
+    color: var(--rivano-brown);
     font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.12em;
@@ -76,8 +83,8 @@
   }
 
   .logo-wordmark {
-    color: var(--rivano-dark);
-    font-family: "Cormorant Garamond", serif;
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
     font-size: 30px;
     font-weight: 400;
     letter-spacing: 0.16em;
@@ -86,7 +93,7 @@
   }
 
   .product-name {
-    color: var(--rivano-dark);
+    color: var(--rivano-brown);
     font-size: 14px;
     font-weight: 400;
     line-height: 1.45;
@@ -101,7 +108,7 @@
 
   .section-divider {
     border: none;
-    border-top: 1px solid var(--rivano-areia);
+    border-top: 1px solid var(--rivano-beige);
     margin: 48px 0;
   }
 
@@ -113,13 +120,13 @@
 
   .primary-button {
     align-items: center;
-    background: var(--rivano-brown);
+    background: var(--rivano-brown-mid);
     border: none;
     border-radius: 0;
     color: var(--rivano-off-white);
     cursor: pointer;
     display: inline-flex;
-    font-family: "DM Sans", sans-serif;
+    font-family: var(--font-sans);
     font-size: 13px;
     font-weight: 400;
     gap: 8px;
@@ -128,22 +135,22 @@
     min-height: 54px;
     padding: 16px 32px;
     text-transform: uppercase;
-    transition: background 0.2s ease;
+    transition: background var(--transition-normal);
     width: 100%;
   }
 
   .primary-button:hover {
-    background: var(--rivano-dark);
+    background: var(--rivano-brown);
   }
 
   .ghost-button {
     background: transparent;
-    border: 1px solid var(--rivano-dark);
-    color: var(--rivano-dark);
+    border: 1px solid var(--rivano-brown);
+    color: var(--rivano-brown);
   }
 
   .ghost-button:hover {
-    background: var(--rivano-dark);
+    background: var(--rivano-brown);
     color: var(--rivano-off-white);
   }
 
@@ -198,11 +205,5 @@
   .section-gap-xl {
     padding-top: 128px;
     padding-bottom: 128px;
-  }
-}
-
-@media (min-width: 640px) {
-  :root {
-    --announcement-bar-height: 32px;
   }
 }

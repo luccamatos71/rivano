@@ -4,12 +4,12 @@ const isHome = pathname === "/";
 const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/produtos");
 ---
 
-<nav class="fixed inset-x-0 bottom-0 z-50 flex h-14 border-t border-[var(--rivano-areia)] bg-[var(--rivano-off-white)] font-['DM_Sans'] md:hidden" aria-label="Navegação inferior">
+<nav class="fixed inset-x-0 bottom-0 z-50 flex h-14 border-t border-[var(--rivano-beige)] bg-[var(--rivano-off-white)] font-['DM_Sans'] md:hidden" aria-label="Navegação inferior">
   <a
     href="/"
     class:list={[
-      "flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] transition-colors duration-200",
-      isHome ? "text-[var(--rivano-brown)]" : "text-[var(--rivano-muted)]",
+      "flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] transition-colors duration-normal",
+      isHome ? "text-[var(--rivano-brown-mid)]" : "text-[var(--rivano-muted)]",
     ]}
     aria-label="Home"
   >
@@ -24,8 +24,8 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
   <a
     href="/catalogo"
     class:list={[
-      "flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] transition-colors duration-200",
-      isCatalog ? "text-[var(--rivano-brown)]" : "text-[var(--rivano-muted)]",
+      "flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] transition-colors duration-normal",
+      isCatalog ? "text-[var(--rivano-brown-mid)]" : "text-[var(--rivano-muted)]",
     ]}
     aria-label="Catálogo"
   >
@@ -40,7 +40,7 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
 
   <a
     href="/catalogo"
-    class="flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-muted)] transition-colors duration-200"
+    class="flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-muted)] transition-colors duration-normal"
     aria-label="Busca"
   >
     <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -54,7 +54,7 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
     href="https://wa.me/5571993135522"
     target="_blank"
     rel="noopener noreferrer"
-    class="flex flex-1 flex-col items-center justify-center gap-1 bg-[var(--rivano-brown)] text-[10px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-off-white)] transition-colors duration-200"
+    class="flex flex-1 flex-col items-center justify-center gap-1 bg-[var(--rivano-brown-mid)] text-[10px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-off-white)] transition-colors duration-normal"
     aria-label="WhatsApp"
   >
     <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
