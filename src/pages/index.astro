@@ -1,137 +1,778 @@
 ---
-import HeroBanner from "../components/HeroBanner.astro";
-import ProductGrid from "../components/ProductGrid.astro";
+import ProductCard from "../components/ProductCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { toCardProduct, type Product } from "../lib/products";
 import productsData from "../data/products.json";
 
 const allProducts = productsData as Product[];
-const products = allProducts.filter((product) => product.available).slice(0, 6).map(toCardProduct);
-const collectionProducts = {
-  ela: allProducts.find((product) => product.slug === "rivano-palermo") ?? allProducts.find((product) => product.audience.includes("ela")),
-  ele: allProducts.find((product) => product.slug === "rivano-balos") ?? allProducts.find((product) => product.audience.includes("ele")),
-  marcante: allProducts.find((product) => product.slug === "rivano-mykonos") ?? allProducts.find((product) => product.vibe?.includes("marcante")),
-};
-const collectionCards = [
-  { title: "Para Ela", href: "/catalogo?para=ela", image: collectionProducts.ela ? toCardProduct(collectionProducts.ela).image : "" },
-  { title: "Para Ele", href: "/catalogo?para=ele", image: collectionProducts.ele ? toCardProduct(collectionProducts.ele).image : "" },
-  { title: "Marcante", href: "/catalogo?vibe=marcante", image: collectionProducts.marcante ? toCardProduct(collectionProducts.marcante).image : "" },
+const featuredProducts = allProducts.slice(0, 6).map(toCardProduct);
+const secondaryProducts = allProducts.slice(6, 10).map(toCardProduct);
+
+const testimonials = [
+  {
+    quote: "Óculos perfeitos, chegaram rápido e a qualidade surpreendeu.",
+    name: "Mariana R.",
+    city: "Salvador",
+  },
+  {
+    quote: "Comprei pelo WhatsApp, super fácil. Adoro o design.",
+    name: "Pedro A.",
+    city: "São Paulo",
+  },
+  {
+    quote: "Já é o segundo par que compro. Não troco por nada.",
+    name: "Camila S.",
+    city: "Recife",
+  },
 ];
 ---
 
 <BaseLayout
-  title="Rivano | Óculos premium-acessíveis em Salvador"
-  description="Óculos premium-acessíveis da Rivano. Nascida em Salvador. Inspirada no verão europeu."
+  title="Rivano | Óculos premium para dias de sol"
+  description="Óculos premium-acessíveis da Rivano. Design autoral, verão europeu e compra pelo WhatsApp."
 >
-  <HeroBanner
-    imageUrl="/banners/banner-1.webp"
-    title="Verão no olhar."
-    ctas={[{ label: "Ver modelos", href: "/catalogo", variant: "secondary" }]}
-  />
+  <div class="rivano-home">
+    <section class="hero-video" aria-label="Rivano coleção 2025">
+      <div class="hero-frame">
+        <video class="hero-media" src="/banners/hero.mov" autoplay muted loop playsinline></video>
+        <div class="hero-gradient" aria-hidden="true"></div>
+        <div class="hero-content">
+          <h1 class="display-xl hero-title">Olhar que define.</h1>
+          <p class="hero-kicker">Coleção 2025</p>
+          <a class="home-button home-button--light" href="/catalogo">Ver coleção</a>
+        </div>
+      </div>
+    </section>
 
-  <div class="border-t border-[var(--rivano-areia)] bg-[var(--rivano-off-white)] py-3 font-['DM_Sans'] text-[11px] font-normal uppercase tracking-[0.2em] text-[var(--rivano-muted)]">
-    <div class="page-wrap flex flex-col items-center justify-center gap-2 text-center md:flex-row md:gap-4">
-      <span>Frete grátis em todo o Brasil</span>
-      <span class="hidden md:inline">|</span>
-      <span>Troca em 30 dias</span>
-      <span class="hidden md:inline">|</span>
-      <span>Atendimento pelo WhatsApp</span>
-    </div>
-  </div>
+    <section class="intro-editorial" aria-label="Manifesto Rivano">
+      <div class="intro-inner">
+        <p class="display-md intro-title">Feitos para quem vive ao sol.</p>
+        <p class="intro-subtitle">Design autoral. Qualidade real. Preço honesto.</p>
+      </div>
+    </section>
 
-  <section class="section-space">
-    <div class="page-wrap mb-8 flex items-end justify-between md:mb-10">
-      <p class="editorial-label">MODELOS</p>
-      <a
-        href="/catalogo"
-        class="text-[11px] uppercase tracking-[0.2em] text-[var(--rivano-muted)] transition-colors duration-200 hover:text-[var(--rivano-brown)]"
-      >
-        Ver todos
-      </a>
-    </div>
+    <section class="collection-highlight" aria-label="Destaques de coleção">
+      <article class="collection-block collection-block--ela">
+        <div class="collection-image-wrap">
+          <img src="/editorial/ela.png" alt="Mulher com lenço usando óculos Rivano sob céu azul" class="collection-image" loading="eager" decoding="async" />
+        </div>
+        <div class="collection-copy">
+          <p class="section-label">Coleção</p>
+          <h2 class="display-lg collection-title">Ela</h2>
+          <p class="collection-description">Frames que acompanham cada mood. Do café da manhã à hora dourada.</p>
+          <a class="home-button home-button--dark" href="/catalogo?genero=ela">Ver coleção</a>
+        </div>
+      </article>
 
-    <ProductGrid products={products} />
-  </section>
+      <hr class="collection-separator" />
 
-  <section class="pb-16 md:pb-24">
-    <div class="page-wrap">
-      <p class="editorial-label">Coleções</p>
-      <div class="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:mx-0 md:grid md:grid-cols-3 md:px-0 md:pb-0">
+      <article class="collection-block collection-block--ele">
+        <div class="collection-copy">
+          <p class="section-label">Coleção</p>
+          <h2 class="display-lg collection-title">Ele</h2>
+          <p class="collection-description">Linhas precisas, presença garantida. Para quem sabe o que quer.</p>
+          <a class="home-button home-button--dark" href="/catalogo?genero=ele">Ver coleção</a>
+        </div>
+        <div class="collection-image-wrap">
+          <img src="/editorial/ele.png" alt="Homem usando óculos redondo Rivano em close sob céu azul" class="collection-image" loading="lazy" decoding="async" />
+        </div>
+      </article>
+    </section>
+
+    <section class="product-section product-section--featured" aria-labelledby="mais-vistos">
+      <h2 id="mais-vistos" class="display-sm product-section-title">Mais vistos</h2>
+      <div class="featured-grid">
         {
-          collectionCards.map((collection) => (
-            <a
-              href={collection.href}
-              class="relative aspect-[3/4] w-[70vw] flex-shrink-0 snap-start overflow-hidden bg-[var(--rivano-areia)] bg-cover bg-center md:w-auto"
-              style={`background-image: url('${collection.image}');`}
-              aria-label={collection.title}
-            >
-              <span class="absolute inset-0 bg-gradient-to-t from-[rgba(63,48,40,0.6)] to-transparent"></span>
-              <span class="absolute inset-x-0 bottom-8 px-6 text-center font-['Cormorant_Garamond'] text-[28px] font-light leading-none tracking-[0.05em] text-[var(--rivano-off-white)]">
-                {collection.title}
-              </span>
-            </a>
+          featuredProducts.map((product, index) => (
+            <article class:list={["home-product-card", index % 3 === 1 && "home-product-card--offset"]}>
+              <ProductCard product={product} index={index} />
+            </article>
           ))
         }
       </div>
-    </div>
-  </section>
-
-  <section
-    class="relative min-h-[58vh] w-full md:min-h-[70vh]"
-    style="background-image: linear-gradient(rgba(63,48,40,0.22), rgba(63,48,40,0.22)), url('/banners/banner-2.webp'); background-size: cover; background-position: center;"
-  >
-    <div class="page-wrap flex min-h-[58vh] items-end pb-14 md:min-h-[70vh] md:pb-20">
-      <p class="max-w-[560px] font-['Cormorant_Garamond'] text-[42px] leading-[1] tracking-[0.06em] text-[#f5f1e8] md:text-[72px]">
-        Presença sem esforço.
-      </p>
-    </div>
-  </section>
-
-  <section class="bg-[var(--rivano-off-white)] py-12 md:py-20">
-    <div class="page-wrap">
-      <p class="editorial-label">Como funciona</p>
-      <div class="grid gap-10 md:grid-cols-3 md:gap-12">
-        <div class="relative pt-8">
-          <span class="absolute left-0 top-0 font-['Cormorant_Garamond'] text-[48px] font-light leading-none text-[var(--rivano-areia)]">01</span>
-          <svg class="relative mb-5 h-8 w-8 text-[var(--rivano-brown)]" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M3 17.5c1.2-3.6 3.9-5.6 7.4-5.6 3.1 0 4.8 1.7 5.6 4.2.8-2.5 2.5-4.2 5.6-4.2 3.5 0 6.2 2 7.4 5.6" />
-            <path d="M3 17.5h10.8" />
-            <path d="M18.2 17.5H29" />
-            <path d="M13.8 17.5c0 2.1-1.7 3.8-3.8 3.8S6.2 19.6 6.2 17.5" />
-            <path d="M25.8 17.5c0 2.1-1.7 3.8-3.8 3.8s-3.8-1.7-3.8-3.8" />
-          </svg>
-          <h2 class="font-['DM_Sans'] text-[13px] font-normal uppercase tracking-[0.14em] text-[var(--rivano-dark)]">Escolha seu modelo</h2>
-          <p class="mt-3 max-w-[320px] font-['DM_Sans'] text-[14px] font-light leading-[1.7] text-[var(--rivano-muted)]">
-            Explore o catálogo e encontre o modelo certo para você.
-          </p>
-        </div>
-
-        <div class="relative pt-8">
-          <span class="absolute left-0 top-0 font-['Cormorant_Garamond'] text-[48px] font-light leading-none text-[var(--rivano-areia)]">02</span>
-          <svg class="relative mb-5 h-8 w-8 text-[var(--rivano-brown)]" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M7 7h18v13H12l-5 5V7z" />
-            <path d="M11 13h10" />
-            <path d="M11 17h7" />
-          </svg>
-          <h2 class="font-['DM_Sans'] text-[13px] font-normal uppercase tracking-[0.14em] text-[var(--rivano-dark)]">Consulte pelo WhatsApp</h2>
-          <p class="mt-3 max-w-[320px] font-['DM_Sans'] text-[14px] font-light leading-[1.7] text-[var(--rivano-muted)]">
-            Fale com a gente, tire dúvidas sobre tamanho, cor e disponibilidade.
-          </p>
-        </div>
-
-        <div class="relative pt-8">
-          <span class="absolute left-0 top-0 font-['Cormorant_Garamond'] text-[48px] font-light leading-none text-[var(--rivano-areia)]">03</span>
-          <svg class="relative mb-5 h-8 w-8 text-[var(--rivano-brown)]" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <path d="M6 10.5 16 5l10 5.5v11L16 27 6 21.5v-11z" />
-            <path d="m6 10.5 10 5.5 10-5.5" />
-            <path d="M16 16v11" />
-          </svg>
-          <h2 class="font-['DM_Sans'] text-[13px] font-normal uppercase tracking-[0.14em] text-[var(--rivano-dark)]">Receba em casa</h2>
-          <p class="mt-3 max-w-[320px] font-['DM_Sans'] text-[14px] font-light leading-[1.7] text-[var(--rivano-muted)]">
-            Enviamos para todo o Brasil. Troca em 30 dias, sem complicação.
-          </p>
-        </div>
+      <div class="catalog-link-wrap">
+        <a class="home-button home-button--dark" href="/catalogo">Ver catálogo completo</a>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <section class="pullquote-section" aria-label="Citação Rivano">
+      <div class="pullquote-inner">
+        <span class="pullquote-mark" aria-hidden="true">"</span>
+        <blockquote class="display-md pullquote-text">
+          Óculos não são acessório. São a primeira coisa que o mundo vê em você.
+        </blockquote>
+        <p class="pullquote-author">— Rivano</p>
+      </div>
+    </section>
+
+    <section class="summer-split" aria-label="O espírito Rivano">
+      <div class="summer-image-wrap">
+        <img src="/editorial/verao.png" alt="Óculos na areia com bolsa de palha e laranja" class="summer-image" loading="lazy" decoding="async" />
+      </div>
+      <div class="summer-copy">
+        <p class="section-label">O espírito Rivano</p>
+        <h2 class="display-md summer-title">Feita para o sol.<br />Inspirada no verão europeu.</h2>
+        <p class="summer-body">Da Riviera Francesa às praias do Brasil, um design que viaja com você.</p>
+        <a class="home-button home-button--dark" href="#">Conhecer a marca</a>
+      </div>
+    </section>
+
+    <section class="product-section product-section--secondary" aria-label="Mais produtos Rivano">
+      <div class="secondary-grid">
+        {
+          secondaryProducts.map((product, index) => (
+            <article class="home-product-card">
+              <ProductCard product={product} index={index + 6} />
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="trust-section" aria-label="Confiança Rivano">
+      <div class="trust-grid">
+        <article class="trust-item">
+          <p class="display-lg trust-number">30</p>
+          <p class="trust-title">dias para trocar</p>
+          <p class="trust-detail">Sem burocracia</p>
+        </article>
+        <article class="trust-item">
+          <p class="display-lg trust-number">100%</p>
+          <p class="trust-title">original garantido</p>
+          <p class="trust-detail">Direto da marca</p>
+        </article>
+        <article class="trust-item">
+          <svg class="trust-whatsapp" viewBox="0 0 32 32" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M16.04 3.2A12.7 12.7 0 0 0 5.18 22.5L3.6 28.8l6.45-1.5a12.72 12.72 0 1 0 5.99-24.1Zm0 2.28a10.44 10.44 0 0 1 8.86 15.96 10.45 10.45 0 0 1-13.93 3.66l-.45-.27-3.92.92.96-3.82-.3-.47A10.43 10.43 0 0 1 16.04 5.48Zm-4.2 5.2c-.23 0-.6.09-.92.43-.32.35-1.2 1.18-1.2 2.88s1.23 3.34 1.4 3.57c.17.23 2.38 3.8 5.9 5.16 2.92 1.15 3.52.92 4.16.86.63-.06 2.04-.83 2.33-1.63.29-.8.29-1.48.2-1.63-.08-.15-.32-.23-.66-.4-.35-.17-2.05-1-2.37-1.12-.32-.11-.55-.17-.78.17-.23.35-.9 1.12-1.1 1.35-.2.23-.4.26-.75.09-.35-.18-1.46-.54-2.78-1.72-1.03-.92-1.72-2.05-1.92-2.4-.2-.34-.02-.53.15-.7.16-.15.35-.4.52-.6.18-.2.24-.34.35-.57.12-.23.06-.43-.03-.6-.09-.17-.78-1.88-1.07-2.57-.28-.67-.57-.58-.78-.59h-.66Z"
+            />
+          </svg>
+          <p class="trust-title">atendimento humano</p>
+          <p class="trust-detail">Respondemos de verdade</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="testimonials-section" aria-labelledby="depoimentos">
+      <h2 id="depoimentos" class="display-sm testimonials-title">O que dizem sobre nós</h2>
+      <div class="testimonials-track">
+        {
+          testimonials.map((testimonial) => (
+            <article class="testimonial-card">
+              <div class="testimonial-stars" aria-label="5 estrelas">
+                {Array.from({ length: 5 }).map(() => (
+                  <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      fill="currentColor"
+                      d="m12 2.6 2.88 5.84 6.45.94-4.66 4.54 1.1 6.42L12 17.3l-5.77 3.04 1.1-6.42-4.66-4.54 6.45-.94L12 2.6Z"
+                    />
+                  </svg>
+                ))}
+              </div>
+              <p class="testimonial-quote">"{testimonial.quote}"</p>
+              <p class="testimonial-name">{testimonial.name}</p>
+              <p class="testimonial-city">{testimonial.city}</p>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </div>
 </BaseLayout>
+
+<style>
+  .rivano-home {
+    --rivano-off-white: #f5f0e8;
+    --rivano-beige: #e8dcc8;
+    --rivano-brown: #3f3028;
+    --rivano-gold: #c4a882;
+    background: var(--rivano-off-white);
+    color: var(--rivano-brown);
+    overflow-x: hidden;
+  }
+
+  .hero-video {
+    background: var(--rivano-off-white);
+    width: 100%;
+  }
+
+  .hero-frame {
+    height: 90vh;
+    margin: 0;
+    overflow: hidden;
+    position: relative;
+    width: 100vw;
+  }
+
+  .hero-media {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .hero-gradient {
+    background: linear-gradient(0deg, rgba(18, 13, 10, 0.72) 0%, rgba(18, 13, 10, 0) 100%);
+    bottom: 0;
+    height: 45%;
+    left: 0;
+    position: absolute;
+    right: 0;
+  }
+
+  .hero-content {
+    bottom: 0;
+    left: 0;
+    padding: 24px 24px 88px;
+    position: absolute;
+    width: 100%;
+  }
+
+  .hero-title {
+    color: var(--rivano-off-white);
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 300;
+    max-width: 340px;
+  }
+
+  .hero-kicker,
+  .intro-subtitle,
+  .section-label,
+  .pullquote-author,
+  .trust-title,
+  .testimonial-name {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .hero-kicker {
+    color: rgba(245, 240, 232, 0.7);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    line-height: 1.35;
+    margin-top: 12px;
+  }
+
+  .home-button {
+    align-items: center;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: 0;
+    display: inline-flex;
+    font-family: "DM Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    justify-content: center;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    min-height: 44px;
+    padding: 14px 28px;
+    text-transform: uppercase;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  .home-button--light {
+    color: var(--rivano-off-white);
+    margin-top: 24px;
+  }
+
+  .home-button--light:hover {
+    background: var(--rivano-off-white);
+    color: var(--rivano-brown);
+  }
+
+  .home-button--dark {
+    color: var(--rivano-brown);
+  }
+
+  .home-button--dark:hover {
+    background: var(--rivano-brown);
+    color: var(--rivano-off-white);
+  }
+
+  .intro-editorial {
+    background: var(--rivano-off-white);
+    padding: 48px 24px;
+    text-align: center;
+  }
+
+  .intro-inner {
+    margin: 0 auto;
+  }
+
+  .intro-title {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .intro-subtitle {
+    color: rgba(63, 48, 40, 0.55);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    line-height: 1.6;
+    margin-top: 16px;
+  }
+
+  .collection-highlight {
+    background: var(--rivano-beige);
+    padding: 0 0 48px;
+  }
+
+  .collection-image-wrap {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .collection-image,
+  .summer-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .collection-copy {
+    padding: 28px 24px;
+  }
+
+  .section-label {
+    color: rgba(63, 48, 40, 0.5);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+  }
+
+  .collection-title {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 300;
+    margin-top: 10px;
+  }
+
+  .collection-description {
+    color: rgba(63, 48, 40, 0.65);
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.65;
+    margin-top: 12px;
+    max-width: 360px;
+  }
+
+  .collection-copy .home-button {
+    margin-top: 24px;
+  }
+
+  .collection-separator {
+    border: 0;
+    border-top: 1px solid var(--rivano-off-white);
+    margin: 0 24px;
+  }
+
+  .product-section {
+    background: var(--rivano-off-white);
+    padding: 48px 16px;
+  }
+
+  .product-section-title,
+  .testimonials-title {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 300;
+    margin: 0 auto 32px;
+    text-align: center;
+  }
+
+  .featured-grid,
+  .secondary-grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 100%;
+  }
+
+  .home-product-card :global(.image-container > span) {
+    display: none;
+  }
+
+  .home-product-card :global(.product-info h3) {
+    color: var(--rivano-brown);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.15;
+  }
+
+  .home-product-card :global(.price) {
+    color: rgba(63, 48, 40, 0.58);
+    font-family: "DM Sans", sans-serif;
+    font-size: 13px;
+  }
+
+  .catalog-link-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+
+  .pullquote-section {
+    background: var(--rivano-brown);
+    color: var(--rivano-off-white);
+    overflow: hidden;
+  }
+
+  .pullquote-inner {
+    margin: 0 auto;
+    padding: 64px 32px;
+    position: relative;
+  }
+
+  .pullquote-mark {
+    color: rgba(196, 168, 130, 0.12);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 180px;
+    font-weight: 300;
+    left: 16px;
+    line-height: 1;
+    pointer-events: none;
+    position: absolute;
+    top: -20px;
+  }
+
+  .pullquote-text {
+    color: var(--rivano-off-white);
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 300;
+    margin: 0 auto;
+    max-width: 680px;
+    position: relative;
+    text-align: center;
+  }
+
+  .pullquote-author {
+    color: rgba(245, 240, 232, 0.4);
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    line-height: 1.4;
+    margin-top: 24px;
+    position: relative;
+    text-align: center;
+  }
+
+  .summer-split {
+    background: var(--rivano-off-white);
+  }
+
+  .summer-image-wrap {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .summer-copy {
+    padding: 32px 24px;
+  }
+
+  .summer-copy .section-label {
+    color: rgba(63, 48, 40, 0.45);
+  }
+
+  .summer-title {
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 300;
+    margin-top: 12px;
+  }
+
+  .summer-body {
+    color: rgba(63, 48, 40, 0.65);
+    font-family: "DM Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.75;
+    margin-top: 16px;
+    max-width: 380px;
+  }
+
+  .summer-copy .home-button {
+    margin-top: 24px;
+  }
+
+  .product-section--secondary {
+    background: var(--rivano-beige);
+  }
+
+  .trust-section {
+    background: var(--rivano-off-white);
+    padding: 48px 32px;
+  }
+
+  .trust-grid {
+    display: grid;
+    margin: 0 auto;
+    max-width: 1280px;
+  }
+
+  .trust-item {
+    border-bottom: 1px solid var(--rivano-beige);
+    padding: 0 0 32px;
+    text-align: center;
+  }
+
+  .trust-item + .trust-item {
+    padding-top: 32px;
+  }
+
+  .trust-item:last-child {
+    border-bottom: 0;
+  }
+
+  .trust-number {
+    color: var(--rivano-gold);
+    font-family: "Cormorant Garamond", serif;
+    font-weight: 300;
+  }
+
+  .trust-whatsapp {
+    color: var(--rivano-gold);
+    display: block;
+    height: 24px;
+    margin: 20px auto 18px;
+    width: 24px;
+  }
+
+  .trust-title {
+    color: var(--rivano-brown);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    line-height: 1.35;
+    margin-top: 8px;
+  }
+
+  .trust-detail {
+    color: rgba(63, 48, 40, 0.45);
+    font-family: "DM Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.45;
+    margin-top: 4px;
+  }
+
+  .testimonials-section {
+    background: var(--rivano-beige);
+    padding: 48px 0;
+  }
+
+  .testimonials-title {
+    padding: 0 24px;
+  }
+
+  .testimonials-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 0 24px;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+
+  .testimonials-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .testimonial-card {
+    background: var(--rivano-off-white);
+    flex: 0 0 82vw;
+    flex-shrink: 0;
+    min-width: 0;
+    padding: 28px;
+    scroll-snap-align: start;
+  }
+
+  .testimonial-stars {
+    color: var(--rivano-gold);
+    display: flex;
+    gap: 3px;
+  }
+
+  .star-icon {
+    height: 11px;
+    width: 11px;
+  }
+
+  .testimonial-quote {
+    color: var(--rivano-brown);
+    font-family: "Cormorant Garamond", serif;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.65;
+    margin-top: 14px;
+    overflow-wrap: break-word;
+  }
+
+  .testimonial-name {
+    color: rgba(63, 48, 40, 0.55);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    line-height: 1.35;
+    margin-top: 18px;
+  }
+
+  .testimonial-city {
+    color: rgba(63, 48, 40, 0.35);
+    font-family: "DM Sans", sans-serif;
+    font-size: 10px;
+    line-height: 1.35;
+    margin-top: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .hero-frame {
+      height: 100vh;
+      margin: 0 auto;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .hero-content {
+      padding: 24px 24px 156px;
+    }
+
+    .intro-editorial {
+      padding: 128px 24px;
+    }
+
+    .intro-inner {
+      max-width: 640px;
+    }
+
+    .collection-highlight {
+      padding: 96px 40px;
+    }
+
+    .collection-block {
+      display: grid;
+      gap: 0;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      margin: 0 auto;
+      max-width: 1280px;
+    }
+
+    .collection-block--ela .collection-image-wrap {
+      grid-column: 1 / 8;
+    }
+
+    .collection-block--ela .collection-copy {
+      grid-column: 8 / 13;
+      padding: 0 0 0 48px;
+    }
+
+    .collection-block--ele {
+      margin-top: 64px;
+    }
+
+    .collection-block--ele .collection-copy {
+      grid-column: 1 / 6;
+      grid-row: 1;
+      padding: 0 48px 0 0;
+    }
+
+    .collection-block--ele .collection-image-wrap {
+      grid-column: 6 / 13;
+      grid-row: 1;
+    }
+
+    .collection-copy {
+      align-self: center;
+    }
+
+    .collection-separator {
+      display: none;
+    }
+
+    .product-section--featured {
+      padding: 96px 40px;
+    }
+
+    .featured-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .home-product-card--offset {
+      padding-top: 56px;
+    }
+
+    .pullquote-inner {
+      max-width: 680px;
+      padding: 128px 40px;
+    }
+
+    .summer-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      padding: 96px 40px;
+    }
+
+    .summer-copy {
+      align-self: center;
+      padding: 0 0 0 64px;
+    }
+
+    .product-section--secondary {
+      padding: 64px 40px;
+    }
+
+    .secondary-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .trust-section {
+      padding: 96px 40px;
+    }
+
+    .trust-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .trust-item {
+      border-bottom: 0;
+      padding: 0 32px;
+    }
+
+    .trust-item + .trust-item {
+      padding-top: 0;
+    }
+
+    .trust-item:nth-child(1),
+    .trust-item:nth-child(2) {
+      border-right: 1px solid var(--rivano-beige);
+    }
+
+    .testimonials-section {
+      padding: 96px 40px;
+    }
+
+    .testimonials-track {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin: 0 auto;
+      max-width: 1280px;
+      overflow: visible;
+      padding: 0;
+    }
+
+    .testimonial-card {
+      flex: initial;
+      min-width: 0;
+    }
+  }
+</style>
