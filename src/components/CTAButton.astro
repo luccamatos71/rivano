@@ -1,23 +1,23 @@
 ---
 interface Props {
-  text?: string;
   label?: string;
   phoneNumber?: string;
   variant?: "primary" | "secondary";
   fullWidth?: boolean;
-  message?: string;
+  productName?: string;
 }
 
 const {
-  text = "Pedir pelo WhatsApp",
   label = "Pedir pelo WhatsApp",
   phoneNumber = "5571993135522",
   variant = "primary",
   fullWidth = false,
-  message,
+  productName,
 } = Astro.props as Props;
 
-const whatsappMessage = message ?? `Olá! Tenho interesse no ${text}. Podem me ajudar com disponibilidade e frete?`;
+const whatsappMessage = productName
+  ? `Olá! 👋 Tenho interesse nos óculos ${productName}. Podem me ajudar com disponibilidade e frete?`
+  : "Olá! 👋 Queria saber mais sobre os óculos da Rivano.";
 const href = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 ---
 

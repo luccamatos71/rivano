@@ -8,7 +8,7 @@ const pathname = Astro.url.pathname;
 const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/produtos/");
 ---
 
-<header class="navbar sticky top-0 z-[100] border-b border-[#d8c7ae] bg-[#f5f1e8] px-5 sm:px-10">
+<header class="navbar sticky top-[var(--announcement-bar-height)] z-[100] border-b border-[#d8c7ae] bg-[#f5f1e8] px-5 sm:px-10">
   <div class="navbar-content mx-auto flex h-[60px] max-w-[1280px] items-center justify-between sm:grid sm:h-[90px] sm:grid-cols-3">
     <nav class="nav-menu hidden items-center gap-8 sm:flex" aria-label="Coleções">
       <a

@@ -20,7 +20,7 @@ export type Product = {
   audience: string[];
   faceShape?: string[];
   vibe?: string[];
-  stock: number;
+  stock?: number;
   available: boolean;
   description: ProductDescription;
   variants: ProductVariant[];
@@ -39,7 +39,7 @@ export type CardProduct = {
   slug: string;
   name: string;
   price: number;
-  stock: number;
+  stock?: number;
   image: string;
   hoverImage?: string;
   available?: boolean;

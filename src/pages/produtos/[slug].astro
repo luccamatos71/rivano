@@ -111,35 +111,56 @@ function sectionLines(value: string | null): string[] {
       </div>
 
       <aside class="md:sticky md:top-24 md:self-start">
-        <h1 class="font-['Cormorant_Garamond'] text-[44px] leading-[0.95] tracking-[0.05em] md:text-[54px]">{product.name}</h1>
+        <h1 class="display-md font-['Cormorant_Garamond']">{product.name}</h1>
         <p class="mt-4 text-[24px] font-light text-[var(--rivano-brown)]">
           {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 }).format(product.price)}
         </p>
 
-        <div class="mt-4 flex flex-wrap items-center gap-4 font-['DM_Sans'] text-[12px] font-normal leading-none text-[var(--rivano-muted)]">
-          <span class="inline-flex items-center gap-1.5">
-            <svg class="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M7 7h9.5a4.5 4.5 0 0 1 0 9H8" />
-              <path d="M10 4 7 7l3 3" />
-              <path d="M14 20l3-3-3-3" />
+        <div class="trust-inline">
+          <span>↻ Troca em 30 dias</span>
+          <span>🚚 Frete grátis</span>
+          <span>✓ 100% Original</span>
+        </div>
+
+        <div class="feature-icons" aria-label="Características do produto">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 13.5c1-3 3.2-4.8 6.2-4.8 2.6 0 4 1.4 4.8 3.8.8-2.4 2.2-3.8 4.8-3.8 3 0 5.2 1.8 6.2 4.8" />
+              <path d="M3 13.5h8.7" />
+              <path d="M16.3 13.5H21" />
+              <path d="M11.7 13.5a3 3 0 1 1-6 0" />
+              <path d="M22.3 13.5a3 3 0 1 1-6 0" />
             </svg>
-            Troca em 30 dias
-          </span>
-          <span class="inline-flex items-center gap-1.5">
-            <svg class="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M3 7h11v9H3z" />
-              <path d="M14 10h3.5l2.5 3v3h-6z" />
-              <path d="M6.5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
-              <path d="M17.5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z" />
+            <span>Armação leve</span>
+          </div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 4c-7 0-12 4.5-12 10.5 0 2.8 2.2 5.5 5.5 5.5C19 20 22 12.5 20 4z" />
+              <path d="M5 21c2.8-5.4 6.8-8.8 12-10.2" />
             </svg>
-            Frete grátis
-          </span>
-          <span class="inline-flex items-center gap-1.5">
-            <svg class="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="m5 12 4 4L19 6" />
+            <span>Material premium</span>
+          </div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2.5v3" />
+              <path d="M12 18.5v3" />
+              <path d="M2.5 12h3" />
+              <path d="M18.5 12h3" />
+              <path d="m5.3 5.3 2.1 2.1" />
+              <path d="m16.6 16.6 2.1 2.1" />
+              <path d="m18.7 5.3-2.1 2.1" />
+              <path d="m7.4 16.6-2.1 2.1" />
             </svg>
-            100% original
-          </span>
+            <span>Lente com proteção UV</span>
+          </div>
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3 19 6v5.5c0 4.4-2.8 7.7-7 9.5-4.2-1.8-7-5.1-7-9.5V6l7-3z" />
+              <path d="m8.7 12.1 2.2 2.2 4.6-4.8" />
+            </svg>
+            <span>Garantia de qualidade</span>
+          </div>
         </div>
 
         {product.description.testimonial && (
@@ -176,7 +197,7 @@ function sectionLines(value: string | null): string[] {
         )}
 
         <div class="mt-8 hidden md:block">
-          <CTAButton fullWidth text={product.name} />
+          <CTAButton fullWidth productName={product.name} />
         </div>
 
         <div class="mt-9 border-t border-[var(--rivano-areia)]">
@@ -230,20 +251,12 @@ function sectionLines(value: string | null): string[] {
       <section class="mt-14 border-t border-[var(--rivano-areia)] pt-10 md:mt-20 md:pt-12">
         <header class="mb-8">
           <p class="editorial-label mb-3">Você também pode gostar</p>
-          <h2 class="font-['Cormorant_Garamond'] text-[38px] leading-[1] tracking-[0.05em] md:text-[50px]">Mais modelos</h2>
+          <h2 class="display-md font-['Cormorant_Garamond']">Mais modelos</h2>
         </header>
         <div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
           {
-            relatedCardProducts.map((item) => (
-              <ProductCard
-                slug={item.slug}
-                name={item.name}
-                price={item.price}
-                stock={item.stock}
-                image={item.image}
-                hoverImage={item.hoverImage}
-                available={item.available}
-              />
+            relatedCardProducts.map((item, index) => (
+              <ProductCard product={item} index={index} />
             ))
           }
         </div>
@@ -252,8 +265,65 @@ function sectionLines(value: string | null): string[] {
   </section>
 
   <div class="fixed inset-x-0 bottom-14 z-40 border-t border-[var(--rivano-areia)] bg-[#f5f1e8]/95 p-4 backdrop-blur md:hidden">
-    <CTAButton fullWidth text={product.name} />
+    <CTAButton fullWidth productName={product.name} />
   </div>
+
+  <style>
+    .trust-inline {
+      color: var(--rivano-brown);
+      display: flex;
+      flex-wrap: wrap;
+      font-family: "DM Sans", sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      gap: 16px;
+      line-height: 1.4;
+      margin-top: 16px;
+    }
+
+    .feature-icons {
+      color: var(--rivano-brown);
+      display: grid;
+      gap: 14px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    .feature-icon {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      min-height: 86px;
+      text-align: center;
+    }
+
+    .feature-icon svg {
+      fill: none;
+      height: 24px;
+      stroke: currentColor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.4;
+      width: 24px;
+    }
+
+    .feature-icon span {
+      color: var(--rivano-dark);
+      font-family: "DM Sans", sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 1.35;
+      text-transform: uppercase;
+    }
+
+    @media (min-width: 768px) {
+      .feature-icons {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+  </style>
 
   <script is:inline>
     const carousel = document.querySelector("[data-carousel]");

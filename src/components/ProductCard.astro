@@ -1,5 +1,5 @@
 ---
-interface Props {
+interface ProductCardData {
   slug: string;
   name: string;
   price: number;
@@ -9,10 +9,19 @@ interface Props {
   available?: boolean;
 }
 
-const { slug, name, price, stock, image, hoverImage, available = true } = Astro.props as Props;
+interface Props extends Partial<ProductCardData> {
+  product?: ProductCardData;
+  index?: number;
+}
+
+const props = Astro.props as Props;
+const source = props.product ?? props;
+const { slug = "", name = "", price = 0, stock, image = "", hoverImage, available = true } = source;
+const { index = Number.MAX_SAFE_INTEGER } = props;
 const productLink = `/produtos/${slug}`;
 const formattedPrice = `R$ ${price.toFixed(2).replace(".", ",")}`;
-const showLowStockBadge = typeof stock === "number" && stock > 0 && stock <= 3;
+const showLowStockBadge = typeof stock === "number" && stock <= 3;
+const imageLoading = index < 4 ? "eager" : "lazy";
 
 function buildImageSrcset(src: string): string {
   const normalized = src.startsWith("/") ? src : `/${src}`;
@@ -44,7 +53,7 @@ function buildImageSrcset(src: string): string {
             "main-image h-full w-full object-contain p-6 transition-opacity duration-300 ease-out",
             hoverImage && "group-hover:opacity-0",
           ]}
-          loading="lazy"
+          loading={imageLoading}
           decoding="async"
           width="900"
           height="1200"
@@ -64,7 +73,7 @@ function buildImageSrcset(src: string): string {
           sizes="(min-width: 1024px) 50vw, 50vw"
           alt={`${name} view 2`}
           class="hover-image absolute inset-0 h-full w-full object-contain p-6 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
-          loading="lazy"
+          loading={imageLoading}
           decoding="async"
           width="900"
           height="1200"
@@ -74,7 +83,7 @@ function buildImageSrcset(src: string): string {
 
     {
       showLowStockBadge && (
-        <span class="absolute bottom-3 left-3 bg-[var(--rivano-brown)] px-2 py-[3px] font-['DM_Sans'] text-[10px] font-normal uppercase tracking-[0.15em] text-[var(--rivano-off-white)]">
+        <span class="absolute left-3 top-3 bg-[#c0392b] px-2 py-[3px] font-['DM_Sans'] text-[10px] font-normal uppercase tracking-[0.12em] text-white">
           Últimas unidades
         </span>
       )

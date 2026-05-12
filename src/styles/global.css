@@ -10,6 +10,7 @@
   --rivano-dark: #3f3028;
   --rivano-gold: #b89b63;
   --rivano-muted: #a8a29a;
+  --announcement-bar-height: 48px;
 }
 
 @layer base {
@@ -35,7 +36,13 @@
 
   h1 {
     font-family: "Cormorant Garamond", serif;
-    letter-spacing: 0.05em;
+    letter-spacing: -0.015em;
+    line-height: 0.95;
+  }
+
+  h2 {
+    letter-spacing: -0.01em;
+    line-height: 1;
   }
 
   a {
@@ -145,5 +152,57 @@
     background: var(--rivano-off-white);
     overflow: hidden;
     position: relative;
+  }
+}
+
+@layer utilities {
+  .display-xl {
+    font-size: clamp(56px, 10vw, 120px);
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+  }
+
+  .display-lg {
+    font-size: clamp(40px, 7vw, 80px);
+    letter-spacing: -0.015em;
+    line-height: 0.95;
+  }
+
+  .display-md {
+    font-size: clamp(28px, 4vw, 52px);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+
+  .display-sm {
+    font-size: clamp(20px, 2.5vw, 36px);
+    letter-spacing: 0;
+    line-height: 1.05;
+  }
+
+  .section-gap-sm {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .section-gap-md {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .section-gap-lg {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+
+  .section-gap-xl {
+    padding-top: 128px;
+    padding-bottom: 128px;
+  }
+}
+
+@media (min-width: 640px) {
+  :root {
+    --announcement-bar-height: 32px;
   }
 }
