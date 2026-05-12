@@ -1,4 +1,5 @@
 ---
+import BottomBar from "../components/BottomBar.astro";
 import Footer from "../components/Footer.astro";
 import Navigation from "../components/Navigation.astro";
 import "../styles/global.css";
@@ -37,7 +38,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).to
       rel="stylesheet"
     />
   </head>
-  <body>
+  <body class:list={[showFooter && "pb-14 md:pb-0"]}>
     <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100]">
       Ir para o conteúdo
     </a>
@@ -46,5 +47,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).to
       <slot />
     </main>
     {showFooter && <Footer />}
+    {showFooter && <BottomBar />}
   </body>
 </html>

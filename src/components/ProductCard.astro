@@ -3,14 +3,16 @@ interface Props {
   slug: string;
   name: string;
   price: number;
+  stock?: number;
   image: string;
   hoverImage?: string;
   available?: boolean;
 }
 
-const { slug, name, price, image, hoverImage, available = true } = Astro.props as Props;
+const { slug, name, price, stock, image, hoverImage, available = true } = Astro.props as Props;
 const productLink = `/produtos/${slug}`;
 const formattedPrice = `R$ ${price.toFixed(2).replace(".", ",")}`;
+const showLowStockBadge = typeof stock === "number" && stock > 0 && stock <= 3;
 
 function buildImageSrcset(src: string): string {
   const normalized = src.startsWith("/") ? src : `/${src}`;
@@ -67,6 +69,14 @@ function buildImageSrcset(src: string): string {
           width="900"
           height="1200"
         />
+      )
+    }
+
+    {
+      showLowStockBadge && (
+        <span class="absolute bottom-3 left-3 bg-[var(--rivano-brown)] px-2 py-[3px] font-['DM_Sans'] text-[10px] font-normal uppercase tracking-[0.15em] text-[var(--rivano-off-white)]">
+          Últimas unidades
+        </span>
       )
     }
   </div>

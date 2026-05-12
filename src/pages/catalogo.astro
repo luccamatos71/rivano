@@ -7,15 +7,33 @@ import productsData from "../data/products.json";
 
 const products = productsData as Product[];
 const cardProducts = products.map(toCardProduct);
-const activeFilter = Astro.url.searchParams.get("para") === "ele" || Astro.url.searchParams.get("para") === "him"
+const activeAudience = Astro.url.searchParams.get("para") === "ele" || Astro.url.searchParams.get("para") === "him"
   ? "ele"
   : Astro.url.searchParams.get("para") === "ela" || Astro.url.searchParams.get("para") === "her"
     ? "ela"
     : "all";
+const faceShapeParam = Astro.url.searchParams.get("face");
+const activeFaceShape = faceShapeParam === "oval" || faceShapeParam === "redondo" || faceShapeParam === "quadrado" || faceShapeParam === "coracao"
+  ? faceShapeParam
+  : "all";
+const vibeParam = Astro.url.searchParams.get("vibe");
+const activeVibe = vibeParam === "discreto" || vibeParam === "marcante" ? vibeParam : "all";
 const filters = [
   { label: "Todos", value: "all", count: products.length },
   { label: "Para ela", value: "ela", count: products.filter((product) => product.audience.includes("ela")).length },
   { label: "Para ele", value: "ele", count: products.filter((product) => product.audience.includes("ele")).length },
+];
+const faceShapeFilters = [
+  { label: "Qualquer formato", value: "all" },
+  { label: "Oval", value: "oval" },
+  { label: "Redondo", value: "redondo" },
+  { label: "Quadrado", value: "quadrado" },
+  { label: "Coração", value: "coracao" },
+];
+const vibeFilters = [
+  { label: "Todos", value: "all" },
+  { label: "Discreto", value: "discreto" },
+  { label: "Marcante", value: "marcante" },
 ];
 ---
 
@@ -28,7 +46,18 @@ const filters = [
       <p class="editorial-label">Catálogo</p>
     </div>
 
-    <ProductFilter filters={filters} activeFilter={activeFilter} />
+    <div class="border-b border-[#d8c7ae] px-5 py-6 sm:px-10">
+      <ProductFilter filters={filters} activeFilter={activeAudience} group="audience" />
+      <ProductFilter filters={faceShapeFilters} activeFilter={activeFaceShape} group="face" small />
+      <ProductFilter filters={vibeFilters} activeFilter={activeVibe} group="vibe" small />
+    </div>
+
+    <div class="page-wrap mt-5">
+      <p class="font-['DM_Sans'] text-[11px] font-normal uppercase tracking-[0.18em] text-[var(--rivano-muted)]">
+        <span data-result-count>{products.length}</span> <span data-result-label>modelos</span>
+      </p>
+    </div>
+
     <div class="mt-8">
       <ProductGrid products={cardProducts} />
     </div>
@@ -37,17 +66,59 @@ const filters = [
   <script is:inline>
     const buttons = Array.from(document.querySelectorAll("[data-filter-button]"));
     const items = Array.from(document.querySelectorAll("[data-product-item]"));
+    const resultCount = document.querySelector("[data-result-count]");
+    const resultLabel = document.querySelector("[data-result-label]");
+    const params = new URLSearchParams(window.location.search);
 
-    const applyFilter = (filter) => {
-      items.forEach((item) => {
-        const audience = item.getAttribute("data-audience") || "";
-        const list = audience.split(",").map((value) => value.trim().toLowerCase());
-        const show = filter === "all" || list.includes(filter);
-        item.toggleAttribute("hidden", !show);
-      });
+    const normalizeAudience = (value) => {
+      if (value === "ela" || value === "her") return "ela";
+      if (value === "ele" || value === "him") return "ele";
+      return "all";
+    };
 
+    const normalizeFace = (value) => {
+      return ["oval", "redondo", "quadrado", "coracao"].includes(value) ? value : "all";
+    };
+
+    const normalizeVibe = (value) => {
+      return ["discreto", "marcante"].includes(value) ? value : "all";
+    };
+
+    const activeFilters = {
+      audience: normalizeAudience(params.get("para")),
+      face: normalizeFace(params.get("face")),
+      vibe: normalizeVibe(params.get("vibe")),
+    };
+
+    const toList = (value) =>
+      value
+        .split(",")
+        .map((item) => item.trim().toLowerCase())
+        .filter(Boolean);
+
+    const matchesFilter = (item, group, value) => {
+      if (value === "all") return true;
+
+      if (group === "audience") {
+        return toList(item.getAttribute("data-audience") || "").includes(value);
+      }
+
+      if (group === "face") {
+        const faceShapes = toList(item.getAttribute("data-face-shape") || "");
+        return faceShapes.includes(value) || faceShapes.includes("qualquer");
+      }
+
+      if (group === "vibe") {
+        return toList(item.getAttribute("data-vibe") || "").includes(value);
+      }
+
+      return true;
+    };
+
+    const updateButtons = () => {
       buttons.forEach((button) => {
-        const selected = button.getAttribute("data-filter") === filter;
+        const group = button.getAttribute("data-filter-group") || "audience";
+        const selected = button.getAttribute("data-filter") === activeFilters[group];
         button.setAttribute("aria-pressed", selected ? "true" : "false");
         button.classList.toggle("active", selected);
         button.classList.toggle("border-[#6e5542]", selected);
@@ -59,14 +130,41 @@ const filters = [
       });
     };
 
-    const initialFilter = new URLSearchParams(window.location.search).get("para");
-    if (initialFilter === "ela" || initialFilter === "her") applyFilter("ela");
-    if (initialFilter === "ele" || initialFilter === "him") applyFilter("ele");
+    const updateUrl = () => {
+      const nextParams = new URLSearchParams();
+      if (activeFilters.audience !== "all") nextParams.set("para", activeFilters.audience);
+      if (activeFilters.face !== "all") nextParams.set("face", activeFilters.face);
+      if (activeFilters.vibe !== "all") nextParams.set("vibe", activeFilters.vibe);
+      const query = nextParams.toString();
+      const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+      window.history.replaceState({}, "", nextUrl);
+    };
+
+    const applyFilters = ({ syncUrl = false } = {}) => {
+      let visibleCount = 0;
+
+      items.forEach((item) => {
+        const show =
+          matchesFilter(item, "audience", activeFilters.audience) &&
+          matchesFilter(item, "face", activeFilters.face) &&
+          matchesFilter(item, "vibe", activeFilters.vibe);
+        item.toggleAttribute("hidden", !show);
+        if (show) visibleCount += 1;
+      });
+
+      if (resultCount) resultCount.textContent = String(visibleCount);
+      if (resultLabel) resultLabel.textContent = visibleCount === 1 ? "modelo" : "modelos";
+      updateButtons();
+      if (syncUrl) updateUrl();
+    };
+
+    applyFilters();
 
     buttons.forEach((button) => {
       button.addEventListener("click", () => {
-        const filter = button.getAttribute("data-filter") || "all";
-        applyFilter(filter);
+        const group = button.getAttribute("data-filter-group") || "audience";
+        activeFilters[group] = button.getAttribute("data-filter") || "all";
+        applyFilters({ syncUrl: true });
       });
     });
   </script>

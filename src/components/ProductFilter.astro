@@ -8,12 +8,14 @@ interface FilterItem {
 interface Props {
   filters: FilterItem[];
   activeFilter?: string;
+  group?: string;
+  small?: boolean;
 }
 
-const { filters, activeFilter = "all" } = Astro.props as Props;
+const { filters, activeFilter = "all", group = "audience", small = false } = Astro.props as Props;
 ---
 
-<div class="filter-bar flex gap-4 overflow-x-auto border-b border-[#d8c7ae] px-5 py-6 sm:px-10">
+<div class:list={["filter-bar flex gap-3 overflow-x-auto", small ? "mt-3" : "gap-4"]}>
   {
     filters.map((filter) => {
       const isActive = activeFilter === filter.value;
@@ -22,9 +24,11 @@ const { filters, activeFilter = "all" } = Astro.props as Props;
         <button
           type="button"
           data-filter-button
+          data-filter-group={group}
           data-filter={filter.value}
           class:list={[
-            "filter-btn whitespace-nowrap border px-4 py-2 font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] transition-colors duration-200",
+            "filter-btn whitespace-nowrap border px-4 py-2 font-['DM_Sans'] font-normal uppercase transition-colors duration-200",
+            small ? "text-[11px] tracking-[0.16em]" : "text-[12px] tracking-[0.12em]",
             isActive
               ? "active border-[#6e5542] bg-[#6e5542] text-[#f5f1e8]"
               : "border-[#3f3028] bg-transparent text-[#3f3028] hover:border-[#6e5542]",

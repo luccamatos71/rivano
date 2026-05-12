@@ -35,6 +35,12 @@
       "products/rivano-balos/2-600.webp",
       "products/rivano-balos/2-1200.webp",
       "products/rivano-balos/2-2000.webp"
+    ],
+    "faceShape": [
+      "qualquer"
+    ],
+    "vibe": [
+      "marcante"
     ]
   },
   {
@@ -72,6 +78,13 @@
       "products/rivano-amalfi/5-600.webp",
       "products/rivano-amalfi/5-1200.webp",
       "products/rivano-amalfi/5-2000.webp"
+    ],
+    "faceShape": [
+      "oval",
+      "redondo"
+    ],
+    "vibe": [
+      "discreto"
     ]
   },
   {
@@ -112,6 +125,12 @@
       "products/rivano-palermo/3-600.webp",
       "products/rivano-palermo/3-1200.webp",
       "products/rivano-palermo/3-2000.webp"
+    ],
+    "faceShape": [
+      "quadrado"
+    ],
+    "vibe": [
+      "marcante"
     ]
   },
   {
@@ -159,6 +178,12 @@
       "products/rivano-verona1/5-600.webp",
       "products/rivano-verona1/5-1200.webp",
       "products/rivano-verona1/5-2000.webp"
+    ],
+    "faceShape": [
+      "qualquer"
+    ],
+    "vibe": [
+      "discreto"
     ]
   },
   {
@@ -208,6 +233,13 @@
       "products/rivano-valeta/6-600.webp",
       "products/rivano-valeta/6-1200.webp",
       "products/rivano-valeta/6-2000.webp"
+    ],
+    "faceShape": [
+      "oval",
+      "redondo"
+    ],
+    "vibe": [
+      "marcante"
     ]
   },
   {
@@ -254,6 +286,12 @@
       "products/rivano-siena/5-600.webp",
       "products/rivano-siena/5-1200.webp",
       "products/rivano-siena/5-2000.webp"
+    ],
+    "faceShape": [
+      "qualquer"
+    ],
+    "vibe": [
+      "discreto"
     ]
   },
   {
@@ -306,6 +344,13 @@
       "products/rivano-nice/7-600.webp",
       "products/rivano-nice/7-1200.webp",
       "products/rivano-nice/7-2000.webp"
+    ],
+    "faceShape": [
+      "oval",
+      "redondo"
+    ],
+    "vibe": [
+      "discreto"
     ]
   },
   {
@@ -361,6 +406,12 @@
       "products/rivano-marbella/8-600.webp",
       "products/rivano-marbella/8-1200.webp",
       "products/rivano-marbella/8-2000.webp"
+    ],
+    "faceShape": [
+      "quadrado"
+    ],
+    "vibe": [
+      "marcante"
     ]
   },
   {
@@ -411,6 +462,12 @@
       "products/rivano-bologna/6-600.webp",
       "products/rivano-bologna/6-1200.webp",
       "products/rivano-bologna/6-2000.webp"
+    ],
+    "faceShape": [
+      "qualquer"
+    ],
+    "vibe": [
+      "discreto"
     ]
   },
   {
@@ -464,6 +521,12 @@
       "products/rivano-santorini/7-600.webp",
       "products/rivano-santorini/7-1200.webp",
       "products/rivano-santorini/7-2000.webp"
+    ],
+    "faceShape": [
+      "quadrado"
+    ],
+    "vibe": [
+      "marcante"
     ]
   },
   {
@@ -511,6 +574,13 @@
       "products/rivano-ibiza/5-600.webp",
       "products/rivano-ibiza/5-1200.webp",
       "products/rivano-ibiza/5-2000.webp"
+    ],
+    "faceShape": [
+      "oval",
+      "redondo"
+    ],
+    "vibe": [
+      "marcante"
     ]
   },
   {
@@ -558,6 +628,12 @@
       "products/rivano-evora/5-600.webp",
       "products/rivano-evora/5-1200.webp",
       "products/rivano-evora/5-2000.webp"
+    ],
+    "faceShape": [
+      "quadrado"
+    ],
+    "vibe": [
+      "discreto"
     ]
   },
   {
@@ -605,6 +681,12 @@
       "products/rivano-positano/5-600.webp",
       "products/rivano-positano/5-1200.webp",
       "products/rivano-positano/5-2000.webp"
+    ],
+    "faceShape": [
+      "qualquer"
+    ],
+    "vibe": [
+      "marcante"
     ]
   },
   {
@@ -654,6 +736,13 @@
       "products/rivano-tropea/6-600.webp",
       "products/rivano-tropea/6-1200.webp",
       "products/rivano-tropea/6-2000.webp"
+    ],
+    "faceShape": [
+      "oval",
+      "redondo"
+    ],
+    "vibe": [
+      "discreto"
     ]
   },
   {
@@ -707,6 +796,12 @@
       "products/rivano-mykonos/7-600.webp",
       "products/rivano-mykonos/7-1200.webp",
       "products/rivano-mykonos/7-2000.webp"
+    ],
+    "faceShape": [
+      "quadrado"
+    ],
+    "vibe": [
+      "marcante"
     ]
   },
   {
@@ -769,6 +864,12 @@
       "products/rivano-saint-tropez/7-600.webp",
       "products/rivano-saint-tropez/7-1200.webp",
       "products/rivano-saint-tropez/7-2000.webp"
+    ],
+    "faceShape": [
+      "qualquer"
+    ],
+    "vibe": [
+      "marcante"
     ]
   }
 ]

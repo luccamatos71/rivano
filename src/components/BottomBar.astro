@@ -1,0 +1,65 @@
+---
+const pathname = Astro.url.pathname;
+const isHome = pathname === "/";
+const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/produtos");
+---
+
+<nav class="fixed inset-x-0 bottom-0 z-50 flex h-14 border-t border-[var(--rivano-areia)] bg-[var(--rivano-off-white)] font-['DM_Sans'] md:hidden" aria-label="Navegação inferior">
+  <a
+    href="/"
+    class:list={[
+      "flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] transition-colors duration-200",
+      isHome ? "text-[var(--rivano-brown)]" : "text-[var(--rivano-muted)]",
+    ]}
+    aria-label="Home"
+  >
+    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 11.5 12 5l8 6.5" />
+      <path d="M6.5 10.5V19h11v-8.5" />
+      <path d="M10 19v-5h4v5" />
+    </svg>
+    <span>Home</span>
+  </a>
+
+  <a
+    href="/catalogo"
+    class:list={[
+      "flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] transition-colors duration-200",
+      isCatalog ? "text-[var(--rivano-brown)]" : "text-[var(--rivano-muted)]",
+    ]}
+    aria-label="Catálogo"
+  >
+    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M5 5h5v5H5z" />
+      <path d="M14 5h5v5h-5z" />
+      <path d="M5 14h5v5H5z" />
+      <path d="M14 14h5v5h-5z" />
+    </svg>
+    <span>Catálogo</span>
+  </a>
+
+  <a
+    href="/catalogo"
+    class="flex flex-1 flex-col items-center justify-center gap-1 text-[10px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-muted)] transition-colors duration-200"
+    aria-label="Busca"
+  >
+    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M10.8 18a7.2 7.2 0 1 0 0-14.4 7.2 7.2 0 0 0 0 14.4z" />
+      <path d="m16 16 4 4" />
+    </svg>
+    <span>Busca</span>
+  </a>
+
+  <a
+    href="https://wa.me/5571993135522"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="flex flex-1 flex-col items-center justify-center gap-1 bg-[var(--rivano-brown)] text-[10px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-off-white)] transition-colors duration-200"
+    aria-label="WhatsApp"
+  >
+    <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.995 1.348l-.36-.183L2.702 2.56l.855 3.081A9.857 9.857 0 002.5 12c0 5.471 4.585 9.905 10.007 9.905 2.716 0 5.274-.869 7.422-2.49l.362.187 3.099 1.006-.893-3.222a9.9 9.9 0 001.449-5.393c0-5.471-4.585-9.905-10.007-9.905z" />
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+</nav>

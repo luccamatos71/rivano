@@ -5,10 +5,13 @@ interface ProductGridItem {
   slug: string;
   name: string;
   price: number;
+  stock: number;
   image: string;
   hoverImage?: string;
   available?: boolean;
   audience?: string[];
+  faceShape?: string[];
+  vibe?: string[];
 }
 
 interface Props {
@@ -27,11 +30,17 @@ const { products, columns = 2 } = Astro.props as Props;
 >
   {
     products.map((product) => (
-      <article data-product-item data-audience={(product.audience ?? []).join(",")}>
+      <article
+        data-product-item
+        data-audience={(product.audience ?? []).join(",")}
+        data-face-shape={(product.faceShape ?? []).join(",")}
+        data-vibe={(product.vibe ?? []).join(",")}
+      >
         <ProductCard
           slug={product.slug}
           name={product.name}
           price={product.price}
+          stock={product.stock}
           image={product.image}
           hoverImage={product.hoverImage}
           available={product.available}

@@ -18,6 +18,8 @@ export type Product = {
   priceCompare: number | null;
   currency: "BRL";
   audience: string[];
+  faceShape?: string[];
+  vibe?: string[];
   stock: number;
   available: boolean;
   description: ProductDescription;
@@ -37,10 +39,13 @@ export type CardProduct = {
   slug: string;
   name: string;
   price: number;
+  stock: number;
   image: string;
   hoverImage?: string;
   available?: boolean;
   audience?: string[];
+  faceShape?: string[];
+  vibe?: string[];
 };
 
 const imageIndexRegex = /\/(\d+)-(\d+)\.webp$/i;
@@ -146,10 +151,13 @@ export function toCardProduct(product: Product): CardProduct {
     slug: product.slug,
     name: product.name,
     price: product.price,
+    stock: product.stock,
     image: toPublicPath(primaryImage?.src),
     hoverImage: hoverImage ? toPublicPath(hoverImage.src) : undefined,
     available: product.available,
     audience: product.audience,
+    faceShape: product.faceShape,
+    vibe: product.vibe,
   };
 }
 

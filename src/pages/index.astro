@@ -5,7 +5,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { toCardProduct, type Product } from "../lib/products";
 import productsData from "../data/products.json";
 
-const products = (productsData as Product[]).filter((product) => product.available).slice(0, 6).map(toCardProduct);
+const allProducts = productsData as Product[];
+const products = allProducts.filter((product) => product.available).slice(0, 6).map(toCardProduct);
+const collectionProducts = {
+  ela: allProducts.find((product) => product.slug === "rivano-palermo") ?? allProducts.find((product) => product.audience.includes("ela")),
+  ele: allProducts.find((product) => product.slug === "rivano-balos") ?? allProducts.find((product) => product.audience.includes("ele")),
+  marcante: allProducts.find((product) => product.slug === "rivano-mykonos") ?? allProducts.find((product) => product.vibe?.includes("marcante")),
+};
+const collectionCards = [
+  { title: "Para Ela", href: "/catalogo?para=ela", image: collectionProducts.ela ? toCardProduct(collectionProducts.ela).image : "" },
+  { title: "Para Ele", href: "/catalogo?para=ele", image: collectionProducts.ele ? toCardProduct(collectionProducts.ele).image : "" },
+  { title: "Marcante", href: "/catalogo?vibe=marcante", image: collectionProducts.marcante ? toCardProduct(collectionProducts.marcante).image : "" },
+];
 ---
 
 <BaseLayout
@@ -17,6 +28,16 @@ const products = (productsData as Product[]).filter((product) => product.availab
     title="Verão no olhar."
     ctas={[{ label: "Ver modelos", href: "/catalogo", variant: "secondary" }]}
   />
+
+  <div class="border-t border-[var(--rivano-areia)] bg-[var(--rivano-off-white)] py-3 font-['DM_Sans'] text-[11px] font-normal uppercase tracking-[0.2em] text-[var(--rivano-muted)]">
+    <div class="page-wrap flex flex-col items-center justify-center gap-2 text-center md:flex-row md:gap-4">
+      <span>Frete grátis em todo o Brasil</span>
+      <span class="hidden md:inline">|</span>
+      <span>Troca em 30 dias</span>
+      <span class="hidden md:inline">|</span>
+      <span>Atendimento pelo WhatsApp</span>
+    </div>
+  </div>
 
   <section class="section-space">
     <div class="page-wrap mb-8 flex items-end justify-between md:mb-10">
@@ -32,6 +53,29 @@ const products = (productsData as Product[]).filter((product) => product.availab
     <ProductGrid products={products} />
   </section>
 
+  <section class="pb-16 md:pb-24">
+    <div class="page-wrap">
+      <p class="editorial-label">Coleções</p>
+      <div class="-mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:mx-0 md:grid md:grid-cols-3 md:px-0 md:pb-0">
+        {
+          collectionCards.map((collection) => (
+            <a
+              href={collection.href}
+              class="relative aspect-[3/4] w-[70vw] flex-shrink-0 snap-start overflow-hidden bg-[var(--rivano-areia)] bg-cover bg-center md:w-auto"
+              style={`background-image: url('${collection.image}');`}
+              aria-label={collection.title}
+            >
+              <span class="absolute inset-0 bg-gradient-to-t from-[rgba(63,48,40,0.6)] to-transparent"></span>
+              <span class="absolute inset-x-0 bottom-8 px-6 text-center font-['Cormorant_Garamond'] text-[28px] font-light leading-none tracking-[0.05em] text-[var(--rivano-off-white)]">
+                {collection.title}
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
   <section
     class="relative min-h-[58vh] w-full md:min-h-[70vh]"
     style="background-image: linear-gradient(rgba(63,48,40,0.22), rgba(63,48,40,0.22)), url('/banners/banner-2.webp'); background-size: cover; background-position: center;"
@@ -40,6 +84,54 @@ const products = (productsData as Product[]).filter((product) => product.availab
       <p class="max-w-[560px] font-['Cormorant_Garamond'] text-[42px] leading-[1] tracking-[0.06em] text-[#f5f1e8] md:text-[72px]">
         Presença sem esforço.
       </p>
+    </div>
+  </section>
+
+  <section class="bg-[var(--rivano-off-white)] py-12 md:py-20">
+    <div class="page-wrap">
+      <p class="editorial-label">Como funciona</p>
+      <div class="grid gap-10 md:grid-cols-3 md:gap-12">
+        <div class="relative pt-8">
+          <span class="absolute left-0 top-0 font-['Cormorant_Garamond'] text-[48px] font-light leading-none text-[var(--rivano-areia)]">01</span>
+          <svg class="relative mb-5 h-8 w-8 text-[var(--rivano-brown)]" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M3 17.5c1.2-3.6 3.9-5.6 7.4-5.6 3.1 0 4.8 1.7 5.6 4.2.8-2.5 2.5-4.2 5.6-4.2 3.5 0 6.2 2 7.4 5.6" />
+            <path d="M3 17.5h10.8" />
+            <path d="M18.2 17.5H29" />
+            <path d="M13.8 17.5c0 2.1-1.7 3.8-3.8 3.8S6.2 19.6 6.2 17.5" />
+            <path d="M25.8 17.5c0 2.1-1.7 3.8-3.8 3.8s-3.8-1.7-3.8-3.8" />
+          </svg>
+          <h2 class="font-['DM_Sans'] text-[13px] font-normal uppercase tracking-[0.14em] text-[var(--rivano-dark)]">Escolha seu modelo</h2>
+          <p class="mt-3 max-w-[320px] font-['DM_Sans'] text-[14px] font-light leading-[1.7] text-[var(--rivano-muted)]">
+            Explore o catálogo e encontre o modelo certo para você.
+          </p>
+        </div>
+
+        <div class="relative pt-8">
+          <span class="absolute left-0 top-0 font-['Cormorant_Garamond'] text-[48px] font-light leading-none text-[var(--rivano-areia)]">02</span>
+          <svg class="relative mb-5 h-8 w-8 text-[var(--rivano-brown)]" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M7 7h18v13H12l-5 5V7z" />
+            <path d="M11 13h10" />
+            <path d="M11 17h7" />
+          </svg>
+          <h2 class="font-['DM_Sans'] text-[13px] font-normal uppercase tracking-[0.14em] text-[var(--rivano-dark)]">Consulte pelo WhatsApp</h2>
+          <p class="mt-3 max-w-[320px] font-['DM_Sans'] text-[14px] font-light leading-[1.7] text-[var(--rivano-muted)]">
+            Fale com a gente, tire dúvidas sobre tamanho, cor e disponibilidade.
+          </p>
+        </div>
+
+        <div class="relative pt-8">
+          <span class="absolute left-0 top-0 font-['Cormorant_Garamond'] text-[48px] font-light leading-none text-[var(--rivano-areia)]">03</span>
+          <svg class="relative mb-5 h-8 w-8 text-[var(--rivano-brown)]" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M6 10.5 16 5l10 5.5v11L16 27 6 21.5v-11z" />
+            <path d="m6 10.5 10 5.5 10-5.5" />
+            <path d="M16 16v11" />
+          </svg>
+          <h2 class="font-['DM_Sans'] text-[13px] font-normal uppercase tracking-[0.14em] text-[var(--rivano-dark)]">Receba em casa</h2>
+          <p class="mt-3 max-w-[320px] font-['DM_Sans'] text-[14px] font-light leading-[1.7] text-[var(--rivano-muted)]">
+            Enviamos para todo o Brasil. Troca em 30 dias, sem complicação.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
