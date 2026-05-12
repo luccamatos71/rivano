@@ -1,0 +1,93 @@
+---
+const pathname = Astro.url.pathname;
+const isModelos = pathname.startsWith("/catalogo") || pathname.startsWith("/produtos/");
+---
+
+<header class="sticky top-0 z-50 border-b border-[var(--rivano-areia)] bg-[#f5f1e8]/95 backdrop-blur">
+  <div class="page-wrap">
+    <div class="flex items-center justify-between py-4 md:hidden">
+      <button
+        id="menu-toggle"
+        type="button"
+        class="nav-link"
+        aria-expanded="false"
+        aria-controls="mobile-nav"
+      >
+        Menu
+      </button>
+
+      <a href="/" class="logo-wordmark text-[25px]">Rivano</a>
+      <span class="block w-10" aria-hidden="true"></span>
+    </div>
+
+    <nav class="hidden items-center py-5 md:grid md:grid-cols-3">
+      <div class="flex justify-start">
+        <a
+          href="/catalogo"
+          class:list={[
+            "nav-link transition-colors duration-200 hover:text-[var(--rivano-brown)]",
+            isModelos && "text-[var(--rivano-brown)]",
+          ]}
+        >
+          Modelos
+        </a>
+      </div>
+
+      <div class="flex justify-center">
+        <a href="/" class="logo-wordmark">Rivano</a>
+      </div>
+
+      <div class="flex justify-end">
+        <a href="/#sobre" class="nav-link transition-colors duration-200 hover:text-[var(--rivano-brown)]">
+          Sobre
+        </a>
+      </div>
+    </nav>
+  </div>
+
+  <div
+    id="mobile-nav"
+    class="fixed inset-0 z-40 hidden bg-[rgba(63,48,40,0.18)] md:hidden"
+    aria-hidden="true"
+  >
+    <div class="ml-auto h-full w-[78%] max-w-[330px] bg-[#f5f1e8] px-6 py-7 shadow-[0_8px_24px_rgba(63,48,40,0.12)]">
+      <div class="mb-8 flex items-center justify-between">
+        <span class="logo-wordmark text-[24px]">Rivano</span>
+        <button id="menu-close" type="button" class="nav-link">Fechar</button>
+      </div>
+
+      <div class="flex flex-col gap-5">
+        <a href="/catalogo" class="nav-link">Modelos</a>
+        <a href="/#sobre" class="nav-link">Sobre</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const toggleButton = document.getElementById("menu-toggle");
+  const closeButton = document.getElementById("menu-close");
+  const drawer = document.getElementById("mobile-nav");
+
+  const closeDrawer = () => {
+    if (!drawer || !toggleButton) return;
+    drawer.classList.add("hidden");
+    drawer.setAttribute("aria-hidden", "true");
+    toggleButton.setAttribute("aria-expanded", "false");
+  };
+
+  const openDrawer = () => {
+    if (!drawer || !toggleButton) return;
+    drawer.classList.remove("hidden");
+    drawer.setAttribute("aria-hidden", "false");
+    toggleButton.setAttribute("aria-expanded", "true");
+  };
+
+  toggleButton?.addEventListener("click", openDrawer);
+  closeButton?.addEventListener("click", closeDrawer);
+  drawer?.addEventListener("click", (event) => {
+    if (event.target === drawer) {
+      closeDrawer();
+    }
+  });
+</script>

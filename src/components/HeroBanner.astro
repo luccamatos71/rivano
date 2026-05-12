@@ -1,0 +1,52 @@
+---
+interface HeroCta {
+  label: string;
+  href: string;
+  variant: "primary" | "secondary";
+}
+
+interface Props {
+  imageUrl: string;
+  title: string;
+  subtitle?: string;
+  ctas?: HeroCta[];
+}
+
+const { imageUrl, title, subtitle, ctas = [] } = Astro.props as Props;
+---
+
+<section class="hero relative flex min-h-[70vh] w-full items-center justify-center overflow-hidden md:h-screen">
+  <img
+    src={imageUrl}
+    alt={title}
+    class="hero-image absolute inset-0 z-[1] h-full w-full object-cover"
+    loading="eager"
+    decoding="async"
+  />
+  <div class="hero-overlay absolute inset-0 z-[2] bg-[rgba(63,48,40,0.3)]"></div>
+  <div class="hero-content page-wrap relative z-[3] text-center text-[#f5f1e8]">
+    <h1 class="font-['Cormorant_Garamond'] text-[52px] font-normal leading-[0.95] tracking-[0.06em] text-[#f5f1e8] md:text-[96px]">
+      {title}
+    </h1>
+    {subtitle && <p class="mx-auto mt-4 max-w-[560px] text-[16px] font-light leading-[1.8]">{subtitle}</p>}
+    {
+      ctas.length > 0 && (
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          {ctas.map((cta) => (
+            <a
+              href={cta.href}
+              class:list={[
+                "btn inline-flex min-h-[54px] items-center justify-center px-8 py-4 text-[13px] font-normal uppercase tracking-[0.1em] transition-colors duration-200",
+                cta.variant === "primary"
+                  ? "btn-primary bg-[#6e5542] text-[#f5f1e8] hover:bg-[#3f3028]"
+                  : "btn-secondary border border-[#f5f1e8] bg-transparent text-[#f5f1e8] hover:bg-[#f5f1e8] hover:text-[#3f3028]",
+              ]}
+            >
+              {cta.label}
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>

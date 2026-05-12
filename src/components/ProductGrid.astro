@@ -1,0 +1,42 @@
+---
+import ProductCard from "./ProductCard.astro";
+
+interface ProductGridItem {
+  slug: string;
+  name: string;
+  price: number;
+  image: string;
+  hoverImage?: string;
+  available?: boolean;
+  audience?: string[];
+}
+
+interface Props {
+  products: ProductGridItem[];
+  columns?: 2 | 3;
+}
+
+const { products, columns = 2 } = Astro.props as Props;
+---
+
+<div
+  class:list={[
+    "product-grid mx-auto grid w-full max-w-[1280px] grid-cols-2 gap-3 px-5 sm:gap-6 sm:px-10",
+    columns === 3 ? "lg:grid-cols-3" : "lg:grid-cols-2",
+  ]}
+>
+  {
+    products.map((product) => (
+      <article data-product-item data-audience={(product.audience ?? []).join(",")}>
+        <ProductCard
+          slug={product.slug}
+          name={product.name}
+          price={product.price}
+          image={product.image}
+          hoverImage={product.hoverImage}
+          available={product.available}
+        />
+      </article>
+    ))
+  }
+</div>

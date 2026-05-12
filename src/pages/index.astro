@@ -1,0 +1,45 @@
+---
+import HeroBanner from "../components/HeroBanner.astro";
+import ProductGrid from "../components/ProductGrid.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { toCardProduct, type Product } from "../lib/products";
+import productsData from "../data/products.json";
+
+const products = (productsData as Product[]).filter((product) => product.available).slice(0, 6).map(toCardProduct);
+---
+
+<BaseLayout
+  title="Rivano | Óculos premium-acessíveis em Salvador"
+  description="Óculos premium-acessíveis da Rivano. Nascida em Salvador. Inspirada no verão europeu."
+>
+  <HeroBanner
+    imageUrl="/banners/banner-1.webp"
+    title="Verão no olhar."
+    ctas={[{ label: "Ver modelos", href: "/catalogo", variant: "secondary" }]}
+  />
+
+  <section class="section-space">
+    <div class="page-wrap mb-8 flex items-end justify-between md:mb-10">
+      <p class="editorial-label">MODELOS</p>
+      <a
+        href="/catalogo"
+        class="text-[11px] uppercase tracking-[0.2em] text-[var(--rivano-muted)] transition-colors duration-200 hover:text-[var(--rivano-brown)]"
+      >
+        Ver todos
+      </a>
+    </div>
+
+    <ProductGrid products={products} />
+  </section>
+
+  <section
+    class="relative min-h-[58vh] w-full md:min-h-[70vh]"
+    style="background-image: linear-gradient(rgba(63,48,40,0.22), rgba(63,48,40,0.22)), url('/banners/banner-2.webp'); background-size: cover; background-position: center;"
+  >
+    <div class="page-wrap flex min-h-[58vh] items-end pb-14 md:min-h-[70vh] md:pb-20">
+      <p class="max-w-[560px] font-['Cormorant_Garamond'] text-[42px] leading-[1] tracking-[0.06em] text-[#f5f1e8] md:text-[72px]">
+        Presença sem esforço.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

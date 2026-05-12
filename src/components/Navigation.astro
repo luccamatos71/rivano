@@ -1,0 +1,104 @@
+---
+interface Props {
+  logo?: string;
+}
+
+const { logo } = Astro.props as Props;
+const pathname = Astro.url.pathname;
+const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/produtos/");
+---
+
+<header class="navbar sticky top-0 z-[100] border-b border-[#d8c7ae] bg-[#f5f1e8] px-5 sm:px-10">
+  <div class="navbar-content mx-auto flex h-[60px] max-w-[1280px] items-center justify-between sm:grid sm:h-[90px] sm:grid-cols-3">
+    <nav class="nav-menu hidden items-center gap-8 sm:flex" aria-label="Coleções">
+      <a
+        href="/catalogo"
+        class:list={[
+          "font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[#3f3028] transition-colors duration-200 hover:text-[#6e5542]",
+          isCatalog && "text-[#6e5542]",
+        ]}
+      >
+        Modelos
+      </a>
+      <a href="/catalogo?para=ela" class="font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[#3f3028] transition-colors duration-200 hover:text-[#6e5542]">
+        Para ela
+      </a>
+    </nav>
+
+    <a href="/" class="flex min-w-[104px] items-center sm:justify-center" aria-label="Rivano">
+      {
+        logo ? (
+          <img src={logo} alt="Rivano" class="logo h-10 w-auto" />
+        ) : (
+          <span class="font-['Cormorant_Garamond'] text-[27px] font-normal uppercase leading-none tracking-[0.16em] text-[#3f3028] sm:text-[30px]">
+            Rivano
+          </span>
+        )
+      }
+    </a>
+
+    <nav class="nav-menu hidden items-center justify-end gap-8 sm:flex" aria-label="Marca">
+      <a href="/catalogo?para=ele" class="font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[#3f3028] transition-colors duration-200 hover:text-[#6e5542]">
+        Para ele
+      </a>
+      <a href="/#sobre" class="font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[#3f3028] transition-colors duration-200 hover:text-[#6e5542]">
+        Sobre
+      </a>
+    </nav>
+
+    <button
+      id="nav-menu-toggle"
+      type="button"
+      class="font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[#3f3028] sm:hidden"
+      aria-controls="mobile-nav"
+      aria-expanded="false"
+    >
+      Menu
+    </button>
+  </div>
+
+  <div id="mobile-nav" class="fixed inset-0 z-[110] hidden bg-[rgba(63,48,40,0.18)] sm:hidden" aria-hidden="true">
+    <div class="ml-auto h-full w-[78%] max-w-[330px] bg-[#f5f1e8] px-6 py-7 shadow-[0_8px_24px_rgba(63,48,40,0.12)]">
+      <div class="mb-8 flex items-center justify-between">
+        <span class="font-['Cormorant_Garamond'] text-[25px] font-normal uppercase leading-none tracking-[0.16em] text-[#3f3028]">
+          Rivano
+        </span>
+        <button id="nav-menu-close" type="button" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[#3f3028]">
+          Fechar
+        </button>
+      </div>
+      <nav class="flex flex-col gap-5" aria-label="Navegação mobile">
+        <a href="/catalogo" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[#3f3028]">Modelos</a>
+        <a href="/catalogo?para=ela" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[#3f3028]">Para ela</a>
+        <a href="/catalogo?para=ele" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[#3f3028]">Para ele</a>
+        <a href="/#sobre" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[#3f3028]">Sobre</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const navToggleButton = document.getElementById("nav-menu-toggle");
+  const navCloseButton = document.getElementById("nav-menu-close");
+  const navDrawer = document.getElementById("mobile-nav");
+
+  const closeNavigation = () => {
+    if (!navDrawer || !navToggleButton) return;
+    navDrawer.classList.add("hidden");
+    navDrawer.setAttribute("aria-hidden", "true");
+    navToggleButton.setAttribute("aria-expanded", "false");
+  };
+
+  const openNavigation = () => {
+    if (!navDrawer || !navToggleButton) return;
+    navDrawer.classList.remove("hidden");
+    navDrawer.setAttribute("aria-hidden", "false");
+    navToggleButton.setAttribute("aria-expanded", "true");
+  };
+
+  navToggleButton?.addEventListener("click", openNavigation);
+  navCloseButton?.addEventListener("click", closeNavigation);
+  navDrawer?.addEventListener("click", (event) => {
+    if (event.target === navDrawer) closeNavigation();
+  });
+</script>

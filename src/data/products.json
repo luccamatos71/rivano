@@ -1,0 +1,774 @@
+[
+  {
+    "slug": "rivano-balos",
+    "name": "Rivano Balos",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 1,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-balos/1-600.webp",
+      "products/rivano-balos/1-1200.webp",
+      "products/rivano-balos/1-2000.webp",
+      "products/rivano-balos/2-600.webp",
+      "products/rivano-balos/2-1200.webp",
+      "products/rivano-balos/2-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-amalfi",
+    "name": "Rivano Amalfi",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela"
+    ],
+    "stock": 0,
+    "available": false,
+    "description": {
+      "experience": null,
+      "details": null,
+      "fit": null,
+      "testimonial": null,
+      "body": "Minimalismo que chama atenção.\nElegante na medida certa, o Amalfi foi criado para acompanhar o dia a dia com leveza e presença.\nDetalhes\nProteção UV400\nArmação leve e confortável\nAcompanha case e flanela\nGarantia de 3 meses"
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-amalfi/1-600.webp",
+      "products/rivano-amalfi/1-1200.webp",
+      "products/rivano-amalfi/1-2000.webp",
+      "products/rivano-amalfi/2-600.webp",
+      "products/rivano-amalfi/2-1200.webp",
+      "products/rivano-amalfi/2-2000.webp",
+      "products/rivano-amalfi/3-600.webp",
+      "products/rivano-amalfi/3-1200.webp",
+      "products/rivano-amalfi/3-2000.webp",
+      "products/rivano-amalfi/4-600.webp",
+      "products/rivano-amalfi/4-1200.webp",
+      "products/rivano-amalfi/4-2000.webp",
+      "products/rivano-amalfi/5-600.webp",
+      "products/rivano-amalfi/5-1200.webp",
+      "products/rivano-amalfi/5-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-palermo",
+    "name": "Rivano Palermo",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela"
+    ],
+    "stock": 1,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-palermo/1-600.webp",
+      "products/rivano-palermo/1-1200.webp",
+      "products/rivano-palermo/1-2000.webp",
+      "products/rivano-palermo/2-600.webp",
+      "products/rivano-palermo/2-1200.webp",
+      "products/rivano-palermo/2-2000.webp",
+      "products/rivano-palermo/3-600.webp",
+      "products/rivano-palermo/3-1200.webp",
+      "products/rivano-palermo/3-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-verona1",
+    "name": "Rivano Verona",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 2,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-verona1/1-600.webp",
+      "products/rivano-verona1/1-1200.webp",
+      "products/rivano-verona1/1-2000.webp",
+      "products/rivano-verona1/2-600.webp",
+      "products/rivano-verona1/2-1200.webp",
+      "products/rivano-verona1/2-2000.webp",
+      "products/rivano-verona1/3-600.webp",
+      "products/rivano-verona1/3-1200.webp",
+      "products/rivano-verona1/3-2000.webp",
+      "products/rivano-verona1/4-600.webp",
+      "products/rivano-verona1/4-1200.webp",
+      "products/rivano-verona1/4-2000.webp",
+      "products/rivano-verona1/5-600.webp",
+      "products/rivano-verona1/5-1200.webp",
+      "products/rivano-verona1/5-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-valeta",
+    "name": "Rivano Valeta",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela"
+    ],
+    "stock": 1,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-valeta/1-600.webp",
+      "products/rivano-valeta/1-1200.webp",
+      "products/rivano-valeta/1-2000.webp",
+      "products/rivano-valeta/2-600.webp",
+      "products/rivano-valeta/2-1200.webp",
+      "products/rivano-valeta/2-2000.webp",
+      "products/rivano-valeta/3-600.webp",
+      "products/rivano-valeta/3-1200.webp",
+      "products/rivano-valeta/3-2000.webp",
+      "products/rivano-valeta/4-600.webp",
+      "products/rivano-valeta/4-1200.webp",
+      "products/rivano-valeta/4-2000.webp",
+      "products/rivano-valeta/5-600.webp",
+      "products/rivano-valeta/5-1200.webp",
+      "products/rivano-valeta/5-2000.webp",
+      "products/rivano-valeta/6-600.webp",
+      "products/rivano-valeta/6-1200.webp",
+      "products/rivano-valeta/6-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-siena",
+    "name": "Rivano Siena",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela"
+    ],
+    "stock": 1,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-siena/1-600.webp",
+      "products/rivano-siena/1-1200.webp",
+      "products/rivano-siena/1-2000.webp",
+      "products/rivano-siena/2-600.webp",
+      "products/rivano-siena/2-1200.webp",
+      "products/rivano-siena/2-2000.webp",
+      "products/rivano-siena/3-600.webp",
+      "products/rivano-siena/3-1200.webp",
+      "products/rivano-siena/3-2000.webp",
+      "products/rivano-siena/4-600.webp",
+      "products/rivano-siena/4-1200.webp",
+      "products/rivano-siena/4-2000.webp",
+      "products/rivano-siena/5-600.webp",
+      "products/rivano-siena/5-1200.webp",
+      "products/rivano-siena/5-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-nice",
+    "name": "Rivano Nice",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela"
+    ],
+    "stock": 1,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-nice/1-600.webp",
+      "products/rivano-nice/1-1200.webp",
+      "products/rivano-nice/1-2000.webp",
+      "products/rivano-nice/2-600.webp",
+      "products/rivano-nice/2-1200.webp",
+      "products/rivano-nice/2-2000.webp",
+      "products/rivano-nice/3-600.webp",
+      "products/rivano-nice/3-1200.webp",
+      "products/rivano-nice/3-2000.webp",
+      "products/rivano-nice/4-600.webp",
+      "products/rivano-nice/4-1200.webp",
+      "products/rivano-nice/4-2000.webp",
+      "products/rivano-nice/5-600.webp",
+      "products/rivano-nice/5-1200.webp",
+      "products/rivano-nice/5-2000.webp",
+      "products/rivano-nice/6-600.webp",
+      "products/rivano-nice/6-1200.webp",
+      "products/rivano-nice/6-2000.webp",
+      "products/rivano-nice/7-600.webp",
+      "products/rivano-nice/7-1200.webp",
+      "products/rivano-nice/7-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-marbella",
+    "name": "Rivano Marbella",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela"
+    ],
+    "stock": 1,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-marbella/1-600.webp",
+      "products/rivano-marbella/1-1200.webp",
+      "products/rivano-marbella/1-2000.webp",
+      "products/rivano-marbella/2-600.webp",
+      "products/rivano-marbella/2-1200.webp",
+      "products/rivano-marbella/2-2000.webp",
+      "products/rivano-marbella/3-600.webp",
+      "products/rivano-marbella/3-1200.webp",
+      "products/rivano-marbella/3-2000.webp",
+      "products/rivano-marbella/4-600.webp",
+      "products/rivano-marbella/4-1200.webp",
+      "products/rivano-marbella/4-2000.webp",
+      "products/rivano-marbella/5-600.webp",
+      "products/rivano-marbella/5-1200.webp",
+      "products/rivano-marbella/5-2000.webp",
+      "products/rivano-marbella/6-600.webp",
+      "products/rivano-marbella/6-1200.webp",
+      "products/rivano-marbella/6-2000.webp",
+      "products/rivano-marbella/7-600.webp",
+      "products/rivano-marbella/7-1200.webp",
+      "products/rivano-marbella/7-2000.webp",
+      "products/rivano-marbella/8-600.webp",
+      "products/rivano-marbella/8-1200.webp",
+      "products/rivano-marbella/8-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-bologna",
+    "name": "Rivano Bologna",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 2,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-bologna/1-600.webp",
+      "products/rivano-bologna/1-1200.webp",
+      "products/rivano-bologna/1-2000.webp",
+      "products/rivano-bologna/2-600.webp",
+      "products/rivano-bologna/2-1200.webp",
+      "products/rivano-bologna/2-2000.webp",
+      "products/rivano-bologna/3-600.webp",
+      "products/rivano-bologna/3-1200.webp",
+      "products/rivano-bologna/3-2000.webp",
+      "products/rivano-bologna/4-600.webp",
+      "products/rivano-bologna/4-1200.webp",
+      "products/rivano-bologna/4-2000.webp",
+      "products/rivano-bologna/5-600.webp",
+      "products/rivano-bologna/5-1200.webp",
+      "products/rivano-bologna/5-2000.webp",
+      "products/rivano-bologna/6-600.webp",
+      "products/rivano-bologna/6-1200.webp",
+      "products/rivano-bologna/6-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-santorini",
+    "name": "Rivano Santorini",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 2,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-santorini/1-600.webp",
+      "products/rivano-santorini/1-1200.webp",
+      "products/rivano-santorini/1-2000.webp",
+      "products/rivano-santorini/2-600.webp",
+      "products/rivano-santorini/2-1200.webp",
+      "products/rivano-santorini/2-2000.webp",
+      "products/rivano-santorini/3-600.webp",
+      "products/rivano-santorini/3-1200.webp",
+      "products/rivano-santorini/3-2000.webp",
+      "products/rivano-santorini/4-600.webp",
+      "products/rivano-santorini/4-1200.webp",
+      "products/rivano-santorini/4-2000.webp",
+      "products/rivano-santorini/5-600.webp",
+      "products/rivano-santorini/5-1200.webp",
+      "products/rivano-santorini/5-2000.webp",
+      "products/rivano-santorini/6-600.webp",
+      "products/rivano-santorini/6-1200.webp",
+      "products/rivano-santorini/6-2000.webp",
+      "products/rivano-santorini/7-600.webp",
+      "products/rivano-santorini/7-1200.webp",
+      "products/rivano-santorini/7-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-ibiza",
+    "name": "Rivano Ibiza",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 1,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-ibiza/1-600.webp",
+      "products/rivano-ibiza/1-1200.webp",
+      "products/rivano-ibiza/1-2000.webp",
+      "products/rivano-ibiza/2-600.webp",
+      "products/rivano-ibiza/2-1200.webp",
+      "products/rivano-ibiza/2-2000.webp",
+      "products/rivano-ibiza/3-600.webp",
+      "products/rivano-ibiza/3-1200.webp",
+      "products/rivano-ibiza/3-2000.webp",
+      "products/rivano-ibiza/4-600.webp",
+      "products/rivano-ibiza/4-1200.webp",
+      "products/rivano-ibiza/4-2000.webp",
+      "products/rivano-ibiza/5-600.webp",
+      "products/rivano-ibiza/5-1200.webp",
+      "products/rivano-ibiza/5-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-evora",
+    "name": "Rivano Évora",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 3,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-evora/1-600.webp",
+      "products/rivano-evora/1-1200.webp",
+      "products/rivano-evora/1-2000.webp",
+      "products/rivano-evora/2-600.webp",
+      "products/rivano-evora/2-1200.webp",
+      "products/rivano-evora/2-2000.webp",
+      "products/rivano-evora/3-600.webp",
+      "products/rivano-evora/3-1200.webp",
+      "products/rivano-evora/3-2000.webp",
+      "products/rivano-evora/4-600.webp",
+      "products/rivano-evora/4-1200.webp",
+      "products/rivano-evora/4-2000.webp",
+      "products/rivano-evora/5-600.webp",
+      "products/rivano-evora/5-1200.webp",
+      "products/rivano-evora/5-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-positano",
+    "name": "Rivano Positano",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 3,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-positano/1-600.webp",
+      "products/rivano-positano/1-1200.webp",
+      "products/rivano-positano/1-2000.webp",
+      "products/rivano-positano/2-600.webp",
+      "products/rivano-positano/2-1200.webp",
+      "products/rivano-positano/2-2000.webp",
+      "products/rivano-positano/3-600.webp",
+      "products/rivano-positano/3-1200.webp",
+      "products/rivano-positano/3-2000.webp",
+      "products/rivano-positano/4-600.webp",
+      "products/rivano-positano/4-1200.webp",
+      "products/rivano-positano/4-2000.webp",
+      "products/rivano-positano/5-600.webp",
+      "products/rivano-positano/5-1200.webp",
+      "products/rivano-positano/5-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-tropea",
+    "name": "Rivano Tropea",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela"
+    ],
+    "stock": 2,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-tropea/1-600.webp",
+      "products/rivano-tropea/1-1200.webp",
+      "products/rivano-tropea/1-2000.webp",
+      "products/rivano-tropea/2-600.webp",
+      "products/rivano-tropea/2-1200.webp",
+      "products/rivano-tropea/2-2000.webp",
+      "products/rivano-tropea/3-600.webp",
+      "products/rivano-tropea/3-1200.webp",
+      "products/rivano-tropea/3-2000.webp",
+      "products/rivano-tropea/4-600.webp",
+      "products/rivano-tropea/4-1200.webp",
+      "products/rivano-tropea/4-2000.webp",
+      "products/rivano-tropea/5-600.webp",
+      "products/rivano-tropea/5-1200.webp",
+      "products/rivano-tropea/5-2000.webp",
+      "products/rivano-tropea/6-600.webp",
+      "products/rivano-tropea/6-1200.webp",
+      "products/rivano-tropea/6-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-mykonos",
+    "name": "Rivano Mykonos",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 2,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Cliente Rivano",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Cliente Rivano"
+      },
+      "body": null
+    },
+    "variants": [],
+    "images": [
+      "products/rivano-mykonos/1-600.webp",
+      "products/rivano-mykonos/1-1200.webp",
+      "products/rivano-mykonos/1-2000.webp",
+      "products/rivano-mykonos/2-600.webp",
+      "products/rivano-mykonos/2-1200.webp",
+      "products/rivano-mykonos/2-2000.webp",
+      "products/rivano-mykonos/3-600.webp",
+      "products/rivano-mykonos/3-1200.webp",
+      "products/rivano-mykonos/3-2000.webp",
+      "products/rivano-mykonos/4-600.webp",
+      "products/rivano-mykonos/4-1200.webp",
+      "products/rivano-mykonos/4-2000.webp",
+      "products/rivano-mykonos/5-600.webp",
+      "products/rivano-mykonos/5-1200.webp",
+      "products/rivano-mykonos/5-2000.webp",
+      "products/rivano-mykonos/6-600.webp",
+      "products/rivano-mykonos/6-1200.webp",
+      "products/rivano-mykonos/6-2000.webp",
+      "products/rivano-mykonos/7-600.webp",
+      "products/rivano-mykonos/7-1200.webp",
+      "products/rivano-mykonos/7-2000.webp"
+    ]
+  },
+  {
+    "slug": "rivano-saint-tropez",
+    "name": "Rivano Saint-Tropez",
+    "price": 140,
+    "priceCompare": null,
+    "currency": "BRL",
+    "audience": [
+      "ela",
+      "ele"
+    ],
+    "stock": 2,
+    "available": true,
+    "description": {
+      "experience": "Rivano Experience\nUm dos modelos mais pedidos da Rivano\nReceba hoje em Salvador\nLeve, confortável e versátil\nDetalhes\nProteção: UV400\nArmação: Leve, confortável e resistente\nDesign: Versátil para diferentes estilos\nIncluso: Case e flanela\nGarantia: 3 meses contra defeitos\nComo fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.\n“Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.”\n— Guilherme Chamusca",
+      "details": {
+        "Proteção": "UV400",
+        "Armação": "Leve, confortável e resistente",
+        "Design": "Versátil para diferentes estilos",
+        "Incluso": "Case e flanela",
+        "Garantia": "3 meses contra defeitos"
+      },
+      "fit": "Como fica\nUm design pensado para valorizar diferentes formatos de rosto.\nDo casual ao sofisticado, se adapta com facilidade ao seu estilo.",
+      "testimonial": {
+        "text": "Comprei pela manhã e chegou no mesmo dia em Salvador. Muito mais bonito ao vivo e extremamente confortável.",
+        "author": "Guilherme Chamusca"
+      },
+      "body": null
+    },
+    "variants": [
+      {
+        "name": "Lente clara",
+        "stock": 2
+      },
+      {
+        "name": "Lente escura",
+        "stock": 0
+      }
+    ],
+    "images": [
+      "products/rivano-saint-tropez/1-600.webp",
+      "products/rivano-saint-tropez/1-1200.webp",
+      "products/rivano-saint-tropez/1-2000.webp",
+      "products/rivano-saint-tropez/2-600.webp",
+      "products/rivano-saint-tropez/2-1200.webp",
+      "products/rivano-saint-tropez/2-2000.webp",
+      "products/rivano-saint-tropez/3-600.webp",
+      "products/rivano-saint-tropez/3-1200.webp",
+      "products/rivano-saint-tropez/3-2000.webp",
+      "products/rivano-saint-tropez/4-600.webp",
+      "products/rivano-saint-tropez/4-1200.webp",
+      "products/rivano-saint-tropez/4-2000.webp",
+      "products/rivano-saint-tropez/5-600.webp",
+      "products/rivano-saint-tropez/5-1200.webp",
+      "products/rivano-saint-tropez/5-2000.webp",
+      "products/rivano-saint-tropez/6-600.webp",
+      "products/rivano-saint-tropez/6-1200.webp",
+      "products/rivano-saint-tropez/6-2000.webp",
+      "products/rivano-saint-tropez/7-600.webp",
+      "products/rivano-saint-tropez/7-1200.webp",
+      "products/rivano-saint-tropez/7-2000.webp"
+    ]
+  }
+]

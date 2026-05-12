@@ -1,0 +1,79 @@
+---
+interface Props {
+  slug: string;
+  name: string;
+  price: number;
+  image: string;
+  hoverImage?: string;
+  available?: boolean;
+}
+
+const { slug, name, price, image, hoverImage, available = true } = Astro.props as Props;
+const productLink = `/produtos/${slug}`;
+const formattedPrice = `R$ ${price.toFixed(2).replace(".", ",")}`;
+
+function buildImageSrcset(src: string): string {
+  const normalized = src.startsWith("/") ? src : `/${src}`;
+
+  if (!/-(?:600|1200|2000)\.webp$/i.test(normalized)) {
+    return "";
+  }
+
+  return [600, 1200, 2000]
+    .map((width) => `${normalized.replace(/-(?:600|1200|2000)\.webp$/i, `-${width}.webp`)} ${width}w`)
+    .join(", ");
+}
+---
+
+<a
+  href={productLink}
+  class:list={["product-card group block", !available && "opacity-60"]}
+  aria-label={`Ver ${name}`}
+>
+  <div class="image-container relative aspect-[3/4] overflow-hidden bg-[#f5f1e8] shadow-[0_2px_8px_rgba(63,48,40,0.06)]">
+    {
+      image ? (
+        <img
+          src={image}
+          srcset={buildImageSrcset(image)}
+          sizes="(min-width: 1024px) 50vw, 50vw"
+          alt={name}
+          class:list={[
+            "main-image h-full w-full object-contain p-6 transition-opacity duration-300 ease-out",
+            hoverImage && "group-hover:opacity-0",
+          ]}
+          loading="lazy"
+          decoding="async"
+          width="900"
+          height="1200"
+        />
+      ) : (
+        <div class="flex h-full w-full items-center justify-center bg-[#e9dece] text-[11px] uppercase tracking-[0.2em] text-[#a8a29a]">
+          Sem imagem
+        </div>
+      )
+    }
+
+    {
+      hoverImage && (
+        <img
+          src={hoverImage}
+          srcset={buildImageSrcset(hoverImage)}
+          sizes="(min-width: 1024px) 50vw, 50vw"
+          alt={`${name} view 2`}
+          class="hover-image absolute inset-0 h-full w-full object-contain p-6 opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
+          loading="lazy"
+          decoding="async"
+          width="900"
+          height="1200"
+        />
+      )
+    }
+  </div>
+
+  <div class="product-info mt-3">
+    <h3 class="font-['DM_Sans'] text-[14px] font-normal leading-[1.45] text-[#3f3028]">{name}</h3>
+    <p class="price mt-1 text-[14px] font-light leading-[1.3] text-[#a8a29a]">{formattedPrice}</p>
+    {!available && <p class="mt-1 text-[11px] uppercase tracking-[0.18em] text-[#a8a29a]">Esgotado</p>}
+  </div>
+</a>

@@ -1,0 +1,73 @@
+---
+import ProductFilter from "../components/ProductFilter.astro";
+import ProductGrid from "../components/ProductGrid.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { toCardProduct, type Product } from "../lib/products";
+import productsData from "../data/products.json";
+
+const products = productsData as Product[];
+const cardProducts = products.map(toCardProduct);
+const activeFilter = Astro.url.searchParams.get("para") === "ele" || Astro.url.searchParams.get("para") === "him"
+  ? "ele"
+  : Astro.url.searchParams.get("para") === "ela" || Astro.url.searchParams.get("para") === "her"
+    ? "ela"
+    : "all";
+const filters = [
+  { label: "Todos", value: "all", count: products.length },
+  { label: "Para ela", value: "ela", count: products.filter((product) => product.audience.includes("ela")).length },
+  { label: "Para ele", value: "ele", count: products.filter((product) => product.audience.includes("ele")).length },
+];
+---
+
+<BaseLayout
+  title="Catálogo Rivano | Modelos de óculos"
+  description="Explore todos os modelos de óculos da Rivano. Elegância para dias de sol."
+>
+  <section class="section-space">
+    <div class="page-wrap mb-6">
+      <p class="editorial-label">Catálogo</p>
+    </div>
+
+    <ProductFilter filters={filters} activeFilter={activeFilter} />
+    <div class="mt-8">
+      <ProductGrid products={cardProducts} />
+    </div>
+  </section>
+
+  <script is:inline>
+    const buttons = Array.from(document.querySelectorAll("[data-filter-button]"));
+    const items = Array.from(document.querySelectorAll("[data-product-item]"));
+
+    const applyFilter = (filter) => {
+      items.forEach((item) => {
+        const audience = item.getAttribute("data-audience") || "";
+        const list = audience.split(",").map((value) => value.trim().toLowerCase());
+        const show = filter === "all" || list.includes(filter);
+        item.toggleAttribute("hidden", !show);
+      });
+
+      buttons.forEach((button) => {
+        const selected = button.getAttribute("data-filter") === filter;
+        button.setAttribute("aria-pressed", selected ? "true" : "false");
+        button.classList.toggle("active", selected);
+        button.classList.toggle("border-[#6e5542]", selected);
+        button.classList.toggle("bg-[#6e5542]", selected);
+        button.classList.toggle("text-[#f5f1e8]", selected);
+        button.classList.toggle("border-[#3f3028]", !selected);
+        button.classList.toggle("bg-transparent", !selected);
+        button.classList.toggle("text-[#3f3028]", !selected);
+      });
+    };
+
+    const initialFilter = new URLSearchParams(window.location.search).get("para");
+    if (initialFilter === "ela" || initialFilter === "her") applyFilter("ela");
+    if (initialFilter === "ele" || initialFilter === "him") applyFilter("ele");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.getAttribute("data-filter") || "all";
+        applyFilter(filter);
+      });
+    });
+  </script>
+</BaseLayout>
