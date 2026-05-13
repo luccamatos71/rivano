@@ -7,23 +7,14 @@ const allProducts = productsData as Product[];
 const editorialProducts = allProducts.slice(0, 4).map(toCardProduct);
 const secondaryProducts = allProducts.slice(6, 10).map(toCardProduct);
 
-const testimonials = [
-  {
-    quote: "Óculos perfeitos, chegaram rápido e a qualidade surpreendeu.",
-    name: "Mariana R.",
-    city: "Salvador",
-  },
-  {
-    quote: "Comprei pelo WhatsApp, super fácil. Adoro o design.",
-    name: "Pedro A.",
-    city: "São Paulo",
-  },
-  {
-    quote: "Já é o segundo par que compro. Não troco por nada.",
-    name: "Camila S.",
-    city: "Recife",
-  },
-];
+const societyImages = Array.from({ length: 8 }, (_, index) => {
+  const imageIndex = String(index + 1).padStart(2, "0");
+
+  return {
+    alt: `Rivano Society editorial ${index + 1}`,
+    src: `/editorial/society/society-${imageIndex}.webp`,
+  };
+});
 ---
 
 <BaseLayout
@@ -86,7 +77,7 @@ const testimonials = [
                   class="editorial-product-image"
                   src={product.image}
                   alt={product.name}
-                  loading={index === 0 ? "eager" : "lazy"}
+                  loading="eager"
                   decoding="async"
                 />
               </span>
@@ -164,7 +155,7 @@ const testimonials = [
                   class="latest-ray-image"
                   src={product.image}
                   alt={product.name}
-                  loading={index === 0 ? "eager" : "lazy"}
+                  loading="eager"
                   decoding="async"
                 />
               </span>
@@ -177,32 +168,51 @@ const testimonials = [
       <a class="latest-rays-link" href="/catalogo">Ver catálogo completo</a>
     </section>
 
-    <section class="social-proof-section" aria-labelledby="depoimentos">
-      <div class="social-proof-header">
-        <p class="social-proof-label">Prova social</p>
-        <h2 id="depoimentos" class="display-md social-proof-title">O que fica depois do sol</h2>
-        <p class="social-proof-subtitle">Relatos de quem encontrou na Rivano um par para todos os dias de verão.</p>
+    <section class="rivano-society-section" aria-labelledby="rivano-society-title">
+      <div class="rivano-society-header">
+        <p class="rivano-society-label">Society</p>
+        <h2 id="rivano-society-title" class="display-md rivano-society-title">The Rivano Society</h2>
+        <p class="rivano-society-subtitle">Um ver&atilde;o visto por quem vive a Rivano.</p>
       </div>
-      <div class="social-proof-track">
+
+      <div class="rivano-society-track-mobile">
         {
-          testimonials.map((testimonial) => (
-            <article class="social-proof-card">
-              <div class="social-proof-stars" aria-label="5 estrelas">
-                {Array.from({ length: 5 }).map(() => (
-                  <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path
-                      fill="currentColor"
-                      d="m12 2.6 2.88 5.84 6.45.94-4.66 4.54 1.1 6.42L12 17.3l-5.77 3.04 1.1-6.42-4.66-4.54 6.45-.94L12 2.6Z"
-                    />
-                  </svg>
-                ))}
-              </div>
-              <p class="social-proof-quote">"{testimonial.quote}"</p>
-              <p class="social-proof-name">{testimonial.name}</p>
-              <p class="social-proof-city">{testimonial.city}</p>
-            </article>
+          societyImages.map((image, index) => (
+            <figure class="rivano-society-item">
+              <img
+                class="rivano-society-image"
+                src={image.src}
+                alt={image.alt}
+                loading={index < 2 ? "eager" : "lazy"}
+                decoding="async"
+              />
+            </figure>
           ))
         }
+      </div>
+
+      <div class="rivano-society-track-desktop-wrap">
+        <div class="rivano-society-track-desktop">
+          {[0, 1].map((groupIndex) => (
+            <div class="rivano-society-desktop-group" aria-hidden={groupIndex === 1 ? "true" : undefined}>
+              {societyImages.map((image, index) => (
+                <figure class="rivano-society-item">
+                  <img
+                    class="rivano-society-image"
+                    src={image.src}
+                    alt={image.alt}
+                    loading={groupIndex === 0 && index < 2 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                </figure>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="rivano-society-cta-wrap">
+        <a class="rivano-society-cta" href="/catalogo">Ver cole&ccedil;&atilde;o</a>
       </div>
     </section>
   </div>
@@ -261,8 +271,7 @@ const testimonials = [
   .manifesto-label,
   .manifesto-text,
   .manifesto-signature,
-  .brand-story-label,
-  .social-proof-name {
+  .brand-story-label {
     font-family: var(--font-sans);
     font-weight: 400;
     text-transform: uppercase;
@@ -432,6 +441,7 @@ const testimonials = [
   }
 
   .editorial-products-track {
+    align-items: flex-start;
     display: flex;
     gap: 14px;
     overflow-x: auto;
@@ -445,8 +455,10 @@ const testimonials = [
   }
 
   .editorial-product {
+    align-self: flex-start;
     color: var(--rivano-brown);
     flex: 0 0 70vw;
+    margin-top: 0;
     min-height: 44px;
     min-width: 0;
     scroll-snap-align: start;
@@ -468,13 +480,13 @@ const testimonials = [
   .editorial-product-image {
     display: block;
     filter: contrast(1.03) saturate(0.98);
-    height: auto;
+    height: 100%;
     mix-blend-mode: multiply;
     object-fit: contain;
     transition: opacity var(--transition-normal);
     width: auto;
-    max-height: 42%;
-    max-width: 68%;
+    max-height: none;
+    max-width: 92%;
   }
 
   .editorial-product:hover .editorial-product-image {
@@ -620,6 +632,7 @@ const testimonials = [
   }
 
   .latest-rays-track {
+    align-items: flex-start;
     display: flex;
     gap: 14px;
     overflow-x: auto;
@@ -633,9 +646,11 @@ const testimonials = [
   }
 
   .latest-ray-item {
+    align-self: flex-start;
     color: var(--rivano-brown);
     display: block;
     flex: 0 0 70vw;
+    margin-top: 0;
     min-width: 0;
     scroll-snap-align: start;
   }
@@ -656,12 +671,12 @@ const testimonials = [
   .latest-ray-image {
     display: block;
     filter: contrast(1.03) saturate(0.98);
-    height: auto;
+    height: 100%;
     mix-blend-mode: multiply;
     object-fit: contain;
     width: auto;
-    max-height: 42%;
-    max-width: 68%;
+    max-height: none;
+    max-width: 92%;
   }
 
   .latest-ray-name {
@@ -797,18 +812,19 @@ const testimonials = [
     text-transform: uppercase;
   }
 
-  .social-proof-section {
-    background: var(--rivano-beige);
-    padding: 64px 0;
+  .rivano-society-section {
+    background: var(--rivano-brown);
+    color: var(--rivano-off-white);
+    overflow: hidden;
+    padding: 72px 0;
   }
 
-  .social-proof-header {
-    margin-bottom: 32px;
+  .rivano-society-header {
     padding: 0 24px;
   }
 
-  .social-proof-label {
-    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+  .rivano-society-label {
+    color: color-mix(in srgb, var(--rivano-off-white) 45%, transparent);
     font-family: var(--font-sans);
     font-size: 10px;
     font-weight: 400;
@@ -817,16 +833,16 @@ const testimonials = [
     text-transform: uppercase;
   }
 
-  .social-proof-title {
-    color: var(--rivano-brown);
+  .rivano-society-title {
+    color: var(--rivano-off-white);
     font-family: var(--font-serif);
     font-weight: 300;
     letter-spacing: 0;
     margin-top: 12px;
   }
 
-  .social-proof-subtitle {
-    color: color-mix(in srgb, var(--rivano-brown) 60%, transparent);
+  .rivano-society-subtitle {
+    color: color-mix(in srgb, var(--rivano-off-white) 65%, transparent);
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 300;
@@ -835,68 +851,74 @@ const testimonials = [
     max-width: 360px;
   }
 
-  .social-proof-track {
+  .rivano-society-track-mobile {
     display: flex;
-    gap: 14px;
+    gap: 12px;
+    margin-top: 36px;
     overflow-x: auto;
     padding: 0 24px;
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
   }
 
-  .social-proof-track::-webkit-scrollbar {
+  .rivano-society-track-mobile::-webkit-scrollbar {
     display: none;
   }
 
-  .social-proof-card {
-    background: var(--rivano-off-white);
-    border-radius: 4px;
-    border-top: 1px solid color-mix(in srgb, var(--rivano-gold) 65%, transparent);
-    flex: 0 0 82vw;
-    flex-shrink: 0;
-    min-width: 0;
-    padding: 32px 28px;
+  .rivano-society-item {
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .rivano-society-track-mobile .rivano-society-item {
+    flex: 0 0 72vw;
     scroll-snap-align: start;
   }
 
-  .social-proof-stars {
-    color: var(--rivano-gold);
-    display: flex;
-    gap: 3px;
+  .rivano-society-track-desktop-wrap {
+    display: none;
   }
 
-  .star-icon {
-    height: 11px;
-    width: 11px;
+  .rivano-society-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
   }
 
-  .social-proof-quote {
-    color: var(--rivano-brown);
-    font-family: var(--font-serif);
-    font-size: 22px;
-    font-style: italic;
-    font-weight: 300;
-    line-height: 1.45;
-    margin-top: 18px;
-    overflow-wrap: break-word;
+  .rivano-society-cta-wrap {
+    margin-top: 32px;
+    padding: 0 24px;
   }
 
-  .social-proof-name {
-    color: color-mix(in srgb, var(--rivano-brown) 55%, transparent);
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    line-height: 1.35;
-    margin-top: 24px;
-  }
-
-  .social-proof-city {
-    color: color-mix(in srgb, var(--rivano-brown) 35%, transparent);
+  .rivano-society-cta {
+    align-items: center;
+    border-bottom: 1px solid color-mix(in srgb, var(--rivano-off-white) 58%, transparent);
+    color: var(--rivano-off-white);
+    display: inline-flex;
     font-family: var(--font-sans);
-    font-size: 10px;
-    line-height: 1.35;
-    margin-top: 4px;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    min-height: 44px;
+    text-transform: uppercase;
   }
 
+  .rivano-society-cta:hover {
+    color: color-mix(in srgb, var(--rivano-off-white) 78%, transparent);
+  }
+
+  @keyframes society-track-loop {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
   @media (min-width: 768px) {
     .campaign-hero {
       height: calc(100vh - 90px);
@@ -979,8 +1001,8 @@ const testimonials = [
     }
 
     .editorial-product-image {
-      max-height: 38%;
-      max-width: 62%;
+      height: 94%;
+      max-width: 84%;
     }
 
     .editorial-products-link-wrap {
@@ -1111,8 +1133,8 @@ const testimonials = [
     }
 
     .latest-ray-image {
-      max-height: 38%;
-      max-width: 62%;
+      height: 94%;
+      max-width: 84%;
     }
 
     .latest-rays-link {
@@ -1121,45 +1143,81 @@ const testimonials = [
       width: fit-content;
     }
 
-    .social-proof-section {
-      padding: 96px 40px;
+    .rivano-society-section {
+      padding: 112px 0;
     }
 
-    .social-proof-header {
-      margin: 0 auto 56px;
+    .rivano-society-header {
+      margin-bottom: 48px;
+      max-width: 720px;
+      padding: 0 40px;
+    }
+
+    .rivano-society-title {
+      font-size: clamp(56px, 5.6vw, 84px);
+      line-height: 0.92;
       max-width: 620px;
-      padding: 0;
-      text-align: center;
     }
 
-    .social-proof-subtitle {
-      margin-left: auto;
-      margin-right: auto;
+    .rivano-society-subtitle {
       max-width: 520px;
     }
 
-    .social-proof-track {
-      display: grid;
-      gap: 24px;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin: 0 auto;
-      max-width: 1280px;
-      overflow: visible;
-      padding: 0;
-      scroll-snap-type: none;
+    .rivano-society-track-mobile {
+      display: none;
     }
 
-    .social-proof-card {
-      flex: initial;
-      min-width: 0;
+    .rivano-society-track-desktop-wrap {
+      display: block;
+      overflow: hidden;
+      padding: 0 40px;
+      width: 100%;
     }
 
-    .social-proof-card:nth-child(2) {
-      margin-top: 48px;
+    .rivano-society-track-desktop {
+      animation: society-track-loop 92s linear infinite;
+      display: flex;
+      width: max-content;
+      will-change: transform;
     }
 
-    .social-proof-card:nth-child(3) {
-      margin-top: 16px;
+    .rivano-society-track-desktop-wrap:hover .rivano-society-track-desktop {
+      animation-play-state: paused;
+    }
+
+    .rivano-society-desktop-group {
+      align-items: flex-start;
+      display: flex;
+      gap: 16px;
+      padding: 0 16px 0 0;
+    }
+
+    .rivano-society-desktop-group .rivano-society-item {
+      flex: 0 0 clamp(260px, 21vw, 320px);
+      width: clamp(260px, 21vw, 320px);
+    }
+
+    .rivano-society-desktop-group .rivano-society-item:nth-child(2) {
+      margin-top: 32px;
+    }
+
+    .rivano-society-desktop-group .rivano-society-item:nth-child(4) {
+      margin-top: 20px;
+    }
+
+    .rivano-society-desktop-group .rivano-society-item:nth-child(6) {
+      margin-top: 40px;
+    }
+
+    .rivano-society-cta-wrap {
+      margin-top: 56px;
+      padding: 0 40px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rivano-society-track-desktop {
+      animation: none;
     }
   }
 </style>
