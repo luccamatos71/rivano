@@ -446,7 +446,7 @@ const testimonials = [
 
   .editorial-product {
     color: var(--rivano-brown);
-    flex: 0 0 60vw;
+    flex: 0 0 70vw;
     min-height: 44px;
     min-width: 0;
     scroll-snap-align: start;
@@ -454,23 +454,27 @@ const testimonials = [
 
   .editorial-product-frame {
     align-items: center;
-    aspect-ratio: 4 / 5;
-    background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
+    aspect-ratio: 1 / 1;
+    background: color-mix(in srgb, var(--rivano-off-white) 74%, var(--rivano-beige));
+    border: 1px solid color-mix(in srgb, var(--rivano-beige) 60%, var(--rivano-off-white));
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     overflow: hidden;
-    padding: 18px;
+    padding: 24px;
     width: 100%;
   }
 
   .editorial-product-image {
     display: block;
-    filter: contrast(1.02);
+    filter: contrast(1.03) saturate(0.98);
     height: auto;
     mix-blend-mode: multiply;
     object-fit: contain;
     transition: opacity var(--transition-normal);
-    width: 88%;
+    width: auto;
+    max-height: 42%;
+    max-width: 68%;
   }
 
   .editorial-product:hover .editorial-product-image {
@@ -480,18 +484,18 @@ const testimonials = [
   .editorial-product-name {
     display: block;
     font-family: var(--font-serif);
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 300;
     letter-spacing: 0;
-    line-height: 1.08;
-    margin-top: 12px;
+    line-height: 1.12;
+    margin-top: 11px;
   }
 
   .editorial-product-price {
-    color: var(--rivano-muted);
+    color: color-mix(in srgb, var(--rivano-brown) 56%, transparent);
     display: block;
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 300;
     line-height: 1.35;
     margin-top: 4px;
@@ -631,7 +635,7 @@ const testimonials = [
   .latest-ray-item {
     color: var(--rivano-brown);
     display: block;
-    flex: 0 0 60vw;
+    flex: 0 0 70vw;
     min-width: 0;
     scroll-snap-align: start;
   }
@@ -646,40 +650,44 @@ const testimonials = [
 
   .latest-ray-frame {
     align-items: center;
-    aspect-ratio: 4 / 5;
-    background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
+    aspect-ratio: 1 / 1;
+    background: color-mix(in srgb, var(--rivano-off-white) 74%, var(--rivano-beige));
+    border: 1px solid color-mix(in srgb, var(--rivano-beige) 60%, var(--rivano-off-white));
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     overflow: hidden;
-    padding: 18px;
+    padding: 24px;
     width: 100%;
   }
 
   .latest-ray-image {
     display: block;
+    filter: contrast(1.03) saturate(0.98);
     height: auto;
-    filter: contrast(1.02);
     mix-blend-mode: multiply;
     object-fit: contain;
-    width: 88%;
+    width: auto;
+    max-height: 42%;
+    max-width: 68%;
   }
 
   .latest-ray-name {
     color: var(--rivano-brown);
     display: block;
     font-family: var(--font-serif);
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 300;
     letter-spacing: 0;
-    line-height: 1.1;
-    margin-top: 14px;
+    line-height: 1.12;
+    margin-top: 11px;
   }
 
   .latest-ray-price {
-    color: color-mix(in srgb, var(--rivano-brown) 60%, transparent);
+    color: color-mix(in srgb, var(--rivano-brown) 56%, transparent);
     display: block;
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 300;
     line-height: 1.35;
     margin-top: 4px;
@@ -967,19 +975,20 @@ const testimonials = [
     }
 
     .editorial-product:nth-child(2) {
-      margin-top: 36px;
-    }
-
-    .editorial-product:nth-child(3) {
-      margin-top: 14px;
+      margin-top: 32px;
     }
 
     .editorial-product:nth-child(4) {
-      margin-top: 48px;
+      margin-top: 40px;
+    }
+
+    .editorial-product:nth-child(3) {
+      margin-top: 0;
     }
 
     .editorial-product-image {
-      width: 82%;
+      max-height: 38%;
+      max-width: 62%;
     }
 
     .editorial-products-link-wrap {
@@ -1098,19 +1107,20 @@ const testimonials = [
     }
 
     .latest-ray-item:nth-child(2) {
-      margin-top: 48px;
-    }
-
-    .latest-ray-item:nth-child(3) {
-      margin-top: 16px;
+      margin-top: 32px;
     }
 
     .latest-ray-item:nth-child(4) {
-      margin-top: 64px;
+      margin-top: 40px;
+    }
+
+    .latest-ray-item:nth-child(3) {
+      margin-top: 0;
     }
 
     .latest-ray-image {
-      width: 82%;
+      max-height: 38%;
+      max-width: 62%;
     }
 
     .latest-rays-link {
