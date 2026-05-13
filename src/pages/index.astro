@@ -1,5 +1,4 @@
 ---
-import ProductCard from "../components/ProductCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { formatPriceBRL, toCardProduct, type Product } from "../lib/products";
 import productsData from "../data/products.json";
@@ -150,25 +149,45 @@ const testimonials = [
       </div>
     </section>
 
-    <section class="product-section product-section--secondary" aria-label="Mais produtos Rivano">
-      <div class="secondary-grid">
+    <section class="latest-rays-section" aria-labelledby="ultimos-raios">
+      <div class="latest-rays-header">
+        <p class="latest-rays-label">Curadoria Rivano</p>
+        <h2 id="ultimos-raios" class="display-md latest-rays-title">Últimos raios</h2>
+        <p class="latest-rays-subtitle">Armações escolhidas para acompanhar a luz até o fim do dia.</p>
+      </div>
+      <div class="latest-rays-track">
         {
           secondaryProducts.map((product, index) => (
-            <article class="home-product-card">
-              <ProductCard product={product} index={index + 6} />
-            </article>
+            <a class="latest-ray-item" href={`/produtos/${product.slug}`} aria-label={`Ver ${product.name}`}>
+              <span class="latest-ray-frame">
+                <img
+                  class="latest-ray-image"
+                  src={product.image}
+                  alt={product.name}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </span>
+              <span class="latest-ray-name">{product.name}</span>
+              <span class="latest-ray-price">{formatPriceBRL(product.price)}</span>
+            </a>
           ))
         }
       </div>
+      <a class="latest-rays-link" href="/catalogo">Ver catálogo completo</a>
     </section>
 
-    <section class="testimonials-section" aria-labelledby="depoimentos">
-      <h2 id="depoimentos" class="display-sm testimonials-title">O que dizem sobre nós</h2>
-      <div class="testimonials-track">
+    <section class="social-proof-section" aria-labelledby="depoimentos">
+      <div class="social-proof-header">
+        <p class="social-proof-label">Prova social</p>
+        <h2 id="depoimentos" class="display-md social-proof-title">O que fica depois do sol</h2>
+        <p class="social-proof-subtitle">Relatos de quem encontrou na Rivano um par para todos os dias de verão.</p>
+      </div>
+      <div class="social-proof-track">
         {
           testimonials.map((testimonial) => (
-            <article class="testimonial-card">
-              <div class="testimonial-stars" aria-label="5 estrelas">
+            <article class="social-proof-card">
+              <div class="social-proof-stars" aria-label="5 estrelas">
                 {Array.from({ length: 5 }).map(() => (
                   <svg class="star-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <path
@@ -178,9 +197,9 @@ const testimonials = [
                   </svg>
                 ))}
               </div>
-              <p class="testimonial-quote">"{testimonial.quote}"</p>
-              <p class="testimonial-name">{testimonial.name}</p>
-              <p class="testimonial-city">{testimonial.city}</p>
+              <p class="social-proof-quote">"{testimonial.quote}"</p>
+              <p class="social-proof-name">{testimonial.name}</p>
+              <p class="social-proof-city">{testimonial.city}</p>
             </article>
           ))
         }
@@ -229,7 +248,7 @@ const testimonials = [
   .campaign-content {
     bottom: 0;
     left: 0;
-    padding: 24px;
+    padding: 24px 24px calc(32px + env(safe-area-inset-bottom));
     position: absolute;
     width: 100%;
     z-index: 1;
@@ -243,7 +262,7 @@ const testimonials = [
   .manifesto-text,
   .manifesto-signature,
   .brand-story-label,
-  .testimonial-name {
+  .social-proof-name {
     font-family: var(--font-sans);
     font-weight: 400;
     text-transform: uppercase;
@@ -427,7 +446,7 @@ const testimonials = [
 
   .editorial-product {
     color: var(--rivano-brown);
-    flex: 0 0 72vw;
+    flex: 0 0 60vw;
     min-height: 44px;
     min-width: 0;
     scroll-snap-align: start;
@@ -435,27 +454,27 @@ const testimonials = [
 
   .editorial-product-frame {
     align-items: center;
-    aspect-ratio: 3 / 4;
-    background: color-mix(in srgb, var(--rivano-beige) 45%, var(--rivano-off-white));
+    aspect-ratio: 4 / 5;
+    background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
     display: flex;
     justify-content: center;
     overflow: hidden;
+    padding: 18px;
     width: 100%;
   }
 
   .editorial-product-image {
     display: block;
-    height: 100%;
+    filter: contrast(1.02);
+    height: auto;
+    mix-blend-mode: multiply;
     object-fit: contain;
-    padding: 8px;
-    transform: scale(1.08);
-    transition: opacity var(--transition-normal), transform var(--transition-slow);
-    width: 100%;
+    transition: opacity var(--transition-normal);
+    width: 88%;
   }
 
   .editorial-product:hover .editorial-product-image {
-    opacity: 0.92;
-    transform: scale(1.1);
+    opacity: 0.94;
   }
 
   .editorial-product-name {
@@ -557,44 +576,128 @@ const testimonials = [
     margin-top: 20px;
   }
 
-  .product-section {
+  .latest-rays-section {
     background: var(--rivano-off-white);
-    padding: 48px 16px;
+    padding: 64px 0;
   }
 
-  .testimonials-title {
+  .latest-rays-header {
+    margin-bottom: 32px;
+    padding: 0 24px;
+  }
+
+  .latest-rays-label {
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .latest-rays-title {
+    color: var(--rivano-brown);
     font-family: var(--font-serif);
     font-weight: 300;
-    margin: 0 auto 32px;
-    text-align: center;
+    letter-spacing: 0;
+    margin-top: 12px;
+    max-width: 560px;
   }
 
-  .secondary-grid {
-    display: grid;
-    gap: 12px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin: 0 auto;
-    max-width: 1280px;
-    width: 100%;
+  .latest-rays-subtitle {
+    color: color-mix(in srgb, var(--rivano-brown) 60%, transparent);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.7;
+    margin-top: 16px;
+    max-width: 360px;
   }
 
-  .home-product-card :global(.image-container > span) {
+  .latest-rays-track {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 0 24px;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+
+  .latest-rays-track::-webkit-scrollbar {
     display: none;
   }
 
-  .home-product-card :global(.product-info h3) {
+  .latest-ray-item {
     color: var(--rivano-brown);
-    font-family: var(--font-serif);
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 1.15;
+    display: block;
+    flex: 0 0 60vw;
+    min-width: 0;
+    scroll-snap-align: start;
   }
 
-  .home-product-card :global(.price) {
-    color: color-mix(in srgb, var(--rivano-brown) 58%, transparent);
+  .latest-ray-item:nth-child(2) {
+    margin-top: 32px;
+  }
+
+  .latest-ray-item:nth-child(4) {
+    margin-top: 16px;
+  }
+
+  .latest-ray-frame {
+    align-items: center;
+    aspect-ratio: 4 / 5;
+    background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    padding: 18px;
+    width: 100%;
+  }
+
+  .latest-ray-image {
+    display: block;
+    height: auto;
+    filter: contrast(1.02);
+    mix-blend-mode: multiply;
+    object-fit: contain;
+    width: 88%;
+  }
+
+  .latest-ray-name {
+    color: var(--rivano-brown);
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.1;
+    margin-top: 14px;
+  }
+
+  .latest-ray-price {
+    color: color-mix(in srgb, var(--rivano-brown) 60%, transparent);
+    display: block;
     font-family: var(--font-sans);
     font-size: 13px;
+    font-weight: 300;
+    line-height: 1.35;
+    margin-top: 4px;
+  }
+
+  .latest-rays-link {
+    align-items: center;
+    border-bottom: 1px solid currentColor;
+    color: var(--rivano-brown);
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    margin: 32px 0 0 24px;
+    min-height: 44px;
+    text-transform: uppercase;
   }
 
   .manifesto-section {
@@ -694,42 +797,69 @@ const testimonials = [
     text-transform: uppercase;
   }
 
-  .product-section--secondary {
+  .social-proof-section {
     background: var(--rivano-beige);
+    padding: 64px 0;
   }
 
-  .testimonials-section {
-    background: var(--rivano-beige);
-    padding: 48px 0;
-  }
-
-  .testimonials-title {
+  .social-proof-header {
+    margin-bottom: 32px;
     padding: 0 24px;
   }
 
-  .testimonials-track {
+  .social-proof-label {
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .social-proof-title {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-weight: 300;
+    letter-spacing: 0;
+    margin-top: 12px;
+  }
+
+  .social-proof-subtitle {
+    color: color-mix(in srgb, var(--rivano-brown) 60%, transparent);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.7;
+    margin-top: 16px;
+    max-width: 360px;
+  }
+
+  .social-proof-track {
     display: flex;
-    gap: 12px;
+    gap: 14px;
     overflow-x: auto;
     padding: 0 24px;
     scrollbar-width: none;
     scroll-snap-type: x mandatory;
   }
 
-  .testimonials-track::-webkit-scrollbar {
+  .social-proof-track::-webkit-scrollbar {
     display: none;
   }
 
-  .testimonial-card {
+  .social-proof-card {
     background: var(--rivano-off-white);
+    border-radius: 4px;
+    border-top: 1px solid color-mix(in srgb, var(--rivano-gold) 65%, transparent);
     flex: 0 0 82vw;
     flex-shrink: 0;
     min-width: 0;
-    padding: 28px;
+    padding: 32px 28px;
     scroll-snap-align: start;
   }
 
-  .testimonial-stars {
+  .social-proof-stars {
     color: var(--rivano-gold);
     display: flex;
     gap: 3px;
@@ -740,31 +870,31 @@ const testimonials = [
     width: 11px;
   }
 
-  .testimonial-quote {
+  .social-proof-quote {
     color: var(--rivano-brown);
     font-family: var(--font-serif);
-    font-size: 18px;
+    font-size: 22px;
     font-style: italic;
     font-weight: 300;
-    line-height: 1.65;
-    margin-top: 14px;
+    line-height: 1.45;
+    margin-top: 18px;
     overflow-wrap: break-word;
   }
 
-  .testimonial-name {
+  .social-proof-name {
     color: color-mix(in srgb, var(--rivano-brown) 55%, transparent);
     font-size: 10px;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
     line-height: 1.35;
-    margin-top: 18px;
+    margin-top: 24px;
   }
 
-  .testimonial-city {
+  .social-proof-city {
     color: color-mix(in srgb, var(--rivano-brown) 35%, transparent);
     font-family: var(--font-sans);
     font-size: 10px;
     line-height: 1.35;
-    margin-top: 2px;
+    margin-top: 4px;
   }
 
   @media (min-width: 768px) {
@@ -823,16 +953,33 @@ const testimonials = [
 
     .editorial-products-track {
       display: grid;
-      gap: 20px;
+      gap: 24px;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       margin: 0 auto;
       max-width: 1280px;
       overflow: visible;
       padding: 0;
+      scroll-snap-type: none;
     }
 
     .editorial-product {
       flex: initial;
+    }
+
+    .editorial-product:nth-child(2) {
+      margin-top: 36px;
+    }
+
+    .editorial-product:nth-child(3) {
+      margin-top: 14px;
+    }
+
+    .editorial-product:nth-child(4) {
+      margin-top: 48px;
+    }
+
+    .editorial-product-image {
+      width: 82%;
     }
 
     .editorial-products-link-wrap {
@@ -920,30 +1067,97 @@ const testimonials = [
       max-width: 520px;
     }
 
-    .product-section--secondary {
-      padding: 64px 40px;
-    }
-
-    .secondary-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .testimonials-section {
+    .latest-rays-section {
       padding: 96px 40px;
     }
 
-    .testimonials-track {
+    .latest-rays-header {
+      margin: 0 auto 48px;
+      max-width: 1280px;
+      padding: 0;
+    }
+
+    .latest-rays-header > * {
+      max-width: 560px;
+    }
+
+    .latest-rays-track {
       display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin: 0 auto;
+      max-width: 1280px;
+      overflow: visible;
+      padding: 0;
+      scroll-snap-type: none;
+    }
+
+    .latest-ray-item {
+      flex: initial;
+      min-width: 0;
+    }
+
+    .latest-ray-item:nth-child(2) {
+      margin-top: 48px;
+    }
+
+    .latest-ray-item:nth-child(3) {
+      margin-top: 16px;
+    }
+
+    .latest-ray-item:nth-child(4) {
+      margin-top: 64px;
+    }
+
+    .latest-ray-image {
+      width: 82%;
+    }
+
+    .latest-rays-link {
+      display: flex;
+      margin: 64px auto 0;
+      width: fit-content;
+    }
+
+    .social-proof-section {
+      padding: 96px 40px;
+    }
+
+    .social-proof-header {
+      margin: 0 auto 56px;
+      max-width: 620px;
+      padding: 0;
+      text-align: center;
+    }
+
+    .social-proof-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 520px;
+    }
+
+    .social-proof-track {
+      display: grid;
+      gap: 24px;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       margin: 0 auto;
       max-width: 1280px;
       overflow: visible;
       padding: 0;
+      scroll-snap-type: none;
     }
 
-    .testimonial-card {
+    .social-proof-card {
       flex: initial;
       min-width: 0;
+    }
+
+    .social-proof-card:nth-child(2) {
+      margin-top: 48px;
+    }
+
+    .social-proof-card:nth-child(3) {
+      margin-top: 16px;
     }
   }
 </style>

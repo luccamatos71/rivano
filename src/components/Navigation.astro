@@ -20,18 +20,18 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
       <a
         href="/catalogo"
         class:list={[
-          "font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]",
+          "inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]",
           isCatalog && "text-[var(--rivano-brown-mid)]",
         ]}
       >
         Modelos
       </a>
-      <a href="/catalogo?para=ela" class="font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
+      <a href="/catalogo?para=ela" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
         Para ela
       </a>
     </nav>
 
-    <a href="/" class="flex min-w-[104px] items-center sm:justify-center" aria-label="Rivano">
+    <a href="/" class="flex min-h-[44px] min-w-[104px] items-center sm:justify-center" aria-label="Rivano">
       {
         logo ? (
           <img src={logo} alt="Rivano" class="logo h-10 w-auto" />
@@ -44,10 +44,10 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
     </a>
 
     <nav class="nav-menu hidden items-center justify-end gap-8 sm:flex" aria-label="Marca">
-      <a href="/catalogo?para=ele" class="font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
+      <a href="/catalogo?para=ele" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
         Para ele
       </a>
-      <a href="/#sobre" class="font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
+      <a href="/#sobre" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
         Sobre
       </a>
     </nav>
@@ -55,7 +55,7 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
     <button
       id="nav-menu-toggle"
       type="button"
-      class="font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] sm:hidden"
+      class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] sm:hidden"
       aria-controls="mobile-nav"
       aria-expanded="false"
     >
@@ -69,15 +69,15 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
         <span class="font-['Cormorant_Garamond'] text-[25px] font-normal uppercase leading-none tracking-[0.16em] text-[var(--rivano-brown)]">
           Rivano
         </span>
-        <button id="nav-menu-close" type="button" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">
+        <button id="nav-menu-close" type="button" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">
           Fechar
         </button>
       </div>
       <nav class="flex flex-col gap-5" aria-label="Navegação mobile">
-        <a href="/catalogo" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">Modelos</a>
-        <a href="/catalogo?para=ela" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">Para ela</a>
-        <a href="/catalogo?para=ele" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">Para ele</a>
-        <a href="/#sobre" class="font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">Sobre</a>
+        <a href="/catalogo" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">Modelos</a>
+        <a href="/catalogo?para=ela" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">Para ela</a>
+        <a href="/catalogo?para=ele" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">Para ele</a>
+        <a href="/#sobre" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] uppercase tracking-[0.12em] text-[var(--rivano-brown)]">Sobre</a>
       </nav>
     </div>
   </div>
