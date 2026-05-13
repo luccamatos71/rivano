@@ -141,9 +141,6 @@ const testimonials = [
 
     <section class="brand-story-section" aria-label="O espírito Rivano">
       <div class="brand-story-inner">
-        <div class="brand-story-image-wrap">
-          <img src="/editorial/verao.png" alt="Óculos na areia com bolsa de palha e laranja" class="brand-story-image" loading="lazy" decoding="async" />
-        </div>
         <div class="brand-story-copy">
           <p class="brand-story-label">O espírito Rivano</p>
           <h2 class="brand-story-title">Feita para o sol que fica.</h2>
@@ -201,8 +198,7 @@ const testimonials = [
 
   .campaign-hero {
     background: color-mix(in srgb, var(--rivano-brown) 86%, black);
-    height: 100svh;
-    margin-top: -60px;
+    height: calc(100svh - 60px);
     overflow: hidden;
     position: relative;
     width: 100vw;
@@ -604,7 +600,11 @@ const testimonials = [
   .manifesto-section {
     background: var(--rivano-brown);
     color: var(--rivano-off-white);
-    padding: 88px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 72svh;
+    padding: 72px 24px;
   }
 
   .manifesto-label {
@@ -617,20 +617,20 @@ const testimonials = [
   .manifesto-title {
     color: var(--rivano-off-white);
     font-family: var(--font-serif);
-    font-size: clamp(58px, 17vw, 86px);
+    font-size: clamp(64px, 19vw, 96px);
     font-weight: 300;
     letter-spacing: 0;
-    line-height: 0.86;
+    line-height: 0.82;
     margin-top: 20px;
     max-width: 360px;
   }
 
   .manifesto-text {
     color: color-mix(in srgb, var(--rivano-off-white) 62%, transparent);
-    font-size: 13px;
-    letter-spacing: 0.14em;
+    font-size: 12px;
+    letter-spacing: 0.16em;
     line-height: 1.6;
-    margin-top: 24px;
+    margin-top: 28px;
     max-width: 260px;
   }
 
@@ -639,28 +639,16 @@ const testimonials = [
     font-size: 10px;
     letter-spacing: 0.18em;
     line-height: 1.35;
-    margin-top: 56px;
+    margin-top: 72px;
   }
 
   .brand-story-section {
     background: var(--rivano-off-white);
-  }
-
-  .brand-story-image-wrap {
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  .brand-story-image {
-    display: block;
-    height: 100%;
-    object-fit: cover;
-    width: 100%;
+    padding: 72px 24px;
   }
 
   .brand-story-copy {
-    padding: 34px 24px 64px;
+    max-width: 360px;
   }
 
   .brand-story-label {
@@ -781,8 +769,7 @@ const testimonials = [
 
   @media (min-width: 768px) {
     .campaign-hero {
-      height: 100vh;
-      margin-top: -90px;
+      height: calc(100vh - 90px);
     }
 
     .campaign-content {
@@ -901,6 +888,7 @@ const testimonials = [
     }
 
     .manifesto-section {
+      min-height: 78vh;
       padding: 144px 40px;
     }
 
@@ -910,32 +898,21 @@ const testimonials = [
     }
 
     .manifesto-title {
-      font-size: clamp(86px, 10vw, 150px);
-      max-width: 900px;
+      font-size: clamp(100px, 11vw, 168px);
+      max-width: 980px;
     }
 
     .brand-story-section {
-      padding: 112px 40px;
+      padding: 128px 40px;
     }
 
     .brand-story-inner {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
       margin: 0 auto;
-      max-width: 1440px;
+      max-width: 920px;
     }
 
     .brand-story-copy {
-      align-self: center;
-      grid-column: 1 / 6;
-      grid-row: 1;
-      padding: 0 56px 0 0;
-    }
-
-    .brand-story-image-wrap {
-      aspect-ratio: 16 / 10;
-      grid-column: 6 / 13;
-      grid-row: 1;
+      max-width: 760px;
     }
 
     .brand-story-title {

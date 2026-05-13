@@ -52,7 +52,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).to
       Ir para o conteúdo
     </a>
     {showAnnouncementBar && <AnnouncementBar />}
-    <Navigation />
+    <Navigation hasAnnouncementBar={showAnnouncementBar} />
     <main id="conteudo">
       <slot />
     </main>

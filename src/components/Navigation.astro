@@ -1,14 +1,20 @@
 ---
 interface Props {
   logo?: string;
+  hasAnnouncementBar?: boolean;
 }
 
-const { logo } = Astro.props as Props;
+const { logo, hasAnnouncementBar = true } = Astro.props as Props;
 const pathname = Astro.url.pathname;
 const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/produtos/");
 ---
 
-<header class="navbar sticky top-[48px] z-[100] border-b border-[var(--rivano-beige)] bg-[var(--rivano-off-white)] px-5 sm:top-[32px] sm:px-10">
+<header
+  class:list={[
+    "navbar sticky z-[100] border-b border-[var(--rivano-beige)] bg-[var(--rivano-off-white)] px-5 sm:px-10",
+    hasAnnouncementBar ? "top-[48px] sm:top-[32px]" : "top-0",
+  ]}
+>
   <div class="navbar-content mx-auto flex h-[60px] max-w-[1280px] items-center justify-between sm:grid sm:h-[90px] sm:grid-cols-3">
     <nav class="nav-menu hidden items-center gap-8 sm:flex" aria-label="Coleções">
       <a
