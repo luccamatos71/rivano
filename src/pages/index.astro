@@ -30,40 +30,45 @@ const testimonials = [
 <BaseLayout
   title="Rivano | Óculos premium para dias de sol"
   description="Óculos premium-acessíveis da Rivano. Design autoral, verão europeu e compra pelo WhatsApp."
+  showAnnouncementBar={false}
+  showBottomBar={false}
 >
   <div class="rivano-home">
-    <section class="hero-video" aria-label="Rivano coleção 2025">
-      <div class="hero-frame">
-        <video class="hero-media" src="/banners/hero.mov" autoplay muted loop playsinline></video>
-        <div class="hero-gradient" aria-hidden="true"></div>
-        <div class="hero-content">
-          <h1 class="display-xl hero-title">Olhar que define.</h1>
-          <p class="hero-kicker">Coleção 2025</p>
-          <a class="home-button home-button--light" href="/catalogo">Ver coleção</a>
-          <a class="hero-whatsapp-link" href="https://wa.me/5571993135522" aria-label="Fale com a Rivano pelo WhatsApp">
-            <svg class="hero-whatsapp-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.995 1.348l-.36-.183L2.702 2.56l.855 3.081A9.857 9.857 0 002.5 12c0 5.471 4.585 9.905 10.007 9.905 2.716 0 5.274-.869 7.422-2.49l.362.187 3.099 1.006-.893-3.222a9.9 9.9 0 001.449-5.393c0-5.471-4.585-9.905-10.007-9.905z" />
-            </svg>
-            Fale com a gente
+    <section class="campaign-hero" aria-label="Campanha Rivano verão 2025">
+      <video class="campaign-video" src="/banners/hero.mov" autoplay muted loop playsinline></video>
+      <div class="campaign-gradient" aria-hidden="true"></div>
+      <div class="campaign-content">
+        <p class="campaign-kicker">Rivano 2025</p>
+        <h1 class="campaign-title">Verão no olhar.</h1>
+        <div class="campaign-actions" aria-label="Ações da campanha">
+          <a class="campaign-cta campaign-cta--primary" href="/catalogo">Ver coleção</a>
+          <a
+            class="campaign-cta campaign-cta--secondary"
+            href="https://wa.me/5571993135522"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
           </a>
         </div>
       </div>
     </section>
 
-    <section class="trust-section" aria-label="Confiança Rivano">
-      <div class="trust-bar">
-        <span class="trust-compact-item"><span aria-hidden="true">↻</span><span>Troca 30 dias</span></span>
-        <span class="trust-separator" aria-hidden="true">·</span>
-        <span class="trust-compact-item"><span aria-hidden="true">✓</span><span>100% Original</span></span>
-        <span class="trust-separator" aria-hidden="true">·</span>
-        <span class="trust-compact-item"><span aria-hidden="true">💬</span><span>WhatsApp 24h</span></span>
-      </div>
-    </section>
-
-    <section class="intro-editorial" aria-label="Manifesto Rivano">
-      <div class="intro-inner">
-        <p class="display-md intro-title">Feitos para quem vive ao sol.</p>
-        <p class="intro-subtitle">Design autoral. Qualidade real. Preço honesto.</p>
+    <section class="post-hero-editorial" aria-label="Editorial Rivano">
+      <div class="post-hero-inner">
+        <div class="post-hero-image-wrap">
+          <img src="/editorial/verao.png" alt="Óculos Rivano em composição de verão" class="post-hero-image" loading="eager" decoding="async" />
+        </div>
+        <div class="post-hero-copy">
+          <p class="post-hero-label">Editorial</p>
+          <h2 class="post-hero-title">Óculos para viver o verão.</h2>
+          <p class="post-hero-text">Uma coleção pensada para luz, pele, mar e cidade.</p>
+          <nav class="post-hero-links" aria-label="Coleções editoriais">
+            <a href="/catalogo?para=ela">Ela</a>
+            <a href="/catalogo?para=ele">Ele</a>
+            <a href="/catalogo">Todos</a>
+          </nav>
+        </div>
       </div>
     </section>
 
@@ -76,7 +81,7 @@ const testimonials = [
           <p class="section-label">Coleção</p>
           <h2 class="display-lg collection-title">Ela</h2>
           <p class="collection-description">Frames que acompanham cada mood. Do café da manhã à hora dourada.</p>
-          <a class="home-button home-button--dark" href="/catalogo?genero=ela">Ver coleção</a>
+          <a class="home-button home-button--dark" href="/catalogo?para=ela">Ver coleção</a>
         </div>
       </article>
 
@@ -87,7 +92,7 @@ const testimonials = [
           <p class="section-label">Coleção</p>
           <h2 class="display-lg collection-title">Ele</h2>
           <p class="collection-description">Linhas precisas, presença garantida. Para quem sabe o que quer.</p>
-          <a class="home-button home-button--dark" href="/catalogo?genero=ele">Ver coleção</a>
+          <a class="home-button home-button--dark" href="/catalogo?para=ele">Ver coleção</a>
         </div>
         <div class="collection-image-wrap">
           <img src="/editorial/ele.png" alt="Homem usando óculos redondo Rivano em close sob céu azul" class="collection-image" loading="lazy" decoding="async" />
@@ -179,67 +184,179 @@ const testimonials = [
     overflow-x: hidden;
   }
 
-  .hero-video {
-    background: var(--rivano-off-white);
-    width: 100%;
-  }
-
-  .hero-frame {
-    height: 90vh;
-    margin: 0;
+  .campaign-hero {
+    background: color-mix(in srgb, var(--rivano-brown) 86%, black);
+    height: 100svh;
+    margin-top: -60px;
     overflow: hidden;
     position: relative;
     width: 100vw;
   }
 
-  .hero-media {
+  .campaign-video {
     display: block;
     height: 100%;
     object-fit: cover;
-    width: 100%;
+    width: 100vw;
   }
 
-  .hero-gradient {
-    background: linear-gradient(0deg, color-mix(in srgb, var(--rivano-brown) 72%, transparent) 0%, transparent 100%);
+  .campaign-gradient {
+    background: linear-gradient(
+      0deg,
+      color-mix(in srgb, black 66%, transparent) 0%,
+      color-mix(in srgb, var(--rivano-brown) 42%, transparent) 52%,
+      transparent 100%
+    );
     bottom: 0;
-    height: 45%;
+    height: 42%;
     left: 0;
+    pointer-events: none;
     position: absolute;
     right: 0;
   }
 
-  .hero-content {
+  .campaign-content {
     bottom: 0;
     left: 0;
-    padding: 24px 24px 88px;
+    padding: 24px;
     position: absolute;
     width: 100%;
+    z-index: 1;
   }
 
-  .hero-title {
-    color: var(--rivano-off-white);
-    font-family: var(--font-serif);
-    font-weight: 300;
-    max-width: 340px;
-  }
-
-  .hero-kicker,
-  .intro-subtitle,
+  .campaign-kicker,
+  .post-hero-label,
   .section-label,
   .pullquote-author,
-  .trust-title,
   .testimonial-name {
     font-family: var(--font-sans);
     font-weight: 400;
     text-transform: uppercase;
   }
 
-  .hero-kicker {
+  .campaign-kicker {
     color: color-mix(in srgb, var(--rivano-off-white) 70%, transparent);
-    font-size: 12px;
-    letter-spacing: 0.14em;
+    font-size: 11px;
+    letter-spacing: 0.16em;
     line-height: 1.35;
-    margin-top: 12px;
+    margin-bottom: 12px;
+  }
+
+  .campaign-title {
+    color: var(--rivano-off-white);
+    font-family: var(--font-serif);
+    font-size: clamp(56px, 16vw, 76px);
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 0.88;
+    margin: 0;
+    max-width: 320px;
+  }
+
+  .campaign-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin-top: 24px;
+  }
+
+  .campaign-cta {
+    align-items: center;
+    color: var(--rivano-off-white);
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    justify-content: center;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    min-height: 44px;
+    text-transform: uppercase;
+  }
+
+  .campaign-cta--primary {
+    border: 1px solid color-mix(in srgb, var(--rivano-off-white) 72%, transparent);
+    padding: 0 22px;
+  }
+
+  .campaign-cta--primary:hover {
+    background: color-mix(in srgb, var(--rivano-off-white) 12%, transparent);
+  }
+
+  .campaign-cta--secondary {
+    opacity: 0.7;
+    padding: 0;
+  }
+
+  .post-hero-editorial {
+    background: var(--rivano-off-white);
+  }
+
+  .post-hero-image-wrap {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .post-hero-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .post-hero-copy {
+    padding: 32px 24px 48px;
+  }
+
+  .post-hero-label {
+    color: var(--rivano-muted);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+  }
+
+  .post-hero-title {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-size: clamp(38px, 11vw, 56px);
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 0.95;
+    margin-top: 14px;
+    max-width: 340px;
+  }
+
+  .post-hero-text {
+    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.65;
+    margin-top: 16px;
+    max-width: 320px;
+  }
+
+  .post-hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+    margin-top: 24px;
+  }
+
+  .post-hero-links a {
+    align-items: center;
+    border-bottom: 1px solid currentColor;
+    color: var(--rivano-brown);
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    min-height: 44px;
+    text-transform: uppercase;
   }
 
   .home-button {
@@ -260,16 +377,6 @@ const testimonials = [
     transition: var(--transition-normal);
   }
 
-  .home-button--light {
-    color: var(--rivano-off-white);
-    margin-top: 24px;
-  }
-
-  .home-button--light:hover {
-    background: var(--rivano-off-white);
-    color: var(--rivano-brown);
-  }
-
   .home-button--dark {
     color: var(--rivano-brown);
   }
@@ -277,50 +384,6 @@ const testimonials = [
   .home-button--dark:hover {
     background: var(--rivano-brown);
     color: var(--rivano-off-white);
-  }
-
-  .hero-whatsapp-link {
-    align-items: center;
-    color: color-mix(in srgb, var(--rivano-off-white) 70%, transparent);
-    display: inline-flex;
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 400;
-    gap: 8px;
-    letter-spacing: 0.1em;
-    line-height: 1.2;
-    margin-top: 12px;
-    min-height: 44px;
-    text-transform: uppercase;
-  }
-
-  .hero-whatsapp-icon {
-    height: 14px;
-    width: 14px;
-  }
-
-  .intro-editorial {
-    background: var(--rivano-off-white);
-    padding: 48px 24px;
-    text-align: center;
-  }
-
-  .intro-inner {
-    margin: 0 auto;
-  }
-
-  .intro-title {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: 300;
-  }
-
-  .intro-subtitle {
-    color: color-mix(in srgb, var(--rivano-brown) 55%, transparent);
-    font-size: 12px;
-    letter-spacing: 0.16em;
-    line-height: 1.6;
-    margin-top: 16px;
   }
 
   .collection-highlight {
@@ -514,38 +577,6 @@ const testimonials = [
     background: var(--rivano-beige);
   }
 
-  .trust-section {
-    background: var(--rivano-beige);
-    padding: 32px 24px;
-  }
-
-  .trust-bar {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px 32px;
-    justify-content: center;
-  }
-
-  .trust-compact-item {
-    align-items: center;
-    color: var(--rivano-brown);
-    display: inline-flex;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 400;
-    gap: 8px;
-    letter-spacing: 0.1em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  .trust-separator {
-    color: var(--rivano-muted);
-    font-size: 11px;
-    line-height: 1;
-  }
-
   .testimonials-section {
     background: var(--rivano-beige);
     padding: 48px 0;
@@ -616,26 +647,44 @@ const testimonials = [
   }
 
   @media (min-width: 768px) {
-    .hero-frame {
+    .campaign-hero {
       height: 100vh;
+      margin-top: -90px;
+    }
+
+    .campaign-content {
+      padding: 40px;
+    }
+
+    .campaign-title {
+      font-size: clamp(72px, 9vw, 128px);
+      max-width: 560px;
+    }
+
+    .post-hero-editorial {
+      padding: 96px 40px;
+    }
+
+    .post-hero-inner {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
       margin: 0 auto;
-      width: 100%;
+      max-width: 1440px;
     }
 
-    .hero-content {
-      padding: 24px 24px 156px;
+    .post-hero-image-wrap {
+      grid-column: 1 / 8;
     }
 
-    .hero-whatsapp-link {
-      display: none;
+    .post-hero-copy {
+      align-self: center;
+      grid-column: 8 / 13;
+      padding: 0 0 0 56px;
     }
 
-    .intro-editorial {
-      padding: 128px 24px;
-    }
-
-    .intro-inner {
-      max-width: 640px;
+    .post-hero-title {
+      font-size: clamp(52px, 5vw, 86px);
+      max-width: 520px;
     }
 
     .collection-highlight {
@@ -716,14 +765,6 @@ const testimonials = [
 
     .secondary-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .trust-section {
-      padding: 40px;
-    }
-
-    .trust-bar {
-      gap: 64px;
     }
 
     .testimonials-section {

@@ -9,9 +9,17 @@ type Props = {
   title: string;
   description: string;
   showFooter?: boolean;
+  showAnnouncementBar?: boolean;
+  showBottomBar?: boolean;
 };
 
-const { title, description, showFooter = true } = Astro.props as Props;
+const {
+  title,
+  description,
+  showFooter = true,
+  showAnnouncementBar = true,
+  showBottomBar = true,
+} = Astro.props as Props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
 ---
 
@@ -39,16 +47,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).to
       rel="stylesheet"
     />
   </head>
-  <body class:list={[showFooter && "pb-14 md:pb-0"]}>
+  <body class:list={[showBottomBar && "pb-14 md:pb-0"]}>
     <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100]">
       Ir para o conteúdo
     </a>
-    <AnnouncementBar />
+    {showAnnouncementBar && <AnnouncementBar />}
     <Navigation />
     <main id="conteudo">
       <slot />
     </main>
     {showFooter && <Footer />}
-    {showFooter && <BottomBar />}
+    {showBottomBar && <BottomBar />}
   </body>
 </html>
