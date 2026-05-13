@@ -130,25 +130,26 @@ const testimonials = [
       </div>
     </section>
 
-    <section class="pullquote-section" aria-label="Citação Rivano">
-      <div class="pullquote-inner">
-        <span class="pullquote-mark" aria-hidden="true">"</span>
-        <blockquote class="display-md pullquote-text">
-          Óculos não são acessório. São a primeira coisa que o mundo vê em você.
-        </blockquote>
-        <p class="pullquote-author">— Rivano</p>
+    <section class="manifesto-section" aria-label="Manifesto Rivano">
+      <div class="manifesto-inner">
+        <p class="manifesto-label">Manifesto</p>
+        <h2 class="manifesto-title">O verão permanece.</h2>
+        <p class="manifesto-text">Na pele, na luz, no olhar.</p>
+        <p class="manifesto-signature">Rivano</p>
       </div>
     </section>
 
-    <section class="summer-split" aria-label="O espírito Rivano">
-      <div class="summer-image-wrap">
-        <img src="/editorial/verao.png" alt="Óculos na areia com bolsa de palha e laranja" class="summer-image" loading="lazy" decoding="async" />
-      </div>
-      <div class="summer-copy">
-        <p class="section-label">O espírito Rivano</p>
-        <h2 class="display-md summer-title">Feita para o sol.<br />Inspirada no verão europeu.</h2>
-        <p class="summer-body">Da Riviera Francesa às praias do Brasil, um design que viaja com você.</p>
-        <a class="home-button home-button--dark" href="#">Conhecer a marca</a>
+    <section class="brand-story-section" aria-label="O espírito Rivano">
+      <div class="brand-story-inner">
+        <div class="brand-story-image-wrap">
+          <img src="/editorial/verao.png" alt="Óculos na areia com bolsa de palha e laranja" class="brand-story-image" loading="lazy" decoding="async" />
+        </div>
+        <div class="brand-story-copy">
+          <p class="brand-story-label">O espírito Rivano</p>
+          <h2 class="brand-story-title">Feita para o sol que fica.</h2>
+          <p class="brand-story-text">Da cidade à beira-mar, a Rivano traduz o verão como presença: leve, elegante e impossível de apressar.</p>
+          <a class="brand-story-link" href="/catalogo">Conhecer a marca</a>
+        </div>
       </div>
     </section>
 
@@ -242,8 +243,10 @@ const testimonials = [
   .post-hero-label,
   .selection-label,
   .curation-label,
-  .section-label,
-  .pullquote-author,
+  .manifesto-label,
+  .manifesto-text,
+  .manifesto-signature,
+  .brand-story-label,
   .testimonial-name {
     font-family: var(--font-sans);
     font-weight: 400;
@@ -373,33 +376,6 @@ const testimonials = [
     line-height: 1.2;
     min-height: 44px;
     text-transform: uppercase;
-  }
-
-  .home-button {
-    align-items: center;
-    background: transparent;
-    border: 1px solid currentColor;
-    border-radius: 0;
-    display: inline-flex;
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 400;
-    justify-content: center;
-    letter-spacing: 0.12em;
-    line-height: 1.2;
-    min-height: 44px;
-    padding: 14px 28px;
-    text-transform: uppercase;
-    transition: var(--transition-normal);
-  }
-
-  .home-button--dark {
-    color: var(--rivano-brown);
-  }
-
-  .home-button--dark:hover {
-    background: var(--rivano-brown);
-    color: var(--rivano-off-white);
   }
 
   .editorial-products {
@@ -543,8 +519,7 @@ const testimonials = [
     width: 100%;
   }
 
-  .sun-curation-image,
-  .summer-image {
+  .sun-curation-image {
     display: block;
     height: 100%;
     object-fit: cover;
@@ -584,13 +559,6 @@ const testimonials = [
 
   .curation-link {
     margin-top: 20px;
-  }
-
-  .section-label {
-    color: color-mix(in srgb, var(--rivano-brown) 50%, transparent);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    line-height: 1.35;
   }
 
   .product-section {
@@ -633,87 +601,109 @@ const testimonials = [
     font-size: 13px;
   }
 
-  .pullquote-section {
+  .manifesto-section {
     background: var(--rivano-brown);
     color: var(--rivano-off-white);
-    overflow: hidden;
+    padding: 88px 24px;
   }
 
-  .pullquote-inner {
-    margin: 0 auto;
-    padding: 64px 32px;
-    position: relative;
+  .manifesto-label {
+    color: color-mix(in srgb, var(--rivano-off-white) 52%, transparent);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
   }
 
-  .pullquote-mark {
-    color: color-mix(in srgb, var(--rivano-gold) 12%, transparent);
-    font-family: var(--font-serif);
-    font-size: 180px;
-    font-weight: 300;
-    left: 16px;
-    line-height: 1;
-    pointer-events: none;
-    position: absolute;
-    top: -20px;
-  }
-
-  .pullquote-text {
+  .manifesto-title {
     color: var(--rivano-off-white);
     font-family: var(--font-serif);
-    font-style: italic;
+    font-size: clamp(58px, 17vw, 86px);
     font-weight: 300;
-    margin: 0 auto;
-    max-width: 680px;
-    position: relative;
-    text-align: center;
+    letter-spacing: 0;
+    line-height: 0.86;
+    margin-top: 20px;
+    max-width: 360px;
   }
 
-  .pullquote-author {
-    color: color-mix(in srgb, var(--rivano-off-white) 40%, transparent);
-    font-size: 10px;
-    letter-spacing: 0.16em;
-    line-height: 1.4;
+  .manifesto-text {
+    color: color-mix(in srgb, var(--rivano-off-white) 62%, transparent);
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    line-height: 1.6;
     margin-top: 24px;
-    position: relative;
-    text-align: center;
+    max-width: 260px;
   }
 
-  .summer-split {
+  .manifesto-signature {
+    color: color-mix(in srgb, var(--rivano-off-white) 42%, transparent);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+    margin-top: 56px;
+  }
+
+  .brand-story-section {
     background: var(--rivano-off-white);
   }
 
-  .summer-image-wrap {
-    aspect-ratio: 1 / 1;
+  .brand-story-image-wrap {
+    aspect-ratio: 4 / 5;
     overflow: hidden;
     width: 100%;
   }
 
-  .summer-copy {
-    padding: 32px 24px;
+  .brand-story-image {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
   }
 
-  .summer-copy .section-label {
-    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+  .brand-story-copy {
+    padding: 34px 24px 64px;
   }
 
-  .summer-title {
+  .brand-story-label {
+    color: var(--rivano-muted);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+  }
+
+  .brand-story-title {
+    color: var(--rivano-brown);
     font-family: var(--font-serif);
+    font-size: clamp(44px, 12vw, 68px);
     font-weight: 300;
+    letter-spacing: 0;
+    line-height: 0.92;
     margin-top: 12px;
+    max-width: 340px;
   }
 
-  .summer-body {
-    color: color-mix(in srgb, var(--rivano-brown) 65%, transparent);
+  .brand-story-text {
+    color: color-mix(in srgb, var(--rivano-brown) 64%, transparent);
     font-family: var(--font-sans);
     font-size: 14px;
     font-weight: 300;
-    line-height: 1.75;
-    margin-top: 16px;
-    max-width: 380px;
+    line-height: 1.7;
+    margin-top: 18px;
+    max-width: 330px;
   }
 
-  .summer-copy .home-button {
+  .brand-story-link {
+    align-items: center;
+    border-bottom: 1px solid currentColor;
+    color: var(--rivano-brown);
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
     margin-top: 24px;
+    min-height: 44px;
+    text-transform: uppercase;
   }
 
   .product-section--secondary {
@@ -910,20 +900,47 @@ const testimonials = [
       font-size: clamp(52px, 5vw, 86px);
     }
 
-    .pullquote-inner {
-      max-width: 680px;
-      padding: 128px 40px;
+    .manifesto-section {
+      padding: 144px 40px;
     }
 
-    .summer-split {
+    .manifesto-inner {
+      margin: 0 auto;
+      max-width: 1280px;
+    }
+
+    .manifesto-title {
+      font-size: clamp(86px, 10vw, 150px);
+      max-width: 900px;
+    }
+
+    .brand-story-section {
+      padding: 112px 40px;
+    }
+
+    .brand-story-inner {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      padding: 96px 40px;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      margin: 0 auto;
+      max-width: 1440px;
     }
 
-    .summer-copy {
+    .brand-story-copy {
       align-self: center;
-      padding: 0 0 0 64px;
+      grid-column: 1 / 6;
+      grid-row: 1;
+      padding: 0 56px 0 0;
+    }
+
+    .brand-story-image-wrap {
+      aspect-ratio: 16 / 10;
+      grid-column: 6 / 13;
+      grid-row: 1;
+    }
+
+    .brand-story-title {
+      font-size: clamp(58px, 5vw, 92px);
+      max-width: 520px;
     }
 
     .product-section--secondary {
