@@ -1,11 +1,11 @@
 ---
 import ProductCard from "../components/ProductCard.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { toCardProduct, type Product } from "../lib/products";
+import { formatPriceBRL, toCardProduct, type Product } from "../lib/products";
 import productsData from "../data/products.json";
 
 const allProducts = productsData as Product[];
-const featuredProducts = allProducts.slice(0, 6).map(toCardProduct);
+const editorialProducts = allProducts.slice(0, 4).map(toCardProduct);
 const secondaryProducts = allProducts.slice(6, 10).map(toCardProduct);
 
 const testimonials = [
@@ -72,47 +72,61 @@ const testimonials = [
       </div>
     </section>
 
-    <section class="collection-highlight" aria-label="Destaques de coleção">
-      <article class="collection-block collection-block--ela">
-        <div class="collection-image-wrap">
-          <img src="/editorial/ela.png" alt="Mulher com lenço usando óculos Rivano sob céu azul" class="collection-image" loading="eager" decoding="async" />
-        </div>
-        <div class="collection-copy">
-          <p class="section-label">Coleção</p>
-          <h2 class="display-lg collection-title">Ela</h2>
-          <p class="collection-description">Frames que acompanham cada mood. Do café da manhã à hora dourada.</p>
-          <a class="home-button home-button--dark" href="/catalogo?para=ela">Ver coleção</a>
-        </div>
-      </article>
-
-      <hr class="collection-separator" />
-
-      <article class="collection-block collection-block--ele">
-        <div class="collection-copy">
-          <p class="section-label">Coleção</p>
-          <h2 class="display-lg collection-title">Ele</h2>
-          <p class="collection-description">Linhas precisas, presença garantida. Para quem sabe o que quer.</p>
-          <a class="home-button home-button--dark" href="/catalogo?para=ele">Ver coleção</a>
-        </div>
-        <div class="collection-image-wrap">
-          <img src="/editorial/ele.png" alt="Homem usando óculos redondo Rivano em close sob céu azul" class="collection-image" loading="lazy" decoding="async" />
-        </div>
-      </article>
-    </section>
-
-    <section class="product-section product-section--featured" aria-labelledby="mais-vistos">
-      <h2 id="mais-vistos" class="display-sm product-section-title">Mais vistos</h2>
-      <div class="featured-grid">
+    <section class="editorial-products" aria-labelledby="selecao-rivano">
+      <div class="editorial-products-header">
+        <p class="selection-label">Seleção Rivano</p>
+        <h2 id="selecao-rivano" class="selection-title">O verão permanece.</h2>
+        <p class="selection-text">Modelos feitos para acompanhar a luz, a cidade e os dias sem pressa.</p>
+      </div>
+      <div class="editorial-products-track">
         {
-          featuredProducts.map((product, index) => (
-            <article class:list={["home-product-card", index % 3 === 1 && "home-product-card--offset"]}>
-              <ProductCard product={product} index={index} />
-            </article>
+          editorialProducts.map((product, index) => (
+            <a class="editorial-product" href={`/produtos/${product.slug}`} aria-label={`Ver ${product.name}`}>
+              <span class="editorial-product-frame">
+                <img
+                  class="editorial-product-image"
+                  src={product.image}
+                  alt={product.name}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </span>
+              <span class="editorial-product-name">{product.name}</span>
+              <span class="editorial-product-price">{formatPriceBRL(product.price)}</span>
+            </a>
           ))
         }
       </div>
-      <div class="catalog-link-wrap">
-        <a class="home-button home-button--dark" href="/catalogo">Ver catálogo completo</a>
+      <div class="editorial-products-link-wrap">
+        <a class="editorial-text-link" href="/catalogo">Ver catálogo</a>
+      </div>
+    </section>
+
+    <section class="sun-curation" aria-label="Curadoria Rivano">
+      <div class="sun-curation-inner">
+        <article class="sun-curation-item sun-curation-item--dela">
+          <div class="sun-curation-image-wrap">
+            <img src="/editorial/ela.png" alt="Mulher com lenço usando óculos Rivano sob céu azul" class="sun-curation-image" loading="lazy" decoding="async" />
+          </div>
+          <div class="sun-curation-copy">
+            <p class="curation-label">Curadoria</p>
+            <h2 class="curation-title">Sol dela</h2>
+            <p class="curation-text">Frames leves para dias longos, luz bonita e presença sem esforço.</p>
+            <a class="curation-link" href="/catalogo?para=ela">Ver seleção</a>
+          </div>
+        </article>
+
+        <article class="sun-curation-item sun-curation-item--dele">
+          <div class="sun-curation-image-wrap">
+            <img src="/editorial/ele.png" alt="Homem usando óculos redondo Rivano em close sob céu azul" class="sun-curation-image" loading="lazy" decoding="async" />
+          </div>
+          <div class="sun-curation-copy">
+            <p class="curation-label">Curadoria</p>
+            <h2 class="curation-title">Sol dele</h2>
+            <p class="curation-text">Linhas limpas, lentes marcantes e o verão como estado de espírito.</p>
+            <a class="curation-link" href="/catalogo?para=ele">Ver seleção</a>
+          </div>
+        </article>
       </div>
     </section>
 
@@ -226,6 +240,8 @@ const testimonials = [
 
   .campaign-kicker,
   .post-hero-label,
+  .selection-label,
+  .curation-label,
   .section-label,
   .pullquote-author,
   .testimonial-name {
@@ -386,18 +402,148 @@ const testimonials = [
     color: var(--rivano-off-white);
   }
 
-  .collection-highlight {
-    background: var(--rivano-beige);
-    padding: 0 0 48px;
+  .editorial-products {
+    background: var(--rivano-off-white);
+    padding: 56px 0 64px;
   }
 
-  .collection-image-wrap {
+  .editorial-products-header {
+    margin-bottom: 28px;
+    padding: 0 24px;
+  }
+
+  .selection-label {
+    color: var(--rivano-muted);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+  }
+
+  .selection-title {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-size: clamp(42px, 12vw, 62px);
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 0.92;
+    margin-top: 12px;
+    max-width: 360px;
+  }
+
+  .selection-text {
+    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.65;
+    margin-top: 16px;
+    max-width: 320px;
+  }
+
+  .editorial-products-track {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding: 0 24px;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+  }
+
+  .editorial-products-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .editorial-product {
+    color: var(--rivano-brown);
+    flex: 0 0 72vw;
+    min-height: 44px;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .editorial-product-frame {
+    align-items: center;
+    aspect-ratio: 3 / 4;
+    background: color-mix(in srgb, var(--rivano-beige) 45%, var(--rivano-off-white));
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .editorial-product-image {
+    display: block;
+    height: 100%;
+    object-fit: contain;
+    padding: 8px;
+    transform: scale(1.08);
+    transition: opacity var(--transition-normal), transform var(--transition-slow);
+    width: 100%;
+  }
+
+  .editorial-product:hover .editorial-product-image {
+    opacity: 0.92;
+    transform: scale(1.1);
+  }
+
+  .editorial-product-name {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.08;
+    margin-top: 12px;
+  }
+
+  .editorial-product-price {
+    color: var(--rivano-muted);
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.35;
+    margin-top: 4px;
+  }
+
+  .editorial-products-link-wrap {
+    margin: 28px 24px 0;
+  }
+
+  .editorial-text-link,
+  .curation-link {
+    align-items: center;
+    border-bottom: 1px solid currentColor;
+    color: var(--rivano-brown);
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    min-height: 44px;
+    text-transform: uppercase;
+  }
+
+  .sun-curation {
+    background: var(--rivano-beige);
+  }
+
+  .sun-curation-item {
+    border-top: 1px solid color-mix(in srgb, var(--rivano-off-white) 62%, transparent);
+  }
+
+  .sun-curation-item:first-child {
+    border-top: 0;
+  }
+
+  .sun-curation-image-wrap {
     aspect-ratio: 4 / 5;
     overflow: hidden;
     width: 100%;
   }
 
-  .collection-image,
+  .sun-curation-image,
   .summer-image {
     display: block;
     height: 100%;
@@ -405,8 +551,39 @@ const testimonials = [
     width: 100%;
   }
 
-  .collection-copy {
-    padding: 28px 24px;
+  .sun-curation-copy {
+    padding: 28px 24px 56px;
+  }
+
+  .curation-label {
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+  }
+
+  .curation-title {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-size: clamp(46px, 13vw, 68px);
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 0.9;
+    margin-top: 10px;
+  }
+
+  .curation-text {
+    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.65;
+    margin-top: 14px;
+    max-width: 320px;
+  }
+
+  .curation-link {
+    margin-top: 20px;
   }
 
   .section-label {
@@ -416,38 +593,11 @@ const testimonials = [
     line-height: 1.35;
   }
 
-  .collection-title {
-    font-family: var(--font-serif);
-    font-weight: 300;
-    margin-top: 10px;
-  }
-
-  .collection-description {
-    color: color-mix(in srgb, var(--rivano-brown) 65%, transparent);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.65;
-    margin-top: 12px;
-    max-width: 360px;
-  }
-
-  .collection-copy .home-button {
-    margin-top: 24px;
-  }
-
-  .collection-separator {
-    border: 0;
-    border-top: 1px solid var(--rivano-off-white);
-    margin: 0 24px;
-  }
-
   .product-section {
     background: var(--rivano-off-white);
     padding: 48px 16px;
   }
 
-  .product-section-title,
   .testimonials-title {
     font-family: var(--font-serif);
     font-weight: 300;
@@ -455,7 +605,6 @@ const testimonials = [
     text-align: center;
   }
 
-  .featured-grid,
   .secondary-grid {
     display: grid;
     gap: 12px;
@@ -482,12 +631,6 @@ const testimonials = [
     color: color-mix(in srgb, var(--rivano-brown) 58%, transparent);
     font-family: var(--font-sans);
     font-size: 13px;
-  }
-
-  .catalog-link-wrap {
-    display: flex;
-    justify-content: center;
-    margin-top: 32px;
   }
 
   .pullquote-section {
@@ -687,60 +830,84 @@ const testimonials = [
       max-width: 520px;
     }
 
-    .collection-highlight {
+    .editorial-products {
       padding: 96px 40px;
     }
 
-    .collection-block {
+    .editorial-products-header {
+      margin: 0 auto 36px;
+      max-width: 1280px;
+      padding: 0;
+    }
+
+    .selection-title {
+      max-width: 520px;
+    }
+
+    .editorial-products-track {
       display: grid;
-      gap: 0;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 20px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       margin: 0 auto;
+      max-width: 1280px;
+      overflow: visible;
+      padding: 0;
+    }
+
+    .editorial-product {
+      flex: initial;
+    }
+
+    .editorial-products-link-wrap {
+      margin: 32px auto 0;
       max-width: 1280px;
     }
 
-    .collection-block--ela .collection-image-wrap {
+    .sun-curation {
+      padding: 96px 40px;
+    }
+
+    .sun-curation-inner {
+      margin: 0 auto;
+      max-width: 1440px;
+    }
+
+    .sun-curation-item {
+      border-top: 0;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .sun-curation-item--dela .sun-curation-image-wrap {
       grid-column: 1 / 8;
     }
 
-    .collection-block--ela .collection-copy {
+    .sun-curation-item--dela .sun-curation-copy {
       grid-column: 8 / 13;
-      padding: 0 0 0 48px;
+      padding: 0 0 0 56px;
     }
 
-    .collection-block--ele {
-      margin-top: 64px;
+    .sun-curation-item--dele {
+      margin-top: 80px;
     }
 
-    .collection-block--ele .collection-copy {
+    .sun-curation-item--dele .sun-curation-copy {
       grid-column: 1 / 6;
       grid-row: 1;
-      padding: 0 48px 0 0;
+      padding: 0 56px 0 0;
     }
 
-    .collection-block--ele .collection-image-wrap {
+    .sun-curation-item--dele .sun-curation-image-wrap {
       grid-column: 6 / 13;
       grid-row: 1;
     }
 
-    .collection-copy {
+    .sun-curation-copy {
       align-self: center;
     }
 
-    .collection-separator {
-      display: none;
-    }
-
-    .product-section--featured {
-      padding: 96px 40px;
-    }
-
-    .featured-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .home-product-card--offset {
-      padding-top: 56px;
+    .curation-title {
+      font-size: clamp(52px, 5vw, 86px);
     }
 
     .pullquote-inner {
