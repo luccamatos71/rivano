@@ -29,7 +29,8 @@ type VariantWithColor = Product["variants"][number] & {
 };
 
 type DisplayVariant = Product["variants"][number] & {
-  colorValue: string;
+  colorValue: string | null;
+  message: string;
 };
 
 const { product } = Astro.props as { product: Product };
@@ -37,13 +38,24 @@ const imageSets = getImageSets(product.images);
 const firstImage = imageSets[0];
 const relatedProducts = pickRelatedProducts(allProducts, product.slug, 4).map(toCardProduct);
 const productDescription = getProductDescription(product);
+const currentStock = product.stock ?? 0;
+const isPurchasable = product.available === true && currentStock > 0;
+const isLowStock = isPurchasable && currentStock <= 3;
+const ctaLabel = isPurchasable ? "Comprar pelo WhatsApp" : "Consultar reposi\u00e7\u00e3o";
+const availabilityText = !isPurchasable
+  ? "Indispon\u00edvel no momento"
+  : isLowStock
+    ? "Poucas unidades dispon\u00edveis"
+    : "Dispon\u00edvel para compra assistida";
 const formattedPrice = new Intl.NumberFormat("pt-BR", {
   style: "currency",
   currency: "BRL",
   minimumFractionDigits: 2,
   maximumFractionDigits: 2,
 }).format(product.price);
-const whatsappMessage = `Olá! 👋 Tenho interesse nos óculos ${product.name}. Podem me ajudar com disponibilidade e frete?`;
+const availableWhatsappMessage = `Ol\u00e1! Tenho interesse no ${product.name}. Podem me ajudar com disponibilidade e frete?`;
+const unavailableWhatsappMessage = `Ol\u00e1! Tenho interesse no ${product.name}. Podem me avisar quando voltar ou indicar modelos parecidos?`;
+const whatsappMessage = isPurchasable ? availableWhatsappMessage : unavailableWhatsappMessage;
 const whatsappUrl = `https://wa.me/5571993135522?text=${encodeURIComponent(whatsappMessage)}`;
 const detailsEntries = Object.entries(product.description.details ?? {});
 const sizeGuideLines = sectionLines(product.description.fit);
@@ -51,30 +63,29 @@ const selectedVariantIndex =
   product.variants.findIndex((variant) => variant.stock > 0) >= 0
     ? product.variants.findIndex((variant) => variant.stock > 0)
     : 0;
-const colorVariants = product.variants
-  .map((variant) => {
-    const colorValue = getVariantColor(variant as VariantWithColor);
-    return colorValue ? { ...variant, colorValue } : null;
-  })
-  .filter((variant): variant is DisplayVariant => Boolean(variant));
-
-const reviews = [
-  {
-    quote: "Óculos perfeitos, chegaram rápido e a qualidade surpreendeu.",
-    name: "Mariana R.",
-    city: "Salvador",
+const displayVariants: DisplayVariant[] = product.variants.map((variant) => ({
+  ...variant,
+  colorValue: getVariantColor(variant as VariantWithColor),
+  message: buildVariantWhatsappMessage(product.name, variant.name, isPurchasable),
+}));
+const hasIncludedCopy = hasCaseAndFlanela(product);
+const includedCopy = hasIncludedCopy ? "Acompanha case e flanela." : "Informa\u00e7\u00e3o incompleta no cat\u00e1logo atual.";
+const incompleteCopy = "Informa\u00e7\u00e3o incompleta no cat\u00e1logo atual.";
+const productUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
+const productJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: product.name,
+  description: productDescription,
+  image: imageSets.map((imageSet) => new URL(`/${imageSet.src}`, Astro.site ?? Astro.url.origin).toString()),
+  offers: {
+    "@type": "Offer",
+    price: product.price,
+    priceCurrency: "BRL",
+    availability: isPurchasable ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    url: productUrl,
   },
-  {
-    quote: "Comprei pelo WhatsApp, super fácil. Adoro o design.",
-    name: "Pedro A.",
-    city: "São Paulo",
-  },
-  {
-    quote: "Já é o segundo par que compro. Não troco por nada.",
-    name: "Camila S.",
-    city: "Recife",
-  },
-];
+};
 
 function sectionLines(value: string | null): string[] {
   if (!value) {
@@ -122,6 +133,28 @@ function getVariantColor(variant: VariantWithColor): string | null {
   return null;
 }
 
+function buildVariantWhatsappMessage(productName: string, variantName: string, available: boolean): string {
+  if (available) {
+    return `Ol\u00e1! Tenho interesse no ${productName} - ${variantName}. Podem me ajudar com disponibilidade e frete?`;
+  }
+
+  return `Ol\u00e1! Tenho interesse no ${productName} - ${variantName}. Podem me avisar quando voltar ou indicar modelos parecidos?`;
+}
+
+function hasCaseAndFlanela(product: Product): boolean {
+  const values = [
+    product.description.body,
+    product.description.experience,
+    product.description.fit,
+    ...Object.entries(product.description.details ?? {}).flat(),
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const normalized = normalizeText(values);
+
+  return normalized.includes("case") && normalized.includes("flanela");
+}
+
 function relatedImageSrcset(product: CardProduct): string {
   const normalized = product.image.startsWith("/") ? product.image : `/${product.image}`;
 
@@ -144,7 +177,8 @@ function formattedRelatedPrice(value: number): string {
 }
 ---
 
-<BaseLayout title={`${product.name} | Rivano`} description={productDescription}>
+<BaseLayout title={`${product.name} | Rivano`} description={productDescription} showBottomBar={false}>
+  <script type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
   <article class="pdp-page">
     <section class="pdp-main" aria-label={`Detalhes de ${product.name}`}>
       <div class="pdp-gallery">
@@ -239,9 +273,9 @@ function formattedRelatedPrice(value: number): string {
 
       <aside class="product-panel">
         <nav class="product-breadcrumb" aria-label="Caminho do produto">
-          <a href="/">Início</a>
+          <a href="/">In&iacute;cio</a>
           <span aria-hidden="true">/</span>
-          <a href="/catalogo">Catálogo</a>
+          <a href="/catalogo">Cat&aacute;logo</a>
           <span aria-hidden="true">/</span>
           <span>{product.name}</span>
         </nav>
@@ -251,92 +285,55 @@ function formattedRelatedPrice(value: number): string {
           <p class="product-price-main">{formattedPrice}</p>
         </div>
 
-        <div class="trust-inline" aria-label="Benefícios">
-          <span>↻ Troca 30 dias</span>
-          <span class="trust-separator" aria-hidden="true">·</span>
-          <span>🚚 Frete grátis</span>
-          <span class="trust-separator" aria-hidden="true">·</span>
-          <span>✓ Original</span>
-        </div>
+        <p class="product-microcopy">Design leve, prote&ccedil;&atilde;o UV400 e presen&ccedil;a para os dias de sol.</p>
+        <p class:list={["product-availability", !isPurchasable && "is-unavailable"]}>{availabilityText}</p>
 
-        {colorVariants.length > 0 && (
-          <div class="color-selector" aria-label="Seleção de cor">
-            <p class="panel-label">Cor</p>
-            <div class="color-options">
-              {colorVariants.map((variant, index) => (
-                <div class="color-choice">
-                  <button
-                    type="button"
-                    class:list={[
-                      "color-option",
-                      index === selectedVariantIndex && "is-active",
-                      variant.stock <= 0 && "is-disabled",
-                    ]}
-                    aria-label={`Selecionar ${variant.name}`}
-                    aria-pressed={index === selectedVariantIndex ? "true" : "false"}
-                    data-color-option
-                  >
-                    <span class="color-dot" style={`background: ${variant.colorValue};`}></span>
-                  </button>
-                  <span class="color-name">{variant.name}</span>
-                </div>
+        {displayVariants.length > 0 && (
+          <div class="variant-selector" aria-label="Sele&ccedil;&atilde;o de varia&ccedil;&atilde;o">
+            <p class="panel-label">Varia&ccedil;&atilde;o</p>
+            <div class="variant-options">
+              {displayVariants.map((variant, index) => (
+                <button
+                  type="button"
+                  class:list={[
+                    "variant-option",
+                    index === selectedVariantIndex && variant.stock > 0 && "is-active",
+                    variant.stock <= 0 && "is-disabled",
+                  ]}
+                  aria-label={`Selecionar ${variant.name}`}
+                  aria-pressed={index === selectedVariantIndex && variant.stock > 0 ? "true" : "false"}
+                  data-variant-option
+                  data-whatsapp-message={variant.message}
+                  disabled={variant.stock <= 0}
+                >
+                  {variant.colorValue && <span class="variant-swatch" style={`background: ${variant.colorValue};`}></span>}
+                  <span>{variant.name}</span>
+                </button>
               ))}
             </div>
           </div>
         )}
 
-        <a class="whatsapp-cta" href={whatsappUrl} data-primary-cta>
-          Consultar pelo WhatsApp
+        <a class:list={["whatsapp-cta", !isPurchasable && "is-secondary"]} href={whatsappUrl} data-primary-cta data-whatsapp-link>
+          {ctaLabel}
         </a>
 
-        <div class="feature-icons" aria-label="Características do produto">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3 13.5c1-3 3.2-4.8 6.2-4.8 2.6 0 4 1.4 4.8 3.8.8-2.4 2.2-3.8 4.8-3.8 3 0 5.2 1.8 6.2 4.8" />
-              <path d="M3 13.5h8.7" />
-              <path d="M16.3 13.5H21" />
-              <path d="M11.7 13.5a3 3 0 1 1-6 0" />
-              <path d="M22.3 13.5a3 3 0 1 1-6 0" />
-            </svg>
-            <span>Armação leve</span>
-          </div>
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20 4c-7 0-12 4.5-12 10.5 0 2.8 2.2 5.5 5.5 5.5C19 20 22 12.5 20 4z" />
-              <path d="M5 21c2.8-5.4 6.8-8.8 12-10.2" />
-            </svg>
-            <span>Material premium</span>
-          </div>
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="12" cy="12" r="4" />
-              <path d="M12 2.5v3" />
-              <path d="M12 18.5v3" />
-              <path d="M2.5 12h3" />
-              <path d="M18.5 12h3" />
-              <path d="m5.3 5.3 2.1 2.1" />
-              <path d="m16.6 16.6 2.1 2.1" />
-              <path d="m18.7 5.3-2.1 2.1" />
-              <path d="m7.4 16.6-2.1 2.1" />
-            </svg>
-            <span>Proteção UV400</span>
-          </div>
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3 19 6v5.5c0 4.4-2.8 7.7-7 9.5-4.2-1.8-7-5.1-7-9.5V6l7-3z" />
-              <path d="m8.7 12.1 2.2 2.2 4.6-4.8" />
-            </svg>
-            <span>Garantia inclusa</span>
-          </div>
+        <p class="purchase-support">Atendimento humano para confirmar disponibilidade e frete.</p>
+
+        <div class="trust-strip" aria-label="Confian&ccedil;a Rivano">
+          <span><strong>01</strong> Prote&ccedil;&atilde;o UV400</span>
+          <span><strong>02</strong> Case e flanela</span>
+          <span><strong>03</strong> Troca em at&eacute; 30 dias</span>
+          <span><strong>04</strong> Garantia contra defeitos</span>
         </div>
 
         <div class="technical-accordion">
-          <details open class="accordion-item">
+          <details open={detailsEntries.length > 0} class="accordion-item">
             <summary>
-              <span>Detalhes técnicos</span>
+              <span>Detalhes do modelo</span>
               <span class="accordion-symbol" aria-hidden="true">
                 <span class="symbol-plus">+</span>
-                <span class="symbol-minus">−</span>
+                <span class="symbol-minus">&minus;</span>
               </span>
             </summary>
             <div class="accordion-body">
@@ -350,17 +347,17 @@ function formattedRelatedPrice(value: number): string {
                   ))}
                 </dl>
               ) : (
-                <p>Detalhes técnicos incompletos no catálogo atual.</p>
+                <p>{incompleteCopy}</p>
               )}
             </div>
           </details>
 
           <details class="accordion-item">
             <summary>
-              <span>Guia de tamanho</span>
+              <span>Como fica no rosto</span>
               <span class="accordion-symbol" aria-hidden="true">
                 <span class="symbol-plus">+</span>
-                <span class="symbol-minus">−</span>
+                <span class="symbol-minus">&minus;</span>
               </span>
             </summary>
             <div class="accordion-body">
@@ -369,55 +366,70 @@ function formattedRelatedPrice(value: number): string {
                   {sizeGuideLines.map((line) => <p>{line}</p>)}
                 </div>
               ) : (
-                <p>Guia de tamanho incompleto no catálogo atual.</p>
+                <p>{incompleteCopy}</p>
               )}
             </div>
           </details>
 
           <details class="accordion-item">
             <summary>
-              <span>Política de troca</span>
+              <span>O que acompanha</span>
               <span class="accordion-symbol" aria-hidden="true">
                 <span class="symbol-plus">+</span>
-                <span class="symbol-minus">−</span>
+                <span class="symbol-minus">&minus;</span>
               </span>
             </summary>
             <div class="accordion-body">
-              <p>Você tem 30 dias para trocar. O atendimento acontece pelo WhatsApp, sem burocracia.</p>
+              <p>{includedCopy}</p>
+            </div>
+          </details>
+
+          <details class="accordion-item">
+            <summary>
+              <span>Trocas e garantia</span>
+              <span class="accordion-symbol" aria-hidden="true">
+                <span class="symbol-plus">+</span>
+                <span class="symbol-minus">&minus;</span>
+              </span>
+            </summary>
+            <div class="accordion-body">
+              <p>Voc&ecirc; tem at&eacute; 30 dias para trocar. O atendimento acontece pelo WhatsApp.</p>
             </div>
           </details>
         </div>
       </aside>
     </section>
 
-    <section class="reviews-section" aria-labelledby="product-reviews">
-      <div class="reviews-inner">
-        <header class="reviews-header">
-          <h2 id="product-reviews" class="display-sm">Avaliações</h2>
-          <p>4.8 ★</p>
+    <section class="assisted-section" aria-labelledby="assisted-purchase">
+      <div class="assisted-inner">
+        <header class="assisted-header">
+          <p class="assisted-label">Compra assistida</p>
+          <h2 id="assisted-purchase" class="display-sm assisted-title">Compra assistida Rivano</h2>
+          <p>Voc&ecirc; escolhe o modelo, fala com a gente pelo WhatsApp e finaliza com atendimento humano.</p>
         </header>
-        <div class="reviews-grid">
-          {reviews.map((review) => (
-            <article class="review-card">
-              <div class="review-stars" aria-label="5 estrelas">
-                {Array.from({ length: 5 }).map(() => (
-                  <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path fill="currentColor" d="m12 2 2.9 6.1 6.7.9-4.8 4.7 1.1 6.6-5.9-3.1-5.9 3.1 1.1-6.6L2.4 9l6.7-.9L12 2z" />
-                  </svg>
-                ))}
-              </div>
-              <p class="review-quote">“{review.quote}”</p>
-              <p class="review-name">{review.name}</p>
-              <p class="review-city">{review.city}</p>
-            </article>
-          ))}
+        <div class="assisted-grid">
+          <article class="assisted-card">
+            <span>01</span>
+            <h3>Atendimento humano</h3>
+            <p>Tiramos d&uacute;vidas antes da compra.</p>
+          </article>
+          <article class="assisted-card">
+            <span>02</span>
+            <h3>Envio e disponibilidade</h3>
+            <p>Confirmamos frete e estoque no atendimento.</p>
+          </article>
+          <article class="assisted-card">
+            <span>03</span>
+            <h3>Troca sem burocracia</h3>
+            <p>Voc&ecirc; tem at&eacute; 30 dias para trocar.</p>
+          </article>
         </div>
       </div>
     </section>
 
     {relatedProducts.length > 0 && (
       <section class="related-section" aria-labelledby="related-products">
-        <h2 id="related-products" class="display-sm related-title">Você também pode gostar</h2>
+        <h2 id="related-products" class="display-sm related-title">Na mesma curadoria</h2>
         <div class="related-track">
           {relatedProducts.map((related, index) => (
             <a href={`/produtos/${related.slug}`} class="related-card" aria-label={`Ver ${related.name}`}>
@@ -443,8 +455,16 @@ function formattedRelatedPrice(value: number): string {
     )}
   </article>
 
+  <div class="mobile-sticky-cta" data-mobile-sticky-cta hidden>
+    <div class="mobile-sticky-copy">
+      <p>{product.name}</p>
+      <span>{formattedPrice}</span>
+    </div>
+    <a class="mobile-sticky-link" href={whatsappUrl} data-whatsapp-link>{ctaLabel}</a>
+  </div>
+
   {firstImage && (
-    <div class="desktop-sticky-bar" data-sticky-bar aria-hidden="true">
+    <div class="desktop-sticky-bar" data-sticky-bar hidden>
       <div class="sticky-product">
         <img
           src={`/${firstImage.src}`}
@@ -462,8 +482,8 @@ function formattedRelatedPrice(value: number): string {
           <p class="sticky-product-price">{formattedPrice}</p>
         </div>
       </div>
-      <a class="sticky-whatsapp-link" href={whatsappUrl}>
-        <span>Consultar pelo WhatsApp</span>
+      <a class="sticky-whatsapp-link" href={whatsappUrl} data-whatsapp-link>
+        <span>{ctaLabel}</span>
       </a>
     </div>
   )}
@@ -487,7 +507,6 @@ function formattedRelatedPrice(value: number): string {
 
     .mobile-gallery {
       display: flex;
-      gap: 0;
       margin-left: calc(50% - 50vw);
       overflow-x: auto;
       scroll-snap-type: x mandatory;
@@ -495,12 +514,20 @@ function formattedRelatedPrice(value: number): string {
       width: 100vw;
     }
 
-    .mobile-gallery::-webkit-scrollbar {
+    .mobile-gallery::-webkit-scrollbar,
+    .related-track::-webkit-scrollbar {
       display: none;
     }
 
     .mobile-slide {
+      align-items: center;
+      aspect-ratio: 3 / 4;
+      background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
+      display: flex;
       flex: 0 0 100vw;
+      justify-content: center;
+      margin: 0;
+      overflow: hidden;
       scroll-snap-align: start;
     }
 
@@ -509,15 +536,17 @@ function formattedRelatedPrice(value: number): string {
     .related-image {
       aspect-ratio: 3 / 4;
       display: block;
-      height: auto;
-      object-fit: cover;
+      height: 100%;
+      mix-blend-mode: multiply;
+      object-fit: contain;
+      padding: 30px;
       width: 100%;
     }
 
     .gallery-dots {
       align-items: center;
       display: flex;
-      gap: 12px;
+      gap: 6px;
       justify-content: center;
       padding: 12px 24px 0;
     }
@@ -535,8 +564,8 @@ function formattedRelatedPrice(value: number): string {
     }
 
     .gallery-dot {
-      background: var(--rivano-beige);
-      border: 1px solid var(--rivano-muted);
+      background: transparent;
+      border: 1px solid color-mix(in srgb, var(--rivano-brown) 35%, transparent);
       border-radius: 50%;
       display: block;
       height: 16px;
@@ -545,7 +574,7 @@ function formattedRelatedPrice(value: number): string {
 
     .gallery-dot.is-active {
       background: var(--rivano-brown);
-      border: 0;
+      border-color: var(--rivano-brown);
     }
 
     .desktop-gallery {
@@ -555,7 +584,7 @@ function formattedRelatedPrice(value: number): string {
     .gallery-empty {
       align-items: center;
       aspect-ratio: 3 / 4;
-      background: var(--rivano-beige);
+      background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
       color: var(--rivano-muted);
       display: flex;
       font-family: var(--font-sans);
@@ -570,19 +599,21 @@ function formattedRelatedPrice(value: number): string {
     .product-panel {
       display: flex;
       flex-direction: column;
-      gap: 20px;
-      padding: 28px 24px 48px;
+      gap: 18px;
+      padding: 30px 24px 56px;
     }
 
     .product-breadcrumb {
       align-items: center;
-      color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+      color: color-mix(in srgb, var(--rivano-brown) 42%, transparent);
       display: flex;
       flex-wrap: wrap;
       font-family: var(--font-sans);
-      font-size: 11px;
+      font-size: 10px;
       gap: 8px;
+      letter-spacing: 0.08em;
       line-height: 1.3;
+      text-transform: uppercase;
     }
 
     .product-breadcrumb a {
@@ -594,45 +625,64 @@ function formattedRelatedPrice(value: number): string {
     }
 
     .product-breadcrumb a:hover {
-      opacity: 0.8;
+      opacity: 0.75;
     }
 
     .product-heading {
       display: flex;
       flex-direction: column;
       gap: 14px;
-      margin-top: -4px;
     }
 
     .product-title {
+      color: var(--rivano-brown);
       font-family: var(--font-serif);
-      font-weight: 400;
+      font-size: 46px;
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 0.95;
     }
 
     .product-price-main {
       color: var(--rivano-brown);
       font-family: var(--font-sans);
-      font-size: 22px;
+      font-size: 21px;
       font-weight: 400;
       line-height: 1.2;
     }
 
-    .trust-inline {
-      align-items: center;
-      color: color-mix(in srgb, var(--rivano-brown) 70%, transparent);
-      display: flex;
-      flex-wrap: wrap;
+    .product-microcopy,
+    .purchase-support {
+      color: color-mix(in srgb, var(--rivano-brown) 66%, transparent);
       font-family: var(--font-sans);
-      font-size: 11px;
-      font-weight: 400;
-      gap: 12px;
-      letter-spacing: 0;
-      line-height: 1.4;
-      margin-top: -8px;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.7;
+      max-width: 360px;
     }
 
-    .trust-separator {
-      color: var(--rivano-muted);
+    .product-availability {
+      color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+      font-family: var(--font-sans);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .product-availability::before {
+      background: currentColor;
+      border-radius: 50%;
+      content: "";
+      display: inline-block;
+      height: 6px;
+      margin-right: 8px;
+      vertical-align: 1px;
+      width: 6px;
+    }
+
+    .product-availability.is-unavailable {
+      color: color-mix(in srgb, var(--rivano-brown) 38%, transparent);
     }
 
     .panel-label {
@@ -642,131 +692,131 @@ function formattedRelatedPrice(value: number): string {
       font-weight: 400;
       letter-spacing: 0.1em;
       line-height: 1.4;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       text-transform: uppercase;
     }
 
-    .color-options {
+    .variant-options {
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .color-choice {
-      align-items: center;
-      display: inline-flex;
-      gap: 6px;
-    }
-
-    .color-option {
+    .variant-option {
       align-items: center;
       background: transparent;
-      border: 0;
+      border: 1px solid color-mix(in srgb, var(--rivano-brown) 18%, transparent);
+      color: var(--rivano-brown);
       cursor: pointer;
-      display: flex;
-      justify-content: center;
-      min-height: 44px;
-      min-width: 44px;
-      padding: 0;
-      transition: var(--transition-fast);
-    }
-
-    .color-option.is-disabled {
-      cursor: default;
-      opacity: 0.45;
-    }
-
-    .color-dot {
-      border: 1px solid var(--rivano-muted);
-      border-radius: 50%;
-      display: block;
-      height: 24px;
-      width: 24px;
-    }
-
-    .color-option.is-active .color-dot {
-      outline: 2px solid var(--rivano-brown);
-      outline-offset: 2px;
-    }
-
-    .color-name {
-      color: color-mix(in srgb, var(--rivano-brown) 65%, transparent);
+      display: inline-flex;
       font-family: var(--font-sans);
       font-size: 11px;
-      line-height: 1.3;
+      gap: 8px;
+      justify-content: center;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      min-height: 44px;
+      padding: 0 14px;
+      text-transform: uppercase;
+      transition: border-color var(--transition-normal), opacity var(--transition-normal);
     }
 
-    .whatsapp-cta {
+    .variant-option.is-active {
+      border-color: var(--rivano-brown);
+    }
+
+    .variant-option.is-disabled {
+      cursor: not-allowed;
+      opacity: 0.38;
+      text-decoration: line-through;
+    }
+
+    .variant-swatch {
+      border: 1px solid color-mix(in srgb, var(--rivano-brown) 28%, transparent);
+      border-radius: 50%;
+      display: block;
+      height: 15px;
+      width: 15px;
+    }
+
+    .whatsapp-cta,
+    .mobile-sticky-link,
+    .sticky-whatsapp-link {
       align-items: center;
       background: var(--rivano-brown);
       color: var(--rivano-off-white);
       display: inline-flex;
       font-family: var(--font-sans);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 400;
       justify-content: center;
       letter-spacing: 0.12em;
       line-height: 1.2;
-      margin-top: 4px;
-      min-height: 52px;
-      padding: 16px 24px;
+      min-height: 44px;
+      padding: 0 22px;
       text-align: center;
       text-transform: uppercase;
       transition: opacity var(--transition-normal);
+    }
+
+    .whatsapp-cta {
+      margin-top: 4px;
+      min-height: 54px;
       width: 100%;
     }
 
-    .whatsapp-cta:hover {
-      opacity: 0.85;
+    .whatsapp-cta.is-secondary {
+      background: color-mix(in srgb, var(--rivano-brown) 88%, var(--rivano-muted));
     }
 
-    .feature-icons {
-      color: var(--rivano-brown);
+    .whatsapp-cta:hover,
+    .mobile-sticky-link:hover,
+    .sticky-whatsapp-link:hover {
+      opacity: 0.86;
+    }
+
+    .purchase-support {
+      font-size: 12px;
+      margin-top: -6px;
+    }
+
+    .trust-strip {
+      background: color-mix(in srgb, var(--rivano-beige) 45%, transparent);
+      border-bottom: 1px solid color-mix(in srgb, var(--rivano-brown) 12%, transparent);
+      border-top: 1px solid color-mix(in srgb, var(--rivano-brown) 12%, transparent);
       display: grid;
-      gap: 16px;
+      gap: 14px 16px;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-top: 8px;
+      padding: 18px;
     }
 
-    .feature-icon {
-      align-items: center;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      min-height: 74px;
-      text-align: center;
-    }
-
-    .feature-icon svg {
-      fill: none;
-      height: 22px;
-      stroke: currentColor;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-width: 1.4;
-      width: 22px;
-    }
-
-    .feature-icon span {
-      color: var(--rivano-brown);
+    .trust-strip span {
+      color: color-mix(in srgb, var(--rivano-brown) 72%, transparent);
       font-family: var(--font-sans);
       font-size: 10px;
       font-weight: 400;
       letter-spacing: 0.08em;
-      line-height: 1.35;
+      line-height: 1.45;
       text-transform: uppercase;
     }
 
+    .trust-strip strong {
+      color: color-mix(in srgb, var(--rivano-brown) 38%, transparent);
+      display: block;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+
     .technical-accordion {
-      margin-top: 4px;
+      margin-top: 2px;
     }
 
     .accordion-item {
-      border-top: 1px solid var(--rivano-beige);
+      border-top: 1px solid color-mix(in srgb, var(--rivano-brown) 13%, transparent);
     }
 
     .accordion-item:last-child {
-      border-bottom: 1px solid var(--rivano-beige);
+      border-bottom: 1px solid color-mix(in srgb, var(--rivano-brown) 13%, transparent);
     }
 
     .accordion-item summary {
@@ -780,7 +830,7 @@ function formattedRelatedPrice(value: number): string {
       letter-spacing: 0.08em;
       line-height: 1.35;
       list-style: none;
-      min-height: 44px;
+      min-height: 52px;
       text-transform: uppercase;
     }
 
@@ -812,20 +862,14 @@ function formattedRelatedPrice(value: number): string {
       color: color-mix(in srgb, var(--rivano-brown) 70%, transparent);
       font-family: var(--font-sans);
       font-size: 13px;
-      line-height: 1.7;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height var(--transition-normal);
-    }
-
-    .accordion-item[open] .accordion-body {
-      max-height: 520px;
-      padding-bottom: 16px;
+      line-height: 1.75;
+      overflow: visible;
+      padding-bottom: 18px;
     }
 
     .technical-list {
       display: grid;
-      gap: 8px;
+      gap: 9px;
     }
 
     .technical-list div {
@@ -843,89 +887,87 @@ function formattedRelatedPrice(value: number): string {
       gap: 8px;
     }
 
-    .reviews-section {
+    .assisted-section {
       background: var(--rivano-beige);
-      padding: 48px 24px;
+      padding: 56px 24px;
     }
 
-    .reviews-header {
-      align-items: baseline;
-      display: flex;
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-
-    .reviews-header h2 {
-      font-family: var(--font-serif);
-      font-weight: 400;
-    }
-
-    .reviews-header p {
-      color: var(--rivano-brown);
-      font-family: var(--font-sans);
-      font-size: 20px;
-      font-weight: 400;
-      line-height: 1;
-    }
-
-    .reviews-grid {
+    .assisted-inner {
       display: grid;
-      gap: 16px;
+      gap: 28px;
     }
 
-    .review-card {
-      background: var(--rivano-off-white);
-      padding: 28px;
-    }
-
-    .review-stars {
-      color: var(--rivano-gold);
-      display: flex;
-      gap: 3px;
-    }
-
-    .review-stars svg {
-      height: 11px;
-      width: 11px;
-    }
-
-    .review-quote {
-      color: var(--rivano-brown);
-      font-family: var(--font-serif);
-      font-size: 18px;
-      font-style: italic;
-      font-weight: 300;
-      line-height: 1.6;
-      margin-top: 14px;
-    }
-
-    .review-name {
-      color: color-mix(in srgb, var(--rivano-brown) 55%, transparent);
+    .assisted-label {
+      color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
       font-family: var(--font-sans);
       font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.16em;
       line-height: 1.35;
-      margin-top: 16px;
+      margin-bottom: 12px;
       text-transform: uppercase;
     }
 
-    .review-city {
-      color: color-mix(in srgb, var(--rivano-brown) 35%, transparent);
+    .assisted-title {
+      font-family: var(--font-serif);
+      font-weight: 300;
+    }
+
+    .assisted-header p {
+      color: color-mix(in srgb, var(--rivano-brown) 64%, transparent);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.7;
+      margin-top: 16px;
+      max-width: 520px;
+    }
+
+    .assisted-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .assisted-card {
+      border-top: 1px solid color-mix(in srgb, var(--rivano-brown) 18%, transparent);
+      padding: 22px 0 4px;
+    }
+
+    .assisted-card span {
+      color: color-mix(in srgb, var(--rivano-brown) 42%, transparent);
+      display: block;
       font-family: var(--font-sans);
       font-size: 10px;
+      letter-spacing: 0.16em;
       line-height: 1.35;
-      margin-top: 2px;
+      margin-bottom: 14px;
+    }
+
+    .assisted-card h3 {
+      color: var(--rivano-brown);
+      font-family: var(--font-serif);
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1.05;
+    }
+
+    .assisted-card p {
+      color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.65;
+      margin-top: 10px;
     }
 
     .related-section {
       background: var(--rivano-off-white);
-      padding: 48px 0;
+      padding: 56px 0 72px;
     }
 
     .related-title {
+      color: var(--rivano-brown);
       font-family: var(--font-serif);
-      font-weight: 400;
+      font-weight: 300;
       margin-bottom: 24px;
       padding: 0 24px;
     }
@@ -939,10 +981,6 @@ function formattedRelatedPrice(value: number): string {
       scrollbar-width: none;
     }
 
-    .related-track::-webkit-scrollbar {
-      display: none;
-    }
-
     .related-card {
       flex: 0 0 64vw;
       min-height: 44px;
@@ -952,16 +990,20 @@ function formattedRelatedPrice(value: number): string {
 
     .related-frame {
       aspect-ratio: 3 / 4;
-      background: var(--rivano-off-white);
+      background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
       overflow: hidden;
+    }
+
+    .related-image {
+      padding: 24px;
     }
 
     .related-card h3 {
       color: var(--rivano-brown);
       font-family: var(--font-serif);
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 1.25;
+      font-size: 18px;
+      font-weight: 300;
+      line-height: 1.2;
       margin-top: 12px;
     }
 
@@ -970,7 +1012,59 @@ function formattedRelatedPrice(value: number): string {
       font-family: var(--font-sans);
       font-size: 13px;
       line-height: 1.35;
-      margin-top: 3px;
+      margin-top: 4px;
+    }
+
+    .mobile-sticky-cta {
+      align-items: center;
+      background: var(--rivano-off-white);
+      border-top: 1px solid var(--rivano-beige);
+      bottom: 0;
+      display: flex;
+      gap: 14px;
+      justify-content: space-between;
+      left: 0;
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      position: fixed;
+      width: 100%;
+      z-index: 130;
+    }
+
+    .mobile-sticky-cta[hidden],
+    .desktop-sticky-bar[hidden] {
+      display: none;
+    }
+
+    .mobile-sticky-copy {
+      min-width: 0;
+    }
+
+    .mobile-sticky-copy p,
+    .mobile-sticky-copy span {
+      display: block;
+      font-family: var(--font-sans);
+      line-height: 1.25;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mobile-sticky-copy p {
+      color: var(--rivano-brown);
+      font-size: 12px;
+      max-width: 150px;
+    }
+
+    .mobile-sticky-copy span {
+      color: color-mix(in srgb, var(--rivano-brown) 58%, transparent);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .mobile-sticky-link {
+      flex: 0 0 auto;
+      font-size: 10px;
+      padding: 0 14px;
     }
 
     .desktop-sticky-bar {
@@ -980,11 +1074,11 @@ function formattedRelatedPrice(value: number): string {
     @media (min-width: 768px) {
       .pdp-main {
         display: grid;
-        gap: 0;
+        gap: 40px;
         grid-template-columns: repeat(12, minmax(0, 1fr));
         margin: 0 auto;
-        max-width: 1280px;
-        padding: 64px 40px;
+        max-width: 1360px;
+        padding: 72px 40px;
       }
 
       .pdp-gallery {
@@ -992,7 +1086,8 @@ function formattedRelatedPrice(value: number): string {
       }
 
       .mobile-gallery,
-      .gallery-dots {
+      .gallery-dots,
+      .mobile-sticky-cta {
         display: none;
       }
 
@@ -1001,20 +1096,24 @@ function formattedRelatedPrice(value: number): string {
       }
 
       .desktop-main-frame {
+        align-items: center;
         aspect-ratio: 3 / 4;
-        background: var(--rivano-off-white);
+        background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
+        display: flex;
+        justify-content: center;
+        margin: 0;
         overflow: hidden;
       }
 
       .desktop-main-image {
-        height: 100%;
+        padding: 48px;
         transition: opacity 200ms ease-out;
       }
 
       .thumbnail-row {
         display: flex;
-        gap: 8px;
-        margin-top: 12px;
+        gap: 10px;
+        margin-top: 14px;
         overflow-x: auto;
         padding: 4px 2px;
         scrollbar-width: thin;
@@ -1022,14 +1121,14 @@ function formattedRelatedPrice(value: number): string {
 
       .thumbnail-button {
         aspect-ratio: 3 / 4;
-        background: transparent;
+        background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
         border: 0;
         cursor: pointer;
         flex: 0 0 72px;
         min-height: 96px;
         opacity: 0.5;
         padding: 0;
-        transition: opacity var(--transition-normal);
+        transition: opacity var(--transition-normal), outline-color var(--transition-normal);
         width: 72px;
       }
 
@@ -1047,44 +1146,60 @@ function formattedRelatedPrice(value: number): string {
         aspect-ratio: 3 / 4;
         display: block;
         height: 100%;
-        object-fit: cover;
+        mix-blend-mode: multiply;
+        object-fit: contain;
+        padding: 10px;
         width: 100%;
       }
 
       .product-panel {
         align-self: start;
-        gap: 20px;
+        gap: 18px;
         grid-column: 8 / span 5;
-        padding: 0 0 0 40px;
+        padding: 12px 0 0 24px;
         position: sticky;
-        top: 24px;
+        top: 32px;
       }
 
-      .feature-icons {
+      .product-title {
+        font-size: 58px;
+        max-width: 520px;
+      }
+
+      .product-microcopy {
+        max-width: 420px;
+      }
+
+      .trust-strip {
         gap: 12px;
         grid-template-columns: repeat(4, minmax(0, 1fr));
+        padding: 16px 14px;
       }
 
-      .reviews-section {
-        padding: 64px 40px;
+      .trust-strip span {
+        font-size: 9px;
       }
 
-      .reviews-inner {
+      .assisted-section {
+        padding: 72px 40px;
+      }
+
+      .assisted-inner {
         margin: 0 auto;
         max-width: 1280px;
       }
 
-      .reviews-grid {
-        gap: 24px;
+      .assisted-grid {
+        gap: 28px;
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .related-section {
-        padding: 64px 40px;
+        padding: 72px 40px 88px;
       }
 
       .related-title {
-        margin: 0 auto 24px;
+        margin: 0 auto 28px;
         max-width: 1280px;
         padding: 0;
       }
@@ -1108,20 +1223,14 @@ function formattedRelatedPrice(value: number): string {
         background: var(--rivano-off-white);
         border-bottom: 1px solid var(--rivano-beige);
         display: flex;
-        height: 60px;
+        height: 62px;
         justify-content: space-between;
         left: 0;
         padding: 0 40px;
         position: fixed;
         top: 0;
-        transform: translateY(-100%);
-        transition: transform var(--transition-slow);
         width: 100%;
         z-index: 120;
-      }
-
-      .desktop-sticky-bar.visible {
-        transform: translateY(0);
       }
 
       .sticky-product {
@@ -1131,50 +1240,32 @@ function formattedRelatedPrice(value: number): string {
       }
 
       .sticky-product-image {
-        height: 53px;
-        object-fit: cover;
-        width: 40px;
+        background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
+        height: 48px;
+        mix-blend-mode: multiply;
+        object-fit: contain;
+        padding: 4px;
+        width: 36px;
+      }
+
+      .sticky-product-name,
+      .sticky-product-price {
+        font-family: var(--font-sans);
+        font-size: 13px;
+        line-height: 1.2;
       }
 
       .sticky-product-name {
         color: var(--rivano-brown);
-        font-family: var(--font-sans);
-        font-size: 13px;
-        line-height: 1.2;
       }
 
       .sticky-product-price {
         color: color-mix(in srgb, var(--rivano-brown) 60%, transparent);
-        font-family: var(--font-sans);
-        font-size: 13px;
-        line-height: 1.2;
         margin-top: 3px;
       }
 
       .sticky-whatsapp-link {
-        align-items: center;
-        color: var(--rivano-off-white);
-        display: inline-flex;
-        font-family: var(--font-sans);
-        font-size: 11px;
-        font-weight: 400;
-        justify-content: center;
-        letter-spacing: 0.12em;
         min-height: 44px;
-        text-transform: uppercase;
-      }
-
-      .sticky-whatsapp-link span {
-        align-items: center;
-        background: var(--rivano-brown);
-        display: inline-flex;
-        height: 36px;
-        padding: 0 20px;
-        transition: opacity var(--transition-normal);
-      }
-
-      .sticky-whatsapp-link:hover span {
-        opacity: 0.85;
       }
     }
   </style>
@@ -1255,30 +1346,54 @@ function formattedRelatedPrice(value: number): string {
       });
     }
 
-    const colorOptions = Array.from(document.querySelectorAll("[data-color-option]"));
+    const variantOptions = Array.from(document.querySelectorAll("[data-variant-option]"));
+    const whatsappLinks = Array.from(document.querySelectorAll("[data-whatsapp-link]"));
+    const whatsappPrefix = "https://wa.me/5571993135522?text=";
 
-    colorOptions.forEach((option) => {
+    const updateWhatsappLinks = (message) => {
+      if (!message) {
+        return;
+      }
+
+      whatsappLinks.forEach((link) => {
+        link.setAttribute("href", whatsappPrefix + encodeURIComponent(message));
+      });
+    };
+
+    const activeVariant = variantOptions.find((option) => option.classList.contains("is-active"));
+    updateWhatsappLinks(activeVariant?.getAttribute("data-whatsapp-message"));
+
+    variantOptions.forEach((option) => {
       option.addEventListener("click", () => {
-        if (option.classList.contains("is-disabled")) {
+        if (option instanceof HTMLButtonElement && option.disabled) {
           return;
         }
 
-        colorOptions.forEach((item) => {
+        variantOptions.forEach((item) => {
           const isActive = item === option;
           item.classList.toggle("is-active", isActive);
           item.setAttribute("aria-pressed", isActive ? "true" : "false");
         });
+
+        updateWhatsappLinks(option.getAttribute("data-whatsapp-message"));
       });
     });
 
     const primaryCta = document.querySelector("[data-primary-cta]");
-    const stickyBar = document.querySelector("[data-sticky-bar]");
+    const stickyTargets = Array.from(document.querySelectorAll("[data-sticky-bar], [data-mobile-sticky-cta]"));
 
-    if (primaryCta && stickyBar && "IntersectionObserver" in window) {
+    if (primaryCta && stickyTargets.length > 0 && "IntersectionObserver" in window) {
+      const setStickyVisibility = (show) => {
+        stickyTargets.forEach((target) => {
+          target.toggleAttribute("hidden", !show);
+        });
+      };
+
+      setStickyVisibility(false);
+
       const observer = new IntersectionObserver(
         ([entry]) => {
-          stickyBar.classList.toggle("visible", !entry.isIntersecting);
-          stickyBar.setAttribute("aria-hidden", entry.isIntersecting ? "true" : "false");
+          setStickyVisibility(!entry.isIntersecting);
         },
         { threshold: 0 },
       );
