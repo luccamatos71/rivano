@@ -177,13 +177,13 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
       <div class="rivano-society-track-mobile">
         {
-          societyImages.map((image, index) => (
+          societyImages.map((image) => (
             <figure class="rivano-society-item">
               <img
                 class="rivano-society-image"
                 src={image.src}
                 alt={image.alt}
-                loading={index < 2 ? "eager" : "lazy"}
+                loading="eager"
                 decoding="async"
               />
             </figure>
@@ -195,13 +195,13 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
         <div class="rivano-society-track-desktop">
           {[0, 1].map((groupIndex) => (
             <div class="rivano-society-desktop-group" aria-hidden={groupIndex === 1 ? "true" : undefined}>
-              {societyImages.map((image, index) => (
+              {societyImages.map((image) => (
                 <figure class="rivano-society-item">
                   <img
                     class="rivano-society-image"
                     src={image.src}
                     alt={image.alt}
-                    loading={groupIndex === 0 && index < 2 ? "eager" : "lazy"}
+                    loading={groupIndex === 0 ? "eager" : "lazy"}
                     decoding="async"
                   />
                 </figure>
