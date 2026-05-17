@@ -199,6 +199,15 @@ function formattedRelatedPrice(value: number): string {
                     width="900"
                     height="1200"
                   />
+                  {index === 0 && (
+                    <div class="gallery-overlay" aria-hidden="true">
+                      <div class="gallery-gradient"></div>
+                      <div class="gallery-product-info">
+                        <span class="gallery-product-name">{product.name}</span>
+                        <span class="gallery-product-price">{formattedPrice}</span>
+                      </div>
+                    </div>
+                  )}
                 </figure>
               ))}
             </div>
@@ -520,18 +529,18 @@ function formattedRelatedPrice(value: number): string {
     }
 
     .mobile-slide {
-      align-items: center;
-      aspect-ratio: 3 / 4;
+      align-items: flex-start;
       background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
       display: flex;
       flex: 0 0 100vw;
       justify-content: center;
       margin: 0;
+      min-height: 88svh;
       overflow: hidden;
+      position: relative;
       scroll-snap-align: start;
     }
 
-    .mobile-gallery-image,
     .desktop-main-image,
     .related-image {
       aspect-ratio: 3 / 4;
@@ -541,6 +550,62 @@ function formattedRelatedPrice(value: number): string {
       object-fit: contain;
       padding: 30px;
       width: 100%;
+    }
+
+    .mobile-gallery-image {
+      aspect-ratio: 3 / 4;
+      display: block;
+      height: auto;
+      mix-blend-mode: multiply;
+      object-fit: cover;
+      width: 100%;
+    }
+
+    .gallery-overlay {
+      inset: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .gallery-gradient {
+      background: linear-gradient(
+        0deg,
+        color-mix(in srgb, var(--rivano-off-white) 85%, transparent) 0%,
+        color-mix(in srgb, var(--rivano-off-white) 18%, transparent) 60%,
+        transparent 100%
+      );
+      bottom: 0;
+      height: 52%;
+      left: 0;
+      position: absolute;
+      right: 0;
+    }
+
+    .gallery-product-info {
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      left: 0;
+      padding: 20px 24px 28px;
+      position: absolute;
+      right: 0;
+    }
+
+    .gallery-product-name {
+      color: var(--rivano-brown);
+      font-family: var(--font-serif);
+      font-size: 38px;
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 0.95;
+    }
+
+    .gallery-product-price {
+      color: color-mix(in srgb, var(--rivano-brown) 70%, transparent);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 300;
     }
 
     .gallery-dots {
@@ -629,9 +694,7 @@ function formattedRelatedPrice(value: number): string {
     }
 
     .product-heading {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      display: none;
     }
 
     .product-title {
@@ -1266,6 +1329,12 @@ function formattedRelatedPrice(value: number): string {
 
       .sticky-whatsapp-link {
         min-height: 44px;
+      }
+
+      .product-heading {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
       }
     }
   </style>
