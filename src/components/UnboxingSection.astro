@@ -1,0 +1,199 @@
+---
+// Sem props — conteúdo é universal para todos os produtos Rivano
+---
+
+<section class="unbox-section" aria-labelledby="unbox-title">
+  <div class="unbox-inner">
+    <p class="unbox-label">Cada detalhe importa</p>
+    <h2 id="unbox-title" class="unbox-title">O que vem<br>na sua caixa.</h2>
+    <p class="unbox-sub">Cada pedido é preparado com cuidado para chegar perfeito.</p>
+
+    <ul class="unbox-list">
+      <li class="unbox-item" data-unbox-item>
+        <div class="unbox-icon" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+            <rect x="4" y="16" width="14" height="10" rx="5" stroke="#c4a882" stroke-width="1.4"/>
+            <rect x="26" y="16" width="14" height="10" rx="5" stroke="#c4a882" stroke-width="1.4"/>
+            <line x1="18" y1="21" x2="26" y2="21" stroke="#c4a882" stroke-width="1.4"/>
+            <line x1="2" y1="19" x2="4" y2="19" stroke="rgba(196,168,130,0.5)" stroke-width="1.2"/>
+            <line x1="40" y1="19" x2="42" y2="19" stroke="rgba(196,168,130,0.5)" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div class="unbox-copy">
+          <p class="unbox-item-name">Óculos Rivano</p>
+          <p class="unbox-item-desc">Proteção UV400 certificada. Armação e lentes inspecionadas.</p>
+        </div>
+      </li>
+
+      <li class="unbox-item" data-unbox-item>
+        <div class="unbox-icon" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+            <rect x="4" y="14" width="36" height="18" rx="9" stroke="#c4a882" stroke-width="1.4"/>
+            <line x1="4" y1="23" x2="40" y2="23" stroke="#c4a882" stroke-width="1" opacity="0.4"/>
+            <circle cx="22" cy="23" r="2" fill="#c4a882" opacity="0.35"/>
+          </svg>
+        </div>
+        <div class="unbox-copy">
+          <p class="unbox-item-name">Case exclusivo</p>
+          <p class="unbox-item-desc">Proteção rígida para o dia a dia. Design Rivano.</p>
+        </div>
+      </li>
+
+      <li class="unbox-item" data-unbox-item>
+        <div class="unbox-icon" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+            <rect x="8" y="8" width="28" height="28" rx="3" stroke="#c4a882" stroke-width="1.4"/>
+            <path d="M12,16 Q22,12 32,16 Q22,20 12,16Z" fill="rgba(196,168,130,0.15)" stroke="#c4a882" stroke-width="0.8"/>
+            <path d="M12,22 Q22,18 32,22" stroke="#c4a882" stroke-width="0.8" opacity="0.4"/>
+            <path d="M12,28 Q22,24 32,28" stroke="#c4a882" stroke-width="0.8" opacity="0.25"/>
+          </svg>
+        </div>
+        <div class="unbox-copy">
+          <p class="unbox-item-name">Flanela de limpeza</p>
+          <p class="unbox-item-desc">Microfibra suave para as lentes. Inclusa em todo pedido.</p>
+        </div>
+      </li>
+
+      <li class="unbox-item" data-unbox-item>
+        <div class="unbox-icon" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+            <rect x="6" y="10" width="32" height="24" rx="2" stroke="#c4a882" stroke-width="1.4"/>
+            <line x1="12" y1="18" x2="32" y2="18" stroke="#c4a882" stroke-width="1" opacity="0.5"/>
+            <line x1="12" y1="23" x2="26" y2="23" stroke="rgba(196,168,130,0.4)" stroke-width="0.8"/>
+            <line x1="12" y1="27" x2="22" y2="27" stroke="rgba(196,168,130,0.3)" stroke-width="0.8"/>
+          </svg>
+        </div>
+        <div class="unbox-copy">
+          <p class="unbox-item-name">Garantia e satisfação</p>
+          <p class="unbox-item-desc"><strong>7 dias</strong> para satisfação garantida. <strong>3 meses</strong> contra defeitos de fábrica.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<script is:inline>
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('[data-unbox-item]').forEach(function (el) {
+        el.classList.add('is-visible');
+      });
+      return;
+    }
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15 }
+    );
+    var items = document.querySelectorAll('[data-unbox-item]');
+    items.forEach(function (item, i) {
+      item.style.transitionDelay = (i * 120) + 'ms';
+      observer.observe(item);
+    });
+  })();
+</script>
+
+<style>
+  .unbox-section {
+    background: #1e1410;
+    padding: 56px 24px 52px;
+  }
+
+  .unbox-inner {
+    max-width: 480px;
+  }
+
+  .unbox-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(196, 168, 130, 0.45);
+    margin-bottom: 10px;
+  }
+
+  .unbox-title {
+    font-family: var(--font-serif);
+    font-size: clamp(34px, 9vw, 52px);
+    font-weight: 300;
+    color: #f5f0e8;
+    line-height: 1.0;
+    margin-bottom: 8px;
+  }
+
+  .unbox-sub {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.38);
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+
+  .unbox-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .unbox-item {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 16px;
+    align-items: center;
+    padding: 18px 0;
+    border-top: 1px solid rgba(196, 168, 130, 0.1);
+    opacity: 0;
+    transform: translateX(-14px);
+    transition:
+      opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .unbox-item:last-child {
+    border-bottom: 1px solid rgba(196, 168, 130, 0.1);
+  }
+
+  .unbox-item.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .unbox-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(196, 168, 130, 0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .unbox-item-name {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    color: #f5f0e8;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    letter-spacing: 0.04em;
+  }
+
+  .unbox-item-desc {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.42);
+    line-height: 1.65;
+  }
+
+  .unbox-item-desc strong {
+    color: rgba(245, 240, 232, 0.72);
+    font-weight: 400;
+  }
+</style>
