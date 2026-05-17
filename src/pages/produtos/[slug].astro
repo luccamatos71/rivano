@@ -11,6 +11,12 @@ import {
   type Product,
 } from "../../lib/products";
 import productsData from "../../data/products.json";
+import StockUrgency from "../../components/StockUrgency.astro";
+import FaceGuide from "../../components/FaceGuide.astro";
+import WhatsAppJourney from "../../components/WhatsAppJourney.astro";
+import MidPageCTA from "../../components/MidPageCTA.astro";
+import SocialProof from "../../components/SocialProof.astro";
+import UnboxingSection from "../../components/UnboxingSection.astro";
 
 const allProducts = productsData as Product[];
 
@@ -336,6 +342,8 @@ function formattedRelatedPrice(value: number): string {
           <span><strong>04</strong> Garantia contra defeitos</span>
         </div>
 
+        <StockUrgency stock={currentStock} />
+
         <div class="technical-accordion">
           <details open={detailsEntries.length > 0} class="accordion-item">
             <summary>
@@ -409,6 +417,8 @@ function formattedRelatedPrice(value: number): string {
       </aside>
     </section>
 
+    <FaceGuide whatsappUrl={whatsappUrl} productName={product.name} />
+
     <section class="assisted-section" aria-labelledby="assisted-purchase">
       <div class="assisted-inner">
         <header class="assisted-header">
@@ -435,6 +445,14 @@ function formattedRelatedPrice(value: number): string {
         </div>
       </div>
     </section>
+
+    <SocialProof />
+
+    <WhatsAppJourney whatsappUrl={whatsappUrl} />
+
+    <MidPageCTA whatsappUrl={whatsappUrl} productName={product.name} />
+
+    <UnboxingSection />
 
     {relatedProducts.length > 0 && (
       <section class="related-section" aria-labelledby="related-products">
