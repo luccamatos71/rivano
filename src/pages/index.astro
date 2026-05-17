@@ -241,14 +241,16 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .campaign-gradient {
-    background: linear-gradient(
-      0deg,
-      color-mix(in srgb, black 66%, transparent) 0%,
-      color-mix(in srgb, var(--rivano-brown) 42%, transparent) 52%,
-      transparent 100%
-    );
+    background:
+      radial-gradient(circle at 50% 14%, color-mix(in srgb, black 22%, transparent) 0%, transparent 58%),
+      linear-gradient(
+        0deg,
+        color-mix(in srgb, black 74%, transparent) 0%,
+        color-mix(in srgb, var(--rivano-brown) 48%, transparent) 54%,
+        transparent 100%
+      );
     bottom: 0;
-    height: 42%;
+    height: 52%;
     left: 0;
     pointer-events: none;
     position: absolute;
@@ -291,9 +293,9 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     font-size: clamp(56px, 16vw, 76px);
     font-weight: 300;
     letter-spacing: 0;
-    line-height: 0.88;
+    line-height: 0.92;
     margin: 0;
-    max-width: 320px;
+    max-width: 340px;
   }
 
   .campaign-actions {
@@ -457,7 +459,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   .editorial-product {
     align-self: flex-start;
     color: var(--rivano-brown);
-    flex: 0 0 70vw;
+    flex: 0 0 74vw;
     margin-top: 0;
     min-height: 44px;
     min-width: 0;
@@ -668,7 +670,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     align-self: flex-start;
     color: var(--rivano-brown);
     display: block;
-    flex: 0 0 70vw;
+    flex: 0 0 74vw;
     margin-top: 0;
     min-width: 0;
     scroll-snap-align: start;
@@ -787,7 +789,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .manifesto-text {
-    color: color-mix(in srgb, var(--rivano-off-white) 62%, transparent);
+    color: color-mix(in srgb, var(--rivano-off-white) 74%, transparent);
     font-size: 12px;
     letter-spacing: 0.16em;
     line-height: 1.6;
@@ -796,11 +798,11 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .manifesto-signature {
-    color: color-mix(in srgb, var(--rivano-off-white) 42%, transparent);
+    color: color-mix(in srgb, var(--rivano-off-white) 56%, transparent);
     font-size: 10px;
     letter-spacing: 0.18em;
     line-height: 1.35;
-    margin-top: 72px;
+    margin-top: 56px;
   }
 
   .brand-story-section {
