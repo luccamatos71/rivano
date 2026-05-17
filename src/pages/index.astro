@@ -46,10 +46,10 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
     <section class="post-hero-editorial" aria-label="Editorial Rivano">
       <div class="post-hero-inner">
-        <div class="post-hero-image-wrap">
+        <div class="post-hero-image-wrap" data-reveal>
           <img src="/editorial/verao.png" alt="Óculos Rivano em composição de verão" class="post-hero-image" loading="eager" decoding="async" />
         </div>
-        <div class="post-hero-copy">
+        <div class="post-hero-copy" data-reveal data-reveal-delay="120">
           <p class="post-hero-label">Editorial</p>
           <h2 class="post-hero-title">Óculos para viver o verão.</h2>
           <p class="post-hero-text">Uma coleção pensada para luz, pele, mar e cidade.</p>
@@ -63,12 +63,12 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     </section>
 
     <section class="editorial-products" aria-labelledby="selecao-rivano">
-      <div class="editorial-products-header">
+      <div class="editorial-products-header" data-reveal>
         <p class="selection-label">Seleção Rivano</p>
         <h2 id="selecao-rivano" class="selection-title">O verão permanece.</h2>
         <p class="selection-text">Modelos feitos para acompanhar a luz, a cidade e os dias sem pressa.</p>
       </div>
-      <div class="editorial-products-track">
+      <div class="editorial-products-track" data-reveal data-reveal-delay="100">
         {
           editorialProducts.map((product, index) => (
             <a class="editorial-product" href={`/produtos/${product.slug}`} aria-label={`Ver ${product.name}`}>
@@ -94,7 +94,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
     <section class="sun-curation" aria-label="Curadoria Rivano">
       <div class="sun-curation-inner">
-        <article class="sun-curation-item sun-curation-item--dela">
+        <article class="sun-curation-item sun-curation-item--dela" data-reveal>
           <div class="sun-curation-image-wrap">
             <img src="/editorial/ela.png" alt="Mulher com lenço usando óculos Rivano sob céu azul" class="sun-curation-image" loading="lazy" decoding="async" />
           </div>
@@ -106,7 +106,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
           </div>
         </article>
 
-        <article class="sun-curation-item sun-curation-item--dele">
+        <article class="sun-curation-item sun-curation-item--dele" data-reveal data-reveal-delay="80">
           <div class="sun-curation-image-wrap">
             <img src="/editorial/ele.png" alt="Homem usando óculos redondo Rivano em close sob céu azul" class="sun-curation-image" loading="lazy" decoding="async" />
           </div>
@@ -121,7 +121,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     </section>
 
     <section class="manifesto-section" aria-label="Manifesto Rivano">
-      <div class="manifesto-inner">
+      <div class="manifesto-inner" data-reveal="fade">
         <p class="manifesto-label">Manifesto</p>
         <h2 class="manifesto-title">O verão permanece.</h2>
         <p class="manifesto-text">Na pele, na luz, no olhar.</p>
@@ -131,7 +131,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
     <section class="brand-story-section" aria-label="O espírito Rivano">
       <div class="brand-story-inner">
-        <div class="brand-story-copy">
+        <div class="brand-story-copy" data-reveal>
           <p class="brand-story-label">O espírito Rivano</p>
           <h2 class="brand-story-title">Feita para o sol que fica.</h2>
           <p class="brand-story-text">Da cidade à beira-mar, a Rivano traduz o verão como presença: leve, elegante e impossível de apressar.</p>
@@ -141,12 +141,12 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     </section>
 
     <section class="latest-rays-section" aria-labelledby="ultimos-raios">
-      <div class="latest-rays-header">
+      <div class="latest-rays-header" data-reveal>
         <p class="latest-rays-label">Curadoria Rivano</p>
         <h2 id="ultimos-raios" class="display-md latest-rays-title">Últimos raios</h2>
         <p class="latest-rays-subtitle">Armações escolhidas para acompanhar a luz até o fim do dia.</p>
       </div>
-      <div class="latest-rays-track">
+      <div class="latest-rays-track" data-reveal data-reveal-delay="90">
         {
           secondaryProducts.map((product, index) => (
             <a class="latest-ray-item" href={`/produtos/${product.slug}`} aria-label={`Ver ${product.name}`}>
@@ -169,7 +169,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     </section>
 
     <section class="rivano-society-section" aria-labelledby="rivano-society-title">
-      <div class="rivano-society-header">
+      <div class="rivano-society-header" data-reveal>
         <p class="rivano-society-label">Society</p>
         <h2 id="rivano-society-title" class="display-md rivano-society-title">The Rivano Society</h2>
         <p class="rivano-society-subtitle">Um ver&atilde;o visto por quem vive a Rivano.</p>
@@ -470,11 +470,20 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     background: color-mix(in srgb, var(--rivano-off-white) 74%, var(--rivano-beige));
     border: 1px solid color-mix(in srgb, var(--rivano-beige) 60%, var(--rivano-off-white));
     border-radius: 8px;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--rivano-brown) 5%, transparent);
     display: flex;
     justify-content: center;
     overflow: hidden;
     padding: 24px;
+    transition:
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     width: 100%;
+  }
+
+  .editorial-product:hover .editorial-product-frame {
+    box-shadow: 0 14px 36px color-mix(in srgb, var(--rivano-brown) 13%, transparent);
+    transform: translateY(-5px);
   }
 
   .editorial-product-image {
@@ -483,14 +492,14 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     height: 100%;
     mix-blend-mode: multiply;
     object-fit: contain;
-    transition: opacity var(--transition-normal);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     width: auto;
     max-height: none;
     max-width: 92%;
   }
 
   .editorial-product:hover .editorial-product-image {
-    opacity: 0.94;
+    transform: scale(1.03);
   }
 
   .editorial-product-name {
@@ -501,6 +510,16 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     letter-spacing: 0;
     line-height: 1.12;
     margin-top: 11px;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.3s ease-out, color 0.25s ease-out;
+  }
+
+  .editorial-product:hover .editorial-product-name {
+    color: var(--rivano-brown-mid);
+    text-decoration-color: color-mix(in srgb, var(--rivano-brown-mid) 55%, transparent);
   }
 
   .editorial-product-price {
@@ -661,11 +680,20 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     background: color-mix(in srgb, var(--rivano-off-white) 74%, var(--rivano-beige));
     border: 1px solid color-mix(in srgb, var(--rivano-beige) 60%, var(--rivano-off-white));
     border-radius: 8px;
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--rivano-brown) 5%, transparent);
     display: flex;
     justify-content: center;
     overflow: hidden;
     padding: 24px;
+    transition:
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     width: 100%;
+  }
+
+  .latest-ray-item:hover .latest-ray-frame {
+    box-shadow: 0 14px 36px color-mix(in srgb, var(--rivano-brown) 13%, transparent);
+    transform: translateY(-5px);
   }
 
   .latest-ray-image {
@@ -674,9 +702,14 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     height: 100%;
     mix-blend-mode: multiply;
     object-fit: contain;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     width: auto;
     max-height: none;
     max-width: 92%;
+  }
+
+  .latest-ray-item:hover .latest-ray-image {
+    transform: scale(1.03);
   }
 
   .latest-ray-name {
@@ -688,6 +721,16 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     letter-spacing: 0;
     line-height: 1.12;
     margin-top: 11px;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: text-decoration-color 0.3s ease-out, color 0.25s ease-out;
+  }
+
+  .latest-ray-item:hover .latest-ray-name {
+    color: var(--rivano-brown-mid);
+    text-decoration-color: color-mix(in srgb, var(--rivano-brown-mid) 55%, transparent);
   }
 
   .latest-ray-price {

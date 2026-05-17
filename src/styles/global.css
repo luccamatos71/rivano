@@ -13,7 +13,8 @@
   --font-sans:  "DM Sans", sans-serif;
   --transition-fast:   150ms ease-out;
   --transition-normal: 200ms ease-out;
-  --transition-slow:   300ms ease-out;
+  --transition-slow:   420ms ease-out;
+  --ease-editorial: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -159,6 +160,33 @@
     background: var(--rivano-off-white);
     overflow: hidden;
     position: relative;
+  }
+}
+
+/* ── Scroll reveal ───────────────────────────────────────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.85s var(--ease-editorial),
+    transform 0.85s var(--ease-editorial);
+}
+
+[data-reveal="fade"] {
+  transform: none;
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 

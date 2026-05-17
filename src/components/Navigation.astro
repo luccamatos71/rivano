@@ -20,13 +20,13 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
       <a
         href="/catalogo"
         class:list={[
-          "inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]",
-          isCatalog && "text-[var(--rivano-brown-mid)]",
+          "nav-link-slide inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)]",
+          isCatalog && "is-current",
         ]}
       >
         Modelos
       </a>
-      <a href="/catalogo?para=ela" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
+      <a href="/catalogo?para=ela" class="nav-link-slide inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)]">
         Para ela
       </a>
     </nav>
@@ -44,10 +44,10 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
     </a>
 
     <nav class="nav-menu hidden items-center justify-end gap-8 sm:flex" aria-label="Marca">
-      <a href="/catalogo?para=ele" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
+      <a href="/catalogo?para=ele" class="nav-link-slide inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)]">
         Para ele
       </a>
-      <a href="/#sobre" class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]">
+      <a href="/#sobre" class="nav-link-slide inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)]">
         Sobre
       </a>
     </nav>
@@ -63,8 +63,8 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
     </button>
   </div>
 
-  <div id="mobile-nav" class="fixed inset-0 z-[110] hidden bg-[color-mix(in_srgb,var(--rivano-brown)_18%,transparent)] sm:hidden" aria-hidden="true">
-    <div class="ml-auto h-full w-[78%] max-w-[330px] bg-[var(--rivano-off-white)] px-6 py-7 shadow-[0_8px_24px_color-mix(in_srgb,var(--rivano-brown)_12%,transparent)]">
+  <div id="mobile-nav" class="mobile-nav-overlay fixed inset-0 z-[110] sm:hidden" aria-hidden="true">
+    <div class="mobile-nav-drawer ml-auto h-full w-[78%] max-w-[330px] bg-[var(--rivano-off-white)] px-6 py-7 shadow-[0_8px_24px_color-mix(in_srgb,var(--rivano-brown)_12%,transparent)]">
       <div class="mb-8 flex items-center justify-between">
         <span class="font-['Cormorant_Garamond'] text-[25px] font-normal uppercase leading-none tracking-[0.16em] text-[var(--rivano-brown)]">
           Rivano
@@ -90,16 +90,16 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
 
   const closeNavigation = () => {
     if (!navDrawer || !navToggleButton) return;
-    navDrawer.classList.add("hidden");
     navDrawer.setAttribute("aria-hidden", "true");
     navToggleButton.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
   };
 
   const openNavigation = () => {
     if (!navDrawer || !navToggleButton) return;
-    navDrawer.classList.remove("hidden");
     navDrawer.setAttribute("aria-hidden", "false");
     navToggleButton.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
   };
 
   navToggleButton?.addEventListener("click", openNavigation);
@@ -108,3 +108,55 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
     if (event.target === navDrawer) closeNavigation();
   });
 </script>
+
+<style>
+  /* Desktop nav underline */
+  .nav-link-slide {
+    position: relative;
+  }
+
+  .nav-link-slide::after {
+    content: '';
+    position: absolute;
+    bottom: 14px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--rivano-brown-mid);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-link-slide:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .nav-link-slide.is-current::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Mobile nav overlay + slide */
+  .mobile-nav-overlay {
+    background: color-mix(in srgb, var(--rivano-brown) 18%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+  }
+
+  .mobile-nav-overlay[aria-hidden="false"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-nav-drawer {
+    transform: translateX(100%);
+    transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .mobile-nav-overlay[aria-hidden="false"] .mobile-nav-drawer {
+    transform: translateX(0);
+  }
+</style>

@@ -58,5 +58,31 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).to
     </main>
     {showFooter && <Footer />}
     {showBottomBar && <BottomBar />}
+    <script is:inline>
+      (function () {
+        if (!('IntersectionObserver' in window)) {
+          document.querySelectorAll('[data-reveal]').forEach(function (el) {
+            el.classList.add('is-visible');
+          });
+          return;
+        }
+        var observer = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              var el = entry.target;
+              var delay = el.getAttribute('data-reveal-delay');
+              if (delay) el.style.transitionDelay = delay + 'ms';
+              el.classList.add('is-visible');
+              observer.unobserve(el);
+            });
+          },
+          { threshold: 0.07, rootMargin: '0px 0px -56px 0px' }
+        );
+        document.querySelectorAll('[data-reveal]').forEach(function (el) {
+          observer.observe(el);
+        });
+      })();
+    </script>
   </body>
 </html>
