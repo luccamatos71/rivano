@@ -1,0 +1,56 @@
+---
+interface Props {
+  stock: number;
+}
+
+const { stock } = Astro.props as Props;
+const show = stock >= 1 && stock <= 9;
+const isLow = stock <= 3;
+const fillPercent = Math.round((Math.min(stock, 9) / 9) * 100);
+const label = isLow
+  ? `Últimas ${stock} unidade${stock === 1 ? '' : 's'}`
+  : `${stock} unidades disponíveis`;
+---
+
+{show && (
+  <div class="stock-urgency">
+    <div class:list={["stock-label", isLow && "is-low"]}>{label}</div>
+    <div class="stock-bar-track">
+      <div class="stock-bar-fill" style={`width: ${fillPercent}%`}></div>
+    </div>
+  </div>
+)}
+
+<style>
+  .stock-urgency {
+    padding: 14px 24px;
+    border-bottom: 1px solid color-mix(in srgb, var(--rivano-brown) 10%, transparent);
+  }
+
+  .stock-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+    margin-bottom: 8px;
+  }
+
+  .stock-label.is-low {
+    color: color-mix(in srgb, #c0392b 70%, var(--rivano-brown));
+  }
+
+  .stock-bar-track {
+    height: 2px;
+    background: var(--rivano-beige);
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .stock-bar-fill {
+    height: 100%;
+    background: var(--rivano-brown-mid);
+    transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+</style>
