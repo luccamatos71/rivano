@@ -1,0 +1,68 @@
+---
+interface Props {
+  whatsappUrl: string;
+  productName: string;
+}
+const { whatsappUrl, productName } = Astro.props as Props;
+---
+
+<section class="mid-cta" aria-label="Comprar Rivano">
+  <div class="mid-cta-inner">
+    <p class="mid-cta-label">Rivano</p>
+    <h2 class="mid-cta-title">O verão não espera.<br>O {productName} também não.</h2>
+    <a class="mid-cta-btn" href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+      Comprar pelo WhatsApp
+    </a>
+  </div>
+</section>
+
+<style>
+  .mid-cta {
+    background: var(--rivano-brown);
+    padding: 64px 24px;
+    color: var(--rivano-off-white);
+  }
+
+  .mid-cta-inner {
+    max-width: 360px;
+  }
+
+  .mid-cta-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--rivano-off-white) 40%, transparent);
+    margin-bottom: 16px;
+  }
+
+  .mid-cta-title {
+    font-family: var(--font-serif);
+    font-size: clamp(34px, 9vw, 52px);
+    font-weight: 300;
+    line-height: 1.0;
+    color: var(--rivano-off-white);
+    margin-bottom: 28px;
+  }
+
+  .mid-cta-btn {
+    display: inline-block;
+    border: 1px solid color-mix(in srgb, var(--rivano-off-white) 55%, transparent);
+    color: var(--rivano-off-white);
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 13px 22px;
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.25s ease-out, border-color 0.25s ease-out;
+  }
+
+  .mid-cta-btn:hover {
+    background: color-mix(in srgb, var(--rivano-off-white) 10%, transparent);
+    border-color: color-mix(in srgb, var(--rivano-off-white) 80%, transparent);
+  }
+</style>
