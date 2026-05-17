@@ -15,7 +15,7 @@ interface Props {
 const { filters, activeFilter = "all", group = "audience", small = false } = Astro.props as Props;
 ---
 
-<div class:list={["filter-bar flex gap-3 overflow-x-auto", small ? "mt-3" : "gap-4"]}>
+<div class:list={["filter-bar flex gap-3 overflow-x-auto pb-1", small ? "mt-3" : "gap-4"]}>
   {
     filters.map((filter) => {
       const isActive = activeFilter === filter.value;
@@ -27,11 +27,11 @@ const { filters, activeFilter = "all", group = "audience", small = false } = Ast
           data-filter-group={group}
           data-filter={filter.value}
           class:list={[
-            "filter-btn whitespace-nowrap border px-4 py-2 font-['DM_Sans'] font-normal uppercase transition-colors duration-normal",
+            "filter-btn whitespace-nowrap border px-4 py-[9px] font-['DM_Sans'] font-normal uppercase transition-all duration-normal",
             small ? "text-[11px] tracking-[0.16em]" : "text-[12px] tracking-[0.12em]",
             isActive
-              ? "active border-[var(--rivano-brown-mid)] bg-[var(--rivano-brown-mid)] text-[var(--rivano-off-white)]"
-              : "border-[var(--rivano-brown)] bg-transparent text-[var(--rivano-brown)] hover:border-[var(--rivano-brown-mid)]",
+              ? "active border-[var(--rivano-brown-mid)] bg-[var(--rivano-brown-mid)] text-[var(--rivano-off-white)] shadow-[0_10px_26px_color-mix(in_srgb,var(--rivano-brown-mid)_22%,transparent)]"
+              : "border-[color:color-mix(in_srgb,var(--rivano-brown)_36%,transparent)] bg-transparent text-[var(--rivano-brown)] hover:-translate-y-[1px] hover:border-[var(--rivano-brown-mid)] hover:bg-[color:color-mix(in_srgb,var(--rivano-off-white)_35%,white)]",
           ]}
           aria-pressed={isActive ? "true" : "false"}
         >

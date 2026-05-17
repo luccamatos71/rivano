@@ -12,12 +12,13 @@ interface ProductCardData {
 interface Props extends Partial<ProductCardData> {
   product?: ProductCardData;
   index?: number;
+  imageSizes?: string;
 }
 
 const props = Astro.props as Props;
 const source = props.product ?? props;
 const { slug = "", name = "", price = 0, stock, image = "", hoverImage, available = true } = source;
-const { index = Number.MAX_SAFE_INTEGER } = props;
+const { index = Number.MAX_SAFE_INTEGER, imageSizes = "(min-width: 1024px) 50vw, 50vw" } = props;
 const productLink = `/produtos/${slug}`;
 const formattedPrice = `R$ ${price.toFixed(2).replace(".", ",")}`;
 const showLowStockBadge = typeof stock === "number" && stock <= 3;
@@ -42,12 +43,13 @@ function buildImageSrcset(src: string): string {
   aria-label={`Ver ${name}`}
 >
   <div class="image-container relative aspect-[3/4] overflow-hidden bg-[var(--rivano-off-white)]">
+    <div class="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(160deg,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0)_42%,rgba(63,48,40,0.06)_100%)]"></div>
     {
       image ? (
         <img
           src={image}
           srcset={buildImageSrcset(image)}
-          sizes="(min-width: 1024px) 50vw, 50vw"
+          sizes={imageSizes}
           alt={name}
           class:list={[
             "main-image h-full w-full object-contain p-6 transition-opacity duration-slow",
@@ -70,7 +72,7 @@ function buildImageSrcset(src: string): string {
         <img
           src={hoverImage}
           srcset={buildImageSrcset(hoverImage)}
-          sizes="(min-width: 1024px) 50vw, 50vw"
+          sizes={imageSizes}
           alt={`${name} view 2`}
           class="hover-image absolute inset-0 h-full w-full object-contain p-6 opacity-0 transition-opacity duration-slow group-hover:opacity-100"
           loading={imageLoading}
@@ -90,15 +92,19 @@ function buildImageSrcset(src: string): string {
     }
   </div>
 
-  <div class="product-info mt-3">
+  <div class="product-info mt-3 border-t border-[color:color-mix(in_srgb,var(--rivano-brown)_14%,transparent)] pt-3">
     <h3 class="card-name font-['DM_Sans'] text-[14px] font-normal leading-[1.45] text-[var(--rivano-brown)]">{name}</h3>
-    <p class="price mt-1 text-[14px] font-light leading-[1.3] text-[var(--rivano-muted)]">{formattedPrice}</p>
+    <div class="mt-1 flex items-end justify-between gap-3">
+      <p class="price text-[14px] font-light leading-[1.3] text-[var(--rivano-muted)]">{formattedPrice}</p>
+      <span class="text-[10px] uppercase tracking-[0.14em] text-[var(--rivano-brown-mid)] opacity-0 transition-opacity duration-normal group-hover:opacity-100">Ver produto</span>
+    </div>
     {!available && <p class="mt-1 text-[11px] uppercase tracking-[0.18em] text-[var(--rivano-muted)]">Esgotado</p>}
   </div>
 </a>
 
 <style>
   .product-card .image-container {
+    border: 1px solid color-mix(in srgb, var(--rivano-beige) 76%, white);
     box-shadow: 0 2px 8px color-mix(in srgb, var(--rivano-brown) 6%, transparent);
     transition:
       transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
