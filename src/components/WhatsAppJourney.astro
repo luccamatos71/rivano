@@ -1,0 +1,161 @@
+---
+interface Props {
+  whatsappUrl: string;
+}
+const { whatsappUrl } = Astro.props as Props;
+
+const steps = [
+  { n: '01', title: 'Toque em "Comprar pelo WhatsApp"', desc: 'Um único toque abre a conversa.' },
+  { n: '02', title: 'A mensagem já vem pronta', desc: 'O modelo e suas dúvidas já estão pré-preenchidos.' },
+  { n: '03', title: 'Respondemos em até 2 horas', desc: 'Atendimento humano, sem bot.' },
+  { n: '04', title: 'Você confirma e decide', desc: 'Frete, estoque e prazo antes de fechar.' },
+];
+---
+
+<section class="waj-section" aria-labelledby="waj-title">
+  <div class="waj-inner">
+    <p class="waj-label">Como funciona</p>
+    <h2 id="waj-title" class="waj-title">Simples assim.</h2>
+    <p class="waj-sub">Compra pelo WhatsApp, do seu jeito.</p>
+
+    <ol class="waj-steps">
+      {steps.map((step, i) => (
+        <li class="waj-step">
+          <div class="waj-step-left">
+            <div class="waj-num">{step.n}</div>
+            {i < steps.length - 1 && <div class="waj-line"></div>}
+          </div>
+          <div class="waj-step-body">
+            <p class="waj-step-title">{step.title}</p>
+            <p class="waj-step-desc">{step.desc}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <a class="waj-cta" href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+      Comprar pelo WhatsApp
+    </a>
+  </div>
+</section>
+
+<style>
+  .waj-section {
+    background: var(--rivano-beige);
+    padding: 56px 24px 48px;
+  }
+
+  .waj-inner {
+    max-width: 480px;
+  }
+
+  .waj-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    margin-bottom: 10px;
+  }
+
+  .waj-title {
+    font-family: var(--font-serif);
+    font-size: clamp(36px, 10vw, 52px);
+    font-weight: 300;
+    color: var(--rivano-brown);
+    line-height: 0.95;
+    margin-bottom: 8px;
+  }
+
+  .waj-sub {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    color: color-mix(in srgb, var(--rivano-brown) 55%, transparent);
+    line-height: 1.65;
+    margin-bottom: 32px;
+  }
+
+  .waj-steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+
+  .waj-step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    min-height: 60px;
+  }
+
+  .waj-step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .waj-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--rivano-brown);
+    color: var(--rivano-off-white);
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .waj-line {
+    flex: 1;
+    width: 1px;
+    background: color-mix(in srgb, var(--rivano-brown) 18%, transparent);
+    margin: 4px 0;
+  }
+
+  .waj-step-body {
+    padding-bottom: 20px;
+    padding-top: 6px;
+  }
+
+  .waj-step-title {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--rivano-brown);
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+
+  .waj-step-desc {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 300;
+    color: color-mix(in srgb, var(--rivano-brown) 55%, transparent);
+    line-height: 1.6;
+  }
+
+  .waj-cta {
+    display: block;
+    background: var(--rivano-brown);
+    color: var(--rivano-off-white);
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    padding: 15px 24px;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .waj-cta:hover { opacity: 0.85; }
+</style>
