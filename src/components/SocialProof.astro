@@ -1,0 +1,129 @@
+---
+const testimonials = [
+  {
+    quote: "Comprei sem ver pessoalmente e chegou melhor do que esperava. A qualidade surpreende pelo preço.",
+    name: "Larissa M.",
+    city: "São Paulo, SP",
+  },
+  {
+    quote: "Achei que ia ser mais frágil, mas a armação é robusta. Uso todo dia e continua impecável.",
+    name: "Rafael S.",
+    city: "Salvador, BA",
+  },
+  {
+    quote: "O atendimento pelo WhatsApp foi rápido demais. Chegou em 3 dias e o case é lindo.",
+    name: "Camila O.",
+    city: "Rio de Janeiro, RJ",
+  },
+];
+---
+
+<section class="sp-section" aria-labelledby="sp-title">
+  <div class="sp-header">
+    <p class="sp-label">Quem já comprou</p>
+    <h2 id="sp-title" class="sp-title">Eles viram ao vivo.</h2>
+  </div>
+  <div class="sp-track" role="list">
+    {testimonials.map((t) => (
+      <article class="sp-card" role="listitem">
+        <svg class="sp-quote-icon" width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden="true">
+          <path d="M0 14V8.4C0 3.73 2.8 1.05 8.4 0l.84 1.68C6.44 2.52 5 4.2 4.76 6.72H8.4V14H0Zm11.6 0V8.4C11.6 3.73 14.4 1.05 20 0l.84 1.68C18.04 2.52 16.6 4.2 16.36 6.72H20V14h-8.4Z" fill="currentColor"/>
+        </svg>
+        <p class="sp-quote">{t.quote}</p>
+        <footer class="sp-author">
+          <span class="sp-name">{t.name}</span>
+          <span class="sp-city">{t.city}</span>
+        </footer>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .sp-section {
+    background: var(--rivano-off-white);
+    padding: 56px 0 64px;
+    overflow: hidden;
+  }
+
+  .sp-header {
+    padding: 0 24px;
+    margin-bottom: 28px;
+  }
+
+  .sp-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--rivano-brown) 42%, transparent);
+    margin-bottom: 8px;
+  }
+
+  .sp-title {
+    font-family: var(--font-serif);
+    font-size: clamp(32px, 9vw, 48px);
+    font-weight: 300;
+    color: var(--rivano-brown);
+    line-height: 0.95;
+  }
+
+  .sp-track {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 0 24px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .sp-track::-webkit-scrollbar { display: none; }
+
+  .sp-card {
+    flex: 0 0 78vw;
+    max-width: 300px;
+    scroll-snap-align: start;
+    border: 1px solid var(--rivano-beige);
+    padding: 24px 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--rivano-off-white);
+  }
+
+  .sp-quote-icon {
+    color: var(--rivano-gold);
+    flex-shrink: 0;
+  }
+
+  .sp-quote {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--rivano-brown);
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  .sp-author {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sp-name {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--rivano-brown);
+    letter-spacing: 0.06em;
+  }
+
+  .sp-city {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 300;
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    letter-spacing: 0.06em;
+  }
+</style>
