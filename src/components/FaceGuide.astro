@@ -1,0 +1,712 @@
+---
+interface Props {
+  whatsappUrl: string;
+  productName: string;
+}
+
+const { whatsappUrl, productName } = Astro.props as Props;
+---
+
+<section class="fg-section" aria-labelledby="fg-title">
+  <div class="fg-trigger-wrap">
+    <p class="fg-pre-label">Guia exclusivo</p>
+    <h2 id="fg-title" class="fg-trigger-title">Este modelo<br>vai ficar em você?</h2>
+    <button class="fg-trigger-btn" id="fg-open" type="button" aria-expanded="false" aria-controls="fg-sheet">
+      Descobrir agora
+      <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  <!-- Overlay + Sheet -->
+  <div class="fg-overlay" id="fg-sheet" role="dialog" aria-modal="true" aria-label="Guia de formato de rosto" aria-hidden="true">
+    <div class="fg-sheet" id="fg-sheet-inner">
+      <div class="fg-handle" aria-hidden="true"></div>
+
+      <!-- Progress -->
+      <div class="fg-progress" id="fg-progress" aria-hidden="true">
+        <div class="fg-prog-seg"><div class="fg-prog-fill" id="fg-p1"></div></div>
+        <div class="fg-prog-seg"><div class="fg-prog-fill" id="fg-p2"></div></div>
+      </div>
+
+      <div class="fg-screens">
+
+        <!-- INTRO -->
+        <div class="fg-screen fg-screen--active" id="fg-s0" role="region" aria-label="Introdução">
+          <div class="fg-intro-face" aria-hidden="true">
+            <svg width="90" height="112" viewBox="0 0 90 112">
+              <ellipse cx="45" cy="62" rx="33" ry="44" fill="none" stroke="rgba(196,168,130,0.3)" stroke-width="1.2">
+                <animate attributeName="rx" values="33;35;33" dur="4s" repeatCount="indefinite"/>
+              </ellipse>
+              <rect x="20" y="40" width="20" height="13" rx="6.5" fill="none" stroke="#c4a882" stroke-width="1.4" stroke-dasharray="3,2"/>
+              <rect x="50" y="40" width="20" height="13" rx="6.5" fill="none" stroke="#c4a882" stroke-width="1.4" stroke-dasharray="3,2"/>
+              <line x1="40" y1="46.5" x2="50" y2="46.5" stroke="#c4a882" stroke-width="1.4" stroke-dasharray="3,2"/>
+            </svg>
+          </div>
+          <p class="fg-step-label">2 perguntas rápidas</p>
+          <p class="fg-step-q">A resposta que você precisava antes de comprar.</p>
+          <button class="fg-btn-primary" id="fg-start" type="button">Começar</button>
+        </div>
+
+        <!-- Q1 -->
+        <div class="fg-screen" id="fg-s1" role="region" aria-label="Pergunta 1">
+          <div class="fg-face-zone" id="fg-fz1" aria-hidden="true">
+            <svg id="fg-face1" width="110" height="146" viewBox="0 0 100 130" style="transition: transform 0.15s ease-out;">
+              <path id="fg-fp1"
+                d="M50,8 C75,8 82,28 82,55 C82,82 70,95 50,95 C30,95 18,82 18,55 C18,28 25,8 50,8 Z"
+                fill="none" stroke="rgba(196,168,130,0.6)" stroke-width="1.5"/>
+              <line x1="18" y1="46" x2="10" y2="43" stroke="rgba(196,168,130,0.3)" stroke-width="1"/>
+              <line x1="82" y1="46" x2="90" y2="43" stroke="rgba(196,168,130,0.3)" stroke-width="1"/>
+            </svg>
+            <div class="fg-swipe-hints">
+              <span class="fg-hint" id="fg-hint1-nao">← Não</span>
+              <span class="fg-hint" id="fg-hint1-sim">Sim →</span>
+            </div>
+          </div>
+          <div class="fg-answer-area">
+            <span class="fg-step-label">Pergunta 1 de 2</span>
+            <p class="fg-step-q">Sua testa é mais larga que seu queixo?</p>
+            <div class="fg-answer-row">
+              <button class="fg-answer-card" type="button" data-q="1" data-val="nao">
+                <svg width="28" height="34" viewBox="0 0 28 34">
+                  <ellipse cx="14" cy="17" rx="11" ry="14" fill="none" stroke="rgba(196,168,130,0.7)" stroke-width="1.2"/>
+                  <line x1="3" y1="8" x2="25" y2="8" stroke="rgba(196,168,130,0.4)" stroke-width="1"/>
+                  <line x1="4" y1="26" x2="24" y2="26" stroke="rgba(196,168,130,0.4)" stroke-width="1"/>
+                </svg>
+                <span>Não,<br>proporcionais</span>
+              </button>
+              <button class="fg-answer-card" type="button" data-q="1" data-val="sim">
+                <svg width="28" height="34" viewBox="0 0 28 34">
+                  <path d="M14,30 C5,22 2,13 2,8 C2,4 5,2 8,2 C11,2 13,5 14,7 C15,5 17,2 20,2 C23,2 26,4 26,8 C26,13 23,22 14,30Z"
+                    fill="none" stroke="rgba(196,168,130,0.7)" stroke-width="1.2"/>
+                </svg>
+                <span>Sim,<br>testa maior</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="fg-screen" id="fg-s2" role="region" aria-label="Pergunta 2">
+          <div class="fg-face-zone" id="fg-fz2" aria-hidden="true">
+            <svg id="fg-face2" width="110" height="146" viewBox="0 0 100 130" style="transition: transform 0.15s ease-out;">
+              <path id="fg-fp2" d="" fill="none" stroke="rgba(196,168,130,0.6)" stroke-width="1.5"/>
+              <line x1="18" y1="46" x2="10" y2="43" stroke="rgba(196,168,130,0.3)" stroke-width="1"/>
+              <line x1="82" y1="46" x2="90" y2="43" stroke="rgba(196,168,130,0.3)" stroke-width="1"/>
+            </svg>
+            <div class="fg-swipe-hints">
+              <span class="fg-hint" id="fg-hint2-nao">← Não</span>
+              <span class="fg-hint" id="fg-hint2-sim">Sim →</span>
+            </div>
+          </div>
+          <div class="fg-answer-area">
+            <span class="fg-step-label">Pergunta 2 de 2</span>
+            <p class="fg-step-q">Seu rosto é mais longo que largo?</p>
+            <div class="fg-answer-row">
+              <button class="fg-answer-card" type="button" data-q="2" data-val="nao">
+                <svg width="28" height="34" viewBox="0 0 28 34">
+                  <ellipse cx="14" cy="17" rx="13" ry="9" fill="none" stroke="rgba(196,168,130,0.7)" stroke-width="1.2"/>
+                </svg>
+                <span>Não,<br>arredondado</span>
+              </button>
+              <button class="fg-answer-card" type="button" data-q="2" data-val="sim">
+                <svg width="28" height="34" viewBox="0 0 28 34">
+                  <ellipse cx="14" cy="17" rx="7" ry="14" fill="none" stroke="rgba(196,168,130,0.7)" stroke-width="1.2"/>
+                </svg>
+                <span>Sim,<br>alongado</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESULT -->
+        <div class="fg-screen fg-screen--result" id="fg-sr" role="region" aria-label="Resultado">
+          <div class="fg-result-upper">
+            <div class="fg-ring-wrap" aria-hidden="true">
+              <svg class="fg-ring-svg" viewBox="0 0 130 130">
+                <circle fill="none" stroke="rgba(196,168,130,0.08)" stroke-width="3" cx="65" cy="65" r="60"/>
+                <circle id="fg-ring" fill="none" stroke="#c4a882" stroke-width="3" stroke-linecap="round"
+                  cx="65" cy="65" r="60"
+                  stroke-dasharray="377" stroke-dashoffset="377"
+                  transform="rotate(-90 65 65)"
+                  style="transition: stroke-dashoffset 1.4s cubic-bezier(0.16,1,0.3,1);"/>
+              </svg>
+              <div class="fg-ring-face">
+                <svg width="80" height="100" viewBox="0 0 100 130">
+                  <path id="fg-rfp" d="" fill="none" stroke="rgba(196,168,130,0.4)" stroke-width="1.3"/>
+                  <g id="fg-rg" style="opacity:0;transition:opacity 0.6s 0.7s ease,transform 0.6s 0.7s cubic-bezier(0.16,1,0.3,1);transform:translateY(4px)">
+                    <rect x="18" y="42" width="26" height="16" rx="8" fill="none" stroke="#c4a882" stroke-width="2"/>
+                    <rect x="56" y="42" width="26" height="16" rx="8" fill="none" stroke="#c4a882" stroke-width="2"/>
+                    <line x1="44" y1="50" x2="56" y2="50" stroke="#c4a882" stroke-width="2"/>
+                    <line x1="8" y1="47" x2="18" y2="47" stroke="rgba(196,168,130,0.5)" stroke-width="1.5"/>
+                    <line x1="82" y1="47" x2="92" y2="47" stroke="rgba(196,168,130,0.5)" stroke-width="1.5"/>
+                  </g>
+                </svg>
+              </div>
+            </div>
+            <p class="fg-result-badge" id="fg-rbadge">Combinação Perfeita</p>
+            <p class="fg-result-verdict" id="fg-rverdict">Este modelo foi feito para você.</p>
+            <p class="fg-result-copy" id="fg-rcopy">Seu formato equilibra qualquer frame. O {productName} realça seus traços naturalmente.</p>
+          </div>
+          <div class="fg-result-lower">
+            <a class="fg-btn-whatsapp" id="fg-rwpp" href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+              Comprar pelo WhatsApp
+            </a>
+            <button class="fg-btn-reset" id="fg-reset" type="button">Refazer o guia</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+(function () {
+  var FACES = {
+    oval:    'M50,8 C75,8 82,28 82,55 C82,82 70,95 50,95 C30,95 18,82 18,55 C18,28 25,8 50,8 Z',
+    redondo: 'M50,12 C74,12 84,32 84,52 C84,74 70,90 50,90 C30,90 16,74 16,52 C16,32 26,12 50,12 Z',
+    coracao: 'M50,88 C28,70 8,50 8,28 C8,14 18,8 28,8 C36,8 44,13 50,22 C56,13 64,8 72,8 C82,8 92,14 92,28 C92,50 72,70 50,88 Z',
+    quadrado:'M22,10 Q22,8 28,8 L72,8 Q78,8 78,14 L78,82 Q78,92 68,92 L32,92 Q22,92 22,82 Z',
+    alongado:'M50,4 C68,4 76,22 76,55 C76,88 64,98 50,98 C36,98 24,88 24,55 C24,22 32,4 50,4 Z'
+  };
+
+  var RESULTS = {
+    perfeito: { score: 100, badge: '✦ Combinação Perfeita', verdict: 'Este modelo foi feito para você.', face: 'oval' },
+    favoravel:{ score: 84,  badge: '◆ Muito Favorável',     verdict: 'O modelo vai te favorecer bastante.', face: 'redondo' },
+    funciona: { score: 70,  badge: '○ Funciona Bem',         verdict: 'Uma escolha elegante para você.', face: 'quadrado' }
+  };
+
+  var ans = {};
+  var swipeX = 0;
+  var mDown = false;
+  var mX = 0;
+
+  var overlay  = document.getElementById('fg-sheet');
+  var openBtn  = document.getElementById('fg-open');
+  var startBtn = document.getElementById('fg-start');
+  var resetBtn = document.getElementById('fg-reset');
+  var ring     = document.getElementById('fg-ring');
+  var rGlasses = document.getElementById('fg-rg');
+  var rFacePath= document.getElementById('fg-rfp');
+
+  function openSheet() {
+    overlay.setAttribute('aria-hidden', 'false');
+    openBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSheet() {
+    overlay.setAttribute('aria-hidden', 'true');
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  function goTo(id) {
+    document.querySelectorAll('.fg-screen').forEach(function (s) {
+      s.classList.remove('fg-screen--active');
+    });
+    var el = document.getElementById(id);
+    if (el) el.classList.add('fg-screen--active');
+  }
+
+  function setProgress(p1, p2) {
+    document.getElementById('fg-p1').style.width = p1 + '%';
+    document.getElementById('fg-p2').style.width = p2 + '%';
+  }
+
+  function answer(q, val) {
+    ans[q] = val;
+    if (navigator.vibrate) navigator.vibrate(10);
+
+    if (q === 1) {
+      var fp2 = document.getElementById('fg-fp2');
+      if (fp2) {
+        fp2.style.d = 'path("' + (val === 'sim' ? FACES.coracao : FACES.oval) + '")';
+        fp2.setAttribute('d', val === 'sim' ? FACES.coracao : FACES.oval);
+      }
+      goTo('fg-s2');
+      setProgress(100, 50);
+    } else {
+      var type;
+      if (ans[1] === 'nao' && val === 'nao') type = 'perfeito';
+      else if (ans[1] === 'nao' && val === 'sim') type = 'favoravel';
+      else type = 'funciona';
+      showResult(type);
+    }
+  }
+
+  function showResult(type) {
+    var r = RESULTS[type];
+    document.getElementById('fg-rbadge').textContent = r.badge;
+    document.getElementById('fg-rverdict').textContent = r.verdict;
+    rFacePath.setAttribute('d', FACES[r.face]);
+    if (rFacePath.style) rFacePath.style.d = 'path("' + FACES[r.face] + '")';
+
+    ring.style.strokeDashoffset = '377';
+    rGlasses.style.opacity = '0';
+    rGlasses.style.transform = 'translateY(4px)';
+
+    goTo('fg-sr');
+    setProgress(100, 100);
+
+    setTimeout(function () {
+      ring.style.strokeDashoffset = String(377 - (377 * r.score / 100));
+    }, 300);
+
+    setTimeout(function () {
+      rGlasses.style.opacity = '1';
+      rGlasses.style.transform = 'translateY(0)';
+    }, 800);
+  }
+
+  function resetQuiz() {
+    ans = {};
+    setProgress(0, 0);
+    goTo('fg-s0');
+  }
+
+  // Swipe helpers
+  function applyTilt(svgId, dx) {
+    var el = document.getElementById(svgId);
+    if (el) el.style.transform = 'rotate(' + Math.max(-18, Math.min(18, dx * 0.1)) + 'deg)';
+  }
+
+  function resetTilt(svgId) {
+    var el = document.getElementById(svgId);
+    if (el) { el.style.transition = 'transform 0.4s ease'; el.style.transform = 'rotate(0deg)'; }
+  }
+
+  function highlightHint(q, dx) {
+    var prefix = q === 1 ? 'fg-hint1' : 'fg-hint2';
+    var nEl = document.getElementById(prefix + '-nao');
+    var sEl = document.getElementById(prefix + '-sim');
+    if (!nEl || !sEl) return;
+    nEl.classList.toggle('fg-hint--active', dx < -30);
+    sEl.classList.toggle('fg-hint--active', dx > 30);
+  }
+
+  function resetHints(q) {
+    var prefix = q === 1 ? 'fg-hint1' : 'fg-hint2';
+    ['nao','sim'].forEach(function(v) {
+      var el = document.getElementById(prefix + '-' + v);
+      if (el) el.classList.remove('fg-hint--active');
+    });
+  }
+
+  // Touch events
+  [1, 2].forEach(function (q) {
+    var fz = document.getElementById('fg-fz' + q);
+    var svgId = 'fg-face' + q;
+    if (!fz) return;
+
+    fz.addEventListener('touchstart', function (e) { swipeX = e.touches[0].clientX; }, { passive: true });
+    fz.addEventListener('touchmove', function (e) {
+      var dx = e.touches[0].clientX - swipeX;
+      applyTilt(svgId, dx);
+      highlightHint(q, dx);
+    }, { passive: true });
+    fz.addEventListener('touchend', function (e) {
+      var dx = e.changedTouches[0].clientX - swipeX;
+      resetTilt(svgId);
+      resetHints(q);
+      if (Math.abs(dx) > 55) answer(q, dx > 0 ? 'sim' : 'nao');
+    });
+
+    fz.addEventListener('mousedown', function (e) { mDown = true; mX = e.clientX; });
+    fz.addEventListener('mousemove', function (e) {
+      if (!mDown) return;
+      var dx = e.clientX - mX;
+      applyTilt(svgId, dx);
+      highlightHint(q, dx);
+    });
+    fz.addEventListener('mouseup', function (e) {
+      if (!mDown) return;
+      mDown = false;
+      var dx = e.clientX - mX;
+      resetTilt(svgId);
+      resetHints(q);
+      if (Math.abs(dx) > 55) answer(q, dx > 0 ? 'sim' : 'nao');
+    });
+    fz.addEventListener('mouseleave', function () {
+      if (!mDown) return;
+      mDown = false;
+      resetTilt(svgId);
+      resetHints(q);
+    });
+  });
+
+  // Answer card clicks
+  document.querySelectorAll('.fg-answer-card').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      answer(Number(btn.getAttribute('data-q')), btn.getAttribute('data-val'));
+    });
+  });
+
+  // Controls
+  if (openBtn) openBtn.addEventListener('click', openSheet);
+  if (startBtn) startBtn.addEventListener('click', function () { goTo('fg-s1'); setProgress(50, 0); });
+  if (resetBtn) resetBtn.addEventListener('click', function () { resetQuiz(); });
+
+  // Close on overlay click
+  if (overlay) {
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeSheet();
+    });
+  }
+})();
+</script>
+
+<style>
+  .fg-section {
+    background: var(--rivano-off-white);
+    padding: 48px 24px;
+    border-top: 1px solid var(--rivano-beige);
+  }
+
+  .fg-pre-label {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--rivano-brown) 42%, transparent);
+    margin-bottom: 8px;
+  }
+
+  .fg-trigger-title {
+    font-family: var(--font-serif);
+    font-size: clamp(30px, 8vw, 44px);
+    font-weight: 300;
+    color: var(--rivano-brown);
+    line-height: 1.05;
+    margin-bottom: 20px;
+  }
+
+  .fg-trigger-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--rivano-brown);
+    color: var(--rivano-brown);
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    min-height: 48px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .fg-trigger-btn:hover {
+    background: var(--rivano-brown);
+    color: var(--rivano-off-white);
+  }
+
+  /* Overlay */
+  .fg-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(26, 18, 16, 0);
+    pointer-events: none;
+    transition: background 0.35s ease-out;
+  }
+
+  .fg-overlay[aria-hidden="false"] {
+    background: rgba(26, 18, 16, 0.7);
+    pointer-events: auto;
+  }
+
+  /* Sheet */
+  .fg-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 86%;
+    background: #0e0a08;
+    border-radius: 20px 20px 0 0;
+    transform: translateY(100%);
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .fg-overlay[aria-hidden="false"] .fg-sheet {
+    transform: translateY(0);
+  }
+
+  .fg-handle {
+    width: 36px;
+    height: 3px;
+    background: rgba(196, 168, 130, 0.2);
+    border-radius: 2px;
+    margin: 12px auto 0;
+    flex-shrink: 0;
+  }
+
+  /* Progress */
+  .fg-progress {
+    display: flex;
+    gap: 4px;
+    padding: 14px 24px 0;
+    flex-shrink: 0;
+  }
+
+  .fg-prog-seg {
+    height: 2px;
+    flex: 1;
+    background: rgba(196, 168, 130, 0.12);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .fg-prog-fill {
+    height: 100%;
+    background: #c4a882;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+
+  /* Screens */
+  .fg-screens {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fg-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(30px) scale(0.97);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow-y: auto;
+  }
+
+  .fg-screen--active {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: auto;
+  }
+
+  /* Intro screen */
+  #fg-s0 {
+    align-items: center;
+    justify-content: center;
+    padding: 28px 28px 32px;
+    gap: 0;
+    text-align: center;
+  }
+
+  .fg-intro-face {
+    margin-bottom: 24px;
+    filter: drop-shadow(0 0 14px rgba(196, 168, 130, 0.15));
+  }
+
+  /* Q screens */
+  .fg-face-zone {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: grab;
+    user-select: none;
+    background: radial-gradient(ellipse at 50% 55%, rgba(196, 168, 130, 0.04) 0%, transparent 70%);
+    min-height: 160px;
+  }
+
+  .fg-swipe-hints {
+    position: absolute;
+    bottom: 12px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .fg-hint {
+    font-family: var(--font-sans);
+    font-size: 7px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(196, 168, 130, 0.2);
+    transition: color 0.2s;
+  }
+
+  .fg-hint--active { color: rgba(196, 168, 130, 0.75); }
+
+  .fg-answer-area {
+    padding: 16px 24px 28px;
+    flex-shrink: 0;
+    background: #0e0a08;
+  }
+
+  .fg-step-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(196, 168, 130, 0.4);
+    margin-bottom: 6px;
+  }
+
+  .fg-step-q {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 300;
+    color: #f5f0e8;
+    line-height: 1.25;
+    margin-bottom: 18px;
+  }
+
+  .fg-answer-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .fg-answer-card {
+    background: rgba(245, 240, 232, 0.04);
+    border: 1px solid rgba(196, 168, 130, 0.14);
+    padding: 14px 10px 12px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .fg-answer-card:hover, .fg-answer-card:active {
+    background: rgba(196, 168, 130, 0.1);
+    border-color: rgba(196, 168, 130, 0.4);
+  }
+
+  .fg-answer-card span {
+    font-family: var(--font-sans);
+    font-size: 9px;
+    color: rgba(245, 240, 232, 0.65);
+    letter-spacing: 0.04em;
+    line-height: 1.4;
+  }
+
+  /* Result */
+  .fg-screen--result {
+    flex-direction: column;
+  }
+
+  .fg-result-upper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 24px 16px;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 45%, rgba(196, 168, 130, 0.07) 0%, transparent 65%);
+  }
+
+  .fg-ring-wrap {
+    width: 130px;
+    height: 130px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .fg-ring-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .fg-ring-face {
+    position: absolute;
+    inset: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .fg-result-badge {
+    font-family: var(--font-sans);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c4a882;
+    margin-bottom: 8px;
+  }
+
+  .fg-result-verdict {
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 300;
+    color: #f5f0e8;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .fg-result-copy {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 300;
+    color: rgba(245, 240, 232, 0.45);
+    line-height: 1.75;
+    max-width: 240px;
+  }
+
+  .fg-result-lower {
+    padding: 16px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid rgba(196, 168, 130, 0.08);
+  }
+
+  .fg-btn-primary, .fg-btn-whatsapp {
+    display: block;
+    width: 100%;
+    background: #c4a882;
+    color: #0e0a08;
+    border: none;
+    padding: 14px;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .fg-btn-primary:hover, .fg-btn-whatsapp:hover { opacity: 0.85; }
+
+  .fg-btn-reset {
+    background: transparent;
+    border: 1px solid rgba(196, 168, 130, 0.2);
+    color: rgba(245, 240, 232, 0.4);
+    font-family: var(--font-sans);
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .fg-btn-reset:hover {
+    border-color: rgba(196, 168, 130, 0.4);
+    color: rgba(245, 240, 232, 0.65);
+  }
+</style>
