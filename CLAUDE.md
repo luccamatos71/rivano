@@ -20,7 +20,7 @@ npm run scrape:images # baixa e otimiza fotos dos produtos
 | `public/products/<slug>/` | Fotos otimizadas em .webp |
 | `public/banners/` | Assets de hero da Home |
 | `public/editorial/` | Assets das campanhas/editoriais da Home |
-| `public/editorial/lifestyle/` | Fotos de pessoas usando Rivano (faixa `rivano-lifestyle`) |
+| `public/editorial/lifestyle/` | Fotos de pessoas usando Rivano (seção `rivano-fits`) |
 | `src/styles/global.css` | Tokens de cor e classes base |
 
 ## Páginas
@@ -40,7 +40,6 @@ npm run scrape:images # baixa e otimiza fotos dos produtos
 - `rivano-summer-notes` usa a arte final `public/editorial/rivano-summer-notes-final.webp`. A tipografia “ÚLTIMO barco.” e a assinatura já estão incorporadas no asset: não duplicá-las em HTML/CSS. O inset inferior esquerdo continua usando `rivano-summer-notes.webp`, sem ícone/interação.
 - `summer-selection` vem imediatamente após essa arte: grid mobile de duas colunas com Saint Tropez, Tropea, Mykonos e Positano, nesta ordem. Dados, preços e rotas vêm de `products.json`. O cabeçalho “SELEÇÃO DE VERÃO” compartilha o eixo esquerdo do inset por `--summer-notes-inset-left`.
 - Os derivados transparentes `public/products/rivano-*/editorial-grid.webp` foram gerados a partir dos originais para este grid. Preservar os originais; não voltar a usar blend modes ou tiles/cards com fundo branco para esses quatro produtos.
-- `rivano-lifestyle` ("Rivano em movimento") substituiu o antigo bloco marrom `manifesto-section` e vem logo depois de `summer-selection`: é a virada de produto para pessoas. Faixa horizontal de fotografia lifestyle com uma foto dominante e as vizinhas cortadas nas duas bordas, mais headline pesada em `--font-sans`. Sem texto, preço, badge ou overlay sobre as fotos — a fotografia continua fotografia.
-- O recorte da borda esquerda vem de um clone da última foto (`--lifestyle-lead`), fora do alcance da rolagem; as dez fotos reais continuam todas acessíveis. Três degraus: empilhado no mobile, empilhado com tipo maior em 768px, faixa e headline lado a lado alinhadas pela base em 1024px.
-- A headline de `rivano-lifestyle` ainda é PLACEHOLDER: trocar o array `lifestyleHeadlineLines` no frontmatter — um `<span>` por linha. Linhas longas voltam a quebrar sozinhas na coluna estreita do desktop.
+- `rivano-fits` ("Rivano Society") ocupa a posição do antigo manifesto, logo depois de `summer-selection`. É um clone estrutural deliberado da seção "Worn by the family" de fouramsterdam.com — protótipo em avaliação, não RIVANIZAR a geometria sem aprovação: grid 2 colunas com herói span 2 linhas (mobile 156×405 + células 4:5; ≥768 colunas 55/45 com linhas fixas de 300px), gutter 16→20, margens 24, headline 24px com `text-indent: 50px`, labels brancos 11px sobre gradiente, CTA sublinhado (rodapé no mobile, topo direito ≥768).
+- O herói de `rivano-fits` usa `<picture>`: retrato `rivano-lifestyle-02.webp` até 1199px e o derivado `rivano-lifestyle-02-wide.webp` (recorte 1.2:1 do original, top=1100) a partir de 1200px. Copy e labels são placeholder de protótipo; a foto da marina golden hour (`-03`) está reservada, fora desta rodada.
 - A linguagem estabelecida para esses blocos é cream/off-white, tipografia marrom escura, objetos isolados, fotografia dominante e ausência de cards, sombras, pills ou chrome de ecommerce genérico.

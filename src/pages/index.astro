@@ -26,30 +26,6 @@ if (!ibizaProduct) {
 const ibizaProductHref = `/produtos/${ibizaProduct.slug}`;
 const ibizaProductName = ibizaProduct.name.replace(/^Rivano\s+/i, "");
 
-// PLACEHOLDER — a copy editorial final ainda será definida.
-// Uma linha por <span>: trocar o conteúdo deste array troca a headline inteira.
-const lifestyleHeadlineLines = ["O sol", "encontra", "quem sai", "de casa."];
-
-// Sequência editorial da faixa. A primeira entra como foto dominante em repouso;
-// a última é clonada como recorte de entrada na borda esquerda.
-const lifestyleImages = [
-  { file: 1, alt: "Óculos Rivano redondos em passeio de barco" },
-  { file: 2, alt: "Look de verão com óculos Rivano entre palmeiras" },
-  { file: 3, alt: "Óculos Rivano brancos no fim de tarde na marina" },
-  { file: 4, alt: "Retrato com óculos Rivano de lente âmbar" },
-  { file: 10, alt: "Óculos Rivano brancos apoiados sobre uma bolsa" },
-  { file: 5, alt: "Óculos Rivano sob a sombra da folhagem" },
-  { file: 6, alt: "Óculos Rivano no fim de tarde na rua" },
-  { file: 8, alt: "Óculos Rivano em uma noite ao ar livre" },
-  { file: 7, alt: "Óculos Rivano com casaco de inverno" },
-  { file: 9, alt: "Óculos Rivano em dia frio de neblina" },
-].map(({ file, alt }) => ({
-  alt,
-  src: `/editorial/lifestyle/rivano-lifestyle-${String(file).padStart(2, "0")}.webp`,
-}));
-
-const lifestyleLeadIn = lifestyleImages[lifestyleImages.length - 1];
-
 const societyImages = Array.from({ length: 8 }, (_, index) => {
   const imageIndex = String(index + 1).padStart(2, "0");
 
@@ -269,49 +245,61 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       </div>
     </section>
 
-    <section class="rivano-lifestyle" aria-labelledby="rivano-lifestyle-title">
-      <p class="rivano-lifestyle-label">Rivano em movimento</p>
-
-      <div class="rivano-lifestyle-body">
-        <div
-          class="rivano-lifestyle-strip"
-          role="group"
-          aria-label="Fotos de quem usa Rivano"
-          tabindex="0"
-        >
-          <ul class="rivano-lifestyle-track">
-            <li class="rivano-lifestyle-item rivano-lifestyle-item--lead" aria-hidden="true">
-              <img
-                class="rivano-lifestyle-image"
-                src={lifestyleLeadIn.src}
-                alt=""
-                width="1080"
-                height="1350"
-                loading="lazy"
-                decoding="async"
-              />
-            </li>
-            {
-              lifestyleImages.map((image) => (
-                <li class="rivano-lifestyle-item">
-                  <img
-                    class="rivano-lifestyle-image"
-                    src={image.src}
-                    alt={image.alt}
-                    width="1080"
-                    height="1350"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </li>
-              ))
-            }
-          </ul>
+    <section class="rivano-fits" aria-labelledby="rivano-fits-title">
+      <div class="rivano-fits-header">
+        <div>
+          <p class="rivano-fits-eyebrow">Rivano Society</p>
+          <h2 id="rivano-fits-title" class="rivano-fits-title">Seen on you. Somewhere under the sun.</h2>
         </div>
+        <a class="rivano-fits-cta rivano-fits-cta--header" href="/catalogo">See the Society</a>
+      </div>
 
-        <h2 id="rivano-lifestyle-title" class="rivano-lifestyle-title" data-reveal="fade">
-          {lifestyleHeadlineLines.map((line) => <span class="rivano-lifestyle-line">{line}</span>)}
-        </h2>
+      <div class="rivano-fits-grid">
+        <figure class="rivano-fits-item rivano-fits-item--hero">
+          <picture>
+            <source media="(min-width: 1200px)" srcset="/editorial/lifestyle/rivano-lifestyle-02-wide.webp" width="1500" height="1250" />
+            <img
+              class="rivano-fits-photo rivano-fits-photo--hero"
+              src="/editorial/lifestyle/rivano-lifestyle-02.webp"
+              alt="Look de verão com óculos Rivano entre palmeiras"
+              width="1080"
+              height="1350"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+          <figcaption class="rivano-fits-label">RIVANO</figcaption>
+        </figure>
+
+        <figure class="rivano-fits-item">
+          <img
+            class="rivano-fits-photo rivano-fits-photo--portrait"
+            src="/editorial/lifestyle/rivano-lifestyle-04.webp"
+            alt="Retrato com óculos Rivano de lente âmbar"
+            width="1080"
+            height="1350"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption class="rivano-fits-label">RIVANO</figcaption>
+        </figure>
+
+        <figure class="rivano-fits-item">
+          <img
+            class="rivano-fits-photo"
+            src="/editorial/lifestyle/rivano-lifestyle-01.webp"
+            alt="Óculos Rivano redondos em passeio de barco"
+            width="1080"
+            height="1350"
+            loading="lazy"
+            decoding="async"
+          />
+          <figcaption class="rivano-fits-label">RIVANO</figcaption>
+        </figure>
+      </div>
+
+      <div class="rivano-fits-footer">
+        <a class="rivano-fits-cta" href="/catalogo">See the Society</a>
       </div>
     </section>
 
@@ -1463,86 +1451,123 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     text-transform: uppercase;
   }
 
-  /* ── Rivano em movimento ─────────────────────────────────
-     Faixa horizontal de fotografia lifestyle: uma foto dominante,
-     vizinhas cortadas nas duas bordas, headline logo abaixo.
-     --lifestyle-lead é o quanto a foto de entrada fica cortada
-     pela borda esquerda. */
-  .rivano-lifestyle {
-    --lifestyle-lead: 70vw;
+  /* ── Rivano Society — clone estrutural da secao "Worn by the family"
+     (fouramsterdam.com). Numeros extraidos da implementacao real:
+     grid 2 colunas / gutter 16 / margens 24, heroi span 2 linhas,
+     celulas 4:5, headline 24px com text-indent 50px, labels brancos
+     sobre gradiente, CTA sublinhado centralizado no mobile. */
+  .rivano-fits {
     background: var(--rivano-off-white);
     color: var(--rivano-brown);
-    overflow: clip;
-    padding: 72px 0 92px;
+    padding: 44px 0;
   }
 
-  .rivano-lifestyle-label {
-    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+  .rivano-fits-header {
+    align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px 28px;
+  }
+
+  .rivano-fits-eyebrow {
     font-family: var(--font-sans);
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.16em;
-    line-height: 1.35;
-    margin: 0 0 24px;
-    padding-left: var(--summer-notes-inset-left);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+    margin: 0;
     text-transform: uppercase;
   }
 
-  .rivano-lifestyle-strip {
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .rivano-lifestyle-strip::-webkit-scrollbar {
-    display: none;
-  }
-
-  .rivano-lifestyle-track {
-    display: flex;
-    gap: 4px;
-    list-style: none;
+  .rivano-fits-title {
+    font-family: var(--font-sans);
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
     margin: 0;
-    padding: 0;
-    width: max-content;
+    text-indent: 50px;
   }
 
-  .rivano-lifestyle-item {
-    flex: 0 0 75vw;
-    scroll-snap-align: center;
+  .rivano-fits-grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 24px;
   }
 
-  /* Recorte de entrada: clone da última foto, cortado pela borda.
-     A área cortada fica fora do alcance da rolagem, então nenhuma
-     das dez fotos reais deixa de ser acessível. */
-  .rivano-lifestyle-item--lead {
-    margin-left: calc(-1 * var(--lifestyle-lead));
-    scroll-snap-align: none;
+  .rivano-fits-item {
+    margin: 0;
+    overflow: hidden;
+    position: relative;
   }
 
-  .rivano-lifestyle-image {
-    aspect-ratio: 281 / 400;
+  .rivano-fits-item:not(.rivano-fits-item--hero) {
+    aspect-ratio: 4 / 5;
+  }
+
+  .rivano-fits-item--hero {
+    grid-row: 1 / 3;
+  }
+
+  .rivano-fits-photo {
     display: block;
-    height: auto;
+    height: 100%;
     object-fit: cover;
-    object-position: center 38%;
+    object-position: 50% 50%;
     width: 100%;
   }
 
-  .rivano-lifestyle-title {
-    font-family: var(--font-sans);
-    font-size: clamp(46px, 13.6vw, 68px);
-    font-weight: 500;
-    letter-spacing: -0.055em;
-    line-height: 0.92;
-    margin: 20px 0 0;
-    padding: 0 16px 0 calc(var(--summer-notes-inset-left) + 9vw);
+  .rivano-fits-item--hero picture {
+    display: block;
+    height: 100%;
   }
 
-  .rivano-lifestyle-line {
-    display: block;
+  .rivano-fits-photo--hero {
+    object-position: 50% 28%;
+  }
+
+  .rivano-fits-photo--portrait {
+    object-position: 50% 80%;
+  }
+
+  .rivano-fits-label {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
+    bottom: 0;
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 500;
+    left: 0;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    margin: 0;
+    padding: 40px 12px 12px;
+    position: absolute;
+    right: 0;
+  }
+
+  .rivano-fits-footer {
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+  }
+
+  .rivano-fits-cta {
+    border-bottom: 1px solid currentColor;
+    color: var(--rivano-brown);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.07em;
+    line-height: 1.45;
+    padding-bottom: 2px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .rivano-fits-cta--header {
+    display: none;
   }
 
   .brand-story-section {
@@ -1826,31 +1851,24 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    /* Tablet: a composição continua empilhada — a coluna da headline
-       só nasce em 1024px, onde há largura para as linhas inteiras. */
-    .rivano-lifestyle {
-      --lifestyle-lead: 12vw;
-      padding: 104px 0 116px;
+    /* ≥768: layout desktop da referencia — colunas 55/45, linhas
+       fixas de 300px, CTA migra do rodape para o topo direito. */
+    .rivano-fits-grid {
+      gap: 20px;
+      grid-template-columns: 55fr 45fr;
+      grid-template-rows: 300px 300px;
     }
 
-    .rivano-lifestyle-label {
-      margin-bottom: 30px;
-      padding-left: 40px;
+    .rivano-fits-item:not(.rivano-fits-item--hero) {
+      aspect-ratio: auto;
     }
 
-    .rivano-lifestyle-item {
-      flex: 0 0 min(46vw, 380px);
+    .rivano-fits-cta--header {
+      display: inline-block;
     }
 
-    .rivano-lifestyle-image {
-      aspect-ratio: 356 / 450;
-    }
-
-    .rivano-lifestyle-title {
-      font-size: clamp(64px, 9vw, 96px);
-      line-height: 0.94;
-      margin: 26px 0 0;
-      padding: 0 40px 0 calc(40px + 6vw);
+    .rivano-fits-footer {
+      display: none;
     }
 
     .brand-story-section {
@@ -1993,34 +2011,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     .rivano-society-cta-wrap {
       margin-top: 56px;
       padding: 0 40px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .rivano-lifestyle {
-      --lifestyle-lead: 15vw;
-      padding: 128px 0 136px;
-    }
-
-    /* A faixa ocupa a esquerda e é cortada pela coluna da headline,
-       que fica alinhada pela base — a tensão vem da adjacência.
-       Copy nova precisa caber em linhas curtas: cada <span> é uma
-       linha e uma linha longa demais volta a quebrar sozinha. */
-    .rivano-lifestyle-body {
-      align-items: end;
-      display: grid;
-      grid-template-columns: minmax(0, 68fr) minmax(0, 32fr);
-    }
-
-    .rivano-lifestyle-item {
-      flex: 0 0 min(26vw, 380px);
-    }
-
-    .rivano-lifestyle-title {
-      font-size: clamp(58px, 6.2vw, 100px);
-      line-height: 0.95;
-      margin: 0;
-      padding: 0 24px;
     }
   }
 
