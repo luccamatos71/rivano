@@ -129,9 +129,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
           />
         </picture>
 
-        <div class="featured-product-identity" aria-label={`Modelo em destaque: ${ibizaProductName}`}>
-          <h2>{ibizaProductName}</h2>
-        </div>
 
         <div class="featured-product-commerce" aria-label={`Informações do modelo ${ibizaProductName}`}>
           <div class="featured-product-commerce-details">
@@ -583,13 +580,13 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .featured-product-story {
-    background: var(--rivano-off-white);
-    margin-top: 20px;
+    background: #fff;
+    padding-top: 20px;
     position: relative;
   }
 
   .featured-product-story-stage {
-    background: var(--rivano-off-white);
+    background: #fff;
     height: clamp(680px, 94svh, 860px);
     isolation: isolate;
     overflow: hidden;
@@ -611,26 +608,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     object-fit: cover;
     object-position: 50% 32%;
     width: 100%;
-  }
-
-  .featured-product-identity {
-    color: #202320;
-    left: 18px;
-    pointer-events: none;
-    position: absolute;
-    top: clamp(38px, 6svh, 54px);
-    transition: opacity 180ms ease;
-    z-index: 3;
-  }
-
-  .featured-product-identity h2 {
-    font-family: var(--font-sans);
-    font-size: clamp(44px, 13vw, 58px);
-    font-weight: 400;
-    letter-spacing: -0.075em;
-    line-height: 0.82;
-    margin: 0;
-    text-transform: uppercase;
   }
 
   .featured-product-commerce-link:focus-visible {
@@ -1963,10 +1940,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .featured-product-identity {
-      transition: none;
-    }
-
     .opening-entrance,
     .opening-products .editorial-product {
       animation: none;
