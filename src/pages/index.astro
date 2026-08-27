@@ -1620,26 +1620,26 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
      14/19.6, 16px ate o link, 48px ate o proximo capitulo.
      A coluna estreita e o branco em volta sao o desenho: nao encher. */
   .rivano-fits-outro {
-    margin: 59px 24px 0;
-    max-width: 176px;
+    margin: 72px 24px 0;
+    max-width: 82%;
   }
 
   .rivano-fits-outro-title {
     color: var(--rivano-brown);
     font-family: var(--font-serif);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 300;
-    letter-spacing: 0;
-    line-height: 1.25;
-    margin: 0 0 16px;
+    letter-spacing: 0.005em;
+    line-height: 1.35;
+    margin: 0 0 14px;
   }
 
   .rivano-fits-outro-text {
-    color: color-mix(in srgb, var(--rivano-brown) 78%, transparent);
+    color: color-mix(in srgb, var(--rivano-brown) 70%, transparent);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 300;
-    line-height: 1.45;
+    line-height: 1.6;
     margin: 0;
   }
 
@@ -1654,7 +1654,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     gap: 4px;
     letter-spacing: 0.12em;
     line-height: 1.2;
-    margin-top: 16px;
+    margin-top: 14px;
     min-height: 44px;
     text-decoration: none;
     text-transform: uppercase;
@@ -1955,9 +1955,20 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
     /* No desktop a referencia mantem a mesma tipografia e apenas afasta
        o bloco da fotografia (139px) — a coluna segue estreita. */
+    /* A medida cresce para a frase respirar; o bloco continua na
+       esquerda e o branco a direita segue sendo o desenho. */
     .rivano-fits-outro {
       margin-top: 139px;
-      max-width: 219px;
+      max-width: 460px;
+    }
+
+    .rivano-fits-outro-title {
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .rivano-fits-outro-text {
+      font-size: 14px;
     }
 
     .rivano-fits-intro {
