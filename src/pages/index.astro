@@ -114,10 +114,10 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       </div>
     </section>
 
-    <section class="featured-product-story" data-featured-story aria-label="Campanha interativa do modelo Ibiza">
-      <div class="featured-product-story-stage" data-story-stage style="--story-divider: 62%;">
+    <section class="featured-product-story" aria-label="Campanha do modelo Ibiza">
+      <div class="featured-product-story-stage">
         <img
-          class="featured-product-story-image featured-product-story-image--reveal"
+          class="featured-product-story-image"
           src="/editorial/rivano-ibiza-story-reveal.jpg"
           alt="Influenciadora Rivano usando o modelo Ibiza em uma paisagem nevada"
           width="959"
@@ -126,36 +126,9 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
           decoding="async"
         />
 
-        <div class="featured-product-story-overlay" data-story-overlay aria-hidden="true">
-          <img
-            class="featured-product-story-image featured-product-story-image--entry"
-            src="/editorial/rivano-ibiza-story-entry.jpg"
-            alt=""
-            width="959"
-            height="1280"
-            loading="lazy"
-            decoding="async"
-          />
-        </div>
-
         <div class="featured-product-identity" aria-label={`Modelo em destaque: ${ibizaProductName}`}>
           <h2>{ibizaProductName}</h2>
         </div>
-
-        <button
-          class="featured-product-divider"
-          data-story-divider
-          type="button"
-          role="slider"
-          aria-label="Revelar outra fotografia da campanha Ibiza"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-valuenow="62"
-          aria-valuetext="62 por cento revelado"
-        >
-          <span class="featured-product-divider-rule" aria-hidden="true"></span>
-          <span class="featured-product-divider-grip" aria-hidden="true"><i></i><i></i><i></i></span>
-        </button>
 
         <div class="featured-product-commerce" aria-label={`Informações do modelo ${ibizaProductName}`}>
           <div class="featured-product-commerce-details">
@@ -347,13 +320,13 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
       <figure class="rivano-break">
         <picture>
-          <source media="(min-width: 768px)" srcset="/editorial/lifestyle/rivano-break-wide.webp" width="1800" height="1013" />
+          <source media="(min-width: 768px)" srcset="/editorial/lifestyle/rivano-break-wide.webp" width="1024" height="576" />
           <img
             class="rivano-break-photo"
             src="/editorial/lifestyle/rivano-break-portrait.webp"
             alt="Óculos Rivano brancos sobre uma revista, ao lado de bolsa de palha e chapéu na areia"
-            width="1080"
-            height="1440"
+            width="1024"
+            height="1365"
             loading="lazy"
             decoding="async"
           />
@@ -498,114 +471,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     }
   }
 
-  const featuredStory = document.querySelector("[data-featured-story]");
-
-  if (featuredStory instanceof HTMLElement && !featuredStory.dataset.storyInitialized) {
-    featuredStory.dataset.storyInitialized = "true";
-    const storyStage = featuredStory.querySelector("[data-story-stage]");
-    const divider = featuredStory.querySelector("[data-story-divider]");
-    if (storyStage instanceof HTMLElement && divider instanceof HTMLButtonElement) {
-      const clamp = (value, minimum = 0, maximum = 100) => Math.min(Math.max(value, minimum), maximum);
-      let currentPosition = Number.parseFloat(divider.getAttribute("aria-valuenow") || "62");
-      let queuedPosition = currentPosition;
-      let animationFrame = 0;
-      let activePointer = null;
-      let startX = 0;
-      let startY = 0;
-      let gesture = null;
-
-      const applyPosition = (position) => {
-        currentPosition = clamp(position);
-        storyStage.style.setProperty("--story-divider", `${currentPosition}%`);
-        divider.setAttribute("aria-valuenow", String(Math.round(currentPosition)));
-        divider.setAttribute("aria-valuetext", `${Math.round(currentPosition)} por cento revelado`);
-      };
-
-      const queuePosition = (position) => {
-        queuedPosition = clamp(position);
-        if (animationFrame) return;
-
-        animationFrame = window.requestAnimationFrame(() => {
-          animationFrame = 0;
-          applyPosition(queuedPosition);
-        });
-      };
-
-      const positionFromPointer = (clientX) => {
-        const bounds = storyStage.getBoundingClientRect();
-        if (!bounds.width) return currentPosition;
-        return ((clientX - bounds.left) / bounds.width) * 100;
-      };
-
-      divider.addEventListener("pointerdown", (event) => {
-        activePointer = event.pointerId;
-        startX = event.clientX;
-        startY = event.clientY;
-        gesture = "pending";
-        divider.setPointerCapture(event.pointerId);
-      });
-
-      divider.addEventListener("pointermove", (event) => {
-        if (event.pointerId !== activePointer || !gesture) return;
-
-        const deltaX = event.clientX - startX;
-        const deltaY = event.clientY - startY;
-
-        if (gesture === "pending") {
-          if (Math.hypot(deltaX, deltaY) < 5) return;
-          gesture = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
-
-          if (gesture === "vertical") {
-            if (divider.hasPointerCapture(event.pointerId)) divider.releasePointerCapture(event.pointerId);
-            return;
-          }
-        }
-
-        if (gesture !== "horizontal") return;
-        event.preventDefault();
-        storyStage.classList.add("is-dragging");
-        queuePosition(positionFromPointer(event.clientX));
-      });
-
-      const finishDrag = (event) => {
-        if (event.pointerId !== activePointer) return;
-        if (animationFrame) {
-          window.cancelAnimationFrame(animationFrame);
-          animationFrame = 0;
-          applyPosition(queuedPosition);
-        }
-
-        if (divider.hasPointerCapture(event.pointerId)) divider.releasePointerCapture(event.pointerId);
-        activePointer = null;
-        gesture = null;
-        storyStage.classList.remove("is-dragging");
-      };
-
-      divider.addEventListener("pointerup", finishDrag);
-      divider.addEventListener("pointercancel", finishDrag);
-      divider.addEventListener("lostpointercapture", () => {
-        activePointer = null;
-        gesture = null;
-        storyStage.classList.remove("is-dragging");
-      });
-
-      divider.addEventListener("keydown", (event) => {
-        const keyboardSteps = {
-          ArrowLeft: -5,
-          ArrowRight: 5,
-          Home: -100,
-          End: 100,
-        };
-        const step = keyboardSteps[event.key];
-        if (step === undefined) return;
-
-        event.preventDefault();
-        applyPosition(step === -100 ? 0 : step === 100 ? 100 : currentPosition + step);
-      });
-
-      applyPosition(currentPosition);
-    }
-  }
 </script>
 
 <style>
@@ -721,7 +586,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .featured-product-story-stage {
-    --story-divider: 62%;
     background: #dfe1e1;
     height: clamp(680px, 94svh, 860px);
     isolation: isolate;
@@ -732,8 +596,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     width: 100%;
   }
 
-  .featured-product-story-image,
-  .featured-product-story-overlay {
+  .featured-product-story-image {
     inset: 0;
     position: absolute;
   }
@@ -742,25 +605,8 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     display: block;
     height: 100%;
     object-fit: cover;
-    width: 100%;
-  }
-
-  .featured-product-story-image--entry {
-    object-position: 47% 46%;
-    transform: translate3d(0, -4.5%, 0) scale(1.115);
-  }
-
-  .featured-product-story-image--reveal {
     object-position: 49% 46%;
-    transform: translate3d(0, -3.5%, 0) scale(1.11);
-  }
-
-  .featured-product-story-overlay {
-    clip-path: inset(0 calc(100% - var(--story-divider)) 0 0);
-    overflow: hidden;
-    pointer-events: none;
-    will-change: clip-path;
-    z-index: 1;
+    width: 100%;
   }
 
   .featured-product-identity {
@@ -783,79 +629,8 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     text-transform: uppercase;
   }
 
-  .featured-product-divider {
-    -webkit-tap-highlight-color: transparent;
-    background: transparent;
-    border: 0;
-    cursor: ew-resize;
-    height: 100%;
-    left: var(--story-divider);
-    margin: 0;
-    outline-offset: -7px;
-    padding: 0;
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    touch-action: pan-y;
-    width: 54px;
-    z-index: 5;
-  }
-
-  .featured-product-divider-rule {
-    background: rgba(24, 28, 27, 0.9);
-    box-shadow: 1px 0 0 rgba(249, 247, 241, 0.5);
-    height: 100%;
-    left: 50%;
-    position: absolute;
-    top: 0;
-    transform: translateX(-50%);
-    width: 1px;
-  }
-
-  .featured-product-divider-grip {
-    align-items: center;
-    background: rgba(24, 28, 27, 0.94);
-    border: 1px solid rgba(24, 28, 27, 0.98);
-    box-sizing: border-box;
-    color: #f5f1e8;
-    display: flex;
-    filter: drop-shadow(0 1px 1px rgba(22, 24, 25, 0.25));
-    flex-direction: column;
-    gap: 3px;
-    height: 26px;
-    justify-content: center;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    transition: opacity 160ms ease, transform 160ms ease;
-    width: 15px;
-  }
-
-  .featured-product-divider-grip i {
-    background: currentColor;
-    display: block;
-    height: 1px;
-    opacity: 0.9;
-    width: 5px;
-  }
-
-  .featured-product-story-stage.is-dragging .featured-product-divider-grip {
-    opacity: 0.82;
-    transform: translate(-50%, -50%) scaleX(0.9) scaleY(1.04);
-  }
-
   .featured-product-commerce-link:focus-visible {
     outline: 1px solid #1d211f;
-    outline-offset: 4px;
-  }
-
-  .featured-product-divider:focus-visible {
-    outline: 0;
-  }
-
-  .featured-product-divider:focus-visible .featured-product-divider-grip {
-    outline: 1px solid #f8f8f5;
     outline-offset: 4px;
   }
 
@@ -2184,12 +1959,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .featured-product-story-overlay {
-      will-change: auto;
-    }
-
-    .featured-product-identity,
-    .featured-product-divider-grip {
+    .featured-product-identity {
       transition: none;
     }
 
