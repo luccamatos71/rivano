@@ -249,7 +249,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       <div class="rivano-fits-intro">
         <p class="rivano-fits-eyebrow">Rivano Society</p>
         <h2 id="rivano-fits-title" class="rivano-fits-title"><span class="rivano-fits-phrase">Seen on you.</span> <span class="rivano-fits-phrase">Somewhere under the sun.</span></h2>
-        <a class="rivano-fits-cta" href="/catalogo">See the Society</a>
       </div>
 
       <div class="rivano-fits-duo">
@@ -333,6 +332,17 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
             decoding="async"
           />
         </figure>
+      </div>
+
+      <div class="rivano-fits-outro">
+        <h3 class="rivano-fits-outro-title">O verão tem seus lugares. Este é um deles.</h3>
+        <p class="rivano-fits-outro-text">Feito para os lugares que você ainda vai conhecer e para aqueles aos quais sempre acaba voltando.</p>
+        <a class="rivano-fits-outro-link" href="/catalogo">
+          <svg class="rivano-fits-outro-marker" viewBox="0 0 24 24" width="12" height="16" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="m17 12-7.5 4.5v-9z" />
+          </svg>
+          Ver todos os modelos
+        </a>
       </div>
     </section>
 
@@ -1500,7 +1510,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   .rivano-fits {
     background: var(--rivano-off-white);
     color: var(--rivano-brown);
-    padding: 64px 0 72px;
+    padding: 64px 0 48px;
   }
 
   .rivano-fits-intro {
@@ -1543,23 +1553,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     .rivano-fits-phrase {
       white-space: normal;
     }
-  }
-
-  /* Mesmo vocabulario de .latest-rays-link, incluindo a area de toque. */
-  .rivano-fits-cta {
-    align-items: center;
-    border-bottom: 1px solid currentColor;
-    color: var(--rivano-brown);
-    display: inline-flex;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    line-height: 1.2;
-    margin-top: 20px;
-    min-height: 44px;
-    text-decoration: none;
-    text-transform: uppercase;
   }
 
   /* Bloco A — duas celulas de meia largura, coladas, edge-to-edge. */
@@ -1618,6 +1611,58 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
   .rivano-fits-photo--sea {
     object-position: 50% 40%;
+  }
+
+  /* Bloco editorial de fechamento — clone do micro-layout "Woven
+     baskets" da mesma pagina de referencia. Medidas reais em 390px:
+     coluna de 176px (45,8vw) alinhada a esquerda, 59px de respiro
+     depois da fotografia, titulo 18/22.5, 16px ate o paragrafo
+     14/19.6, 16px ate o link, 48px ate o proximo capitulo.
+     A coluna estreita e o branco em volta sao o desenho: nao encher. */
+  .rivano-fits-outro {
+    margin: 59px 24px 0;
+    max-width: 176px;
+  }
+
+  .rivano-fits-outro-title {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.25;
+    margin: 0 0 16px;
+  }
+
+  .rivano-fits-outro-text {
+    color: color-mix(in srgb, var(--rivano-brown) 78%, transparent);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* Marcador triangular do link, como na referencia. */
+  .rivano-fits-outro-link {
+    align-items: center;
+    color: var(--rivano-brown);
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    gap: 4px;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    margin-top: 16px;
+    min-height: 44px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .rivano-fits-outro-marker {
+    display: block;
+    flex: none;
   }
 
   .brand-story-section {
@@ -1905,7 +1950,14 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
        passa a valer 6 unidades — a dominante cede largura e duas
        menores extras aparecem, como no desktop da referencia. */
     .rivano-fits {
-      padding: 104px 0 112px;
+      padding: 104px 0 72px;
+    }
+
+    /* No desktop a referencia mantem a mesma tipografia e apenas afasta
+       o bloco da fotografia (139px) — a coluna segue estreita. */
+    .rivano-fits-outro {
+      margin-top: 139px;
+      max-width: 219px;
     }
 
     .rivano-fits-intro {
