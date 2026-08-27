@@ -116,15 +116,18 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
     <section class="featured-product-story" aria-label="Campanha do modelo Ibiza">
       <div class="featured-product-story-stage">
-        <img
-          class="featured-product-story-image"
-          src="/editorial/rivano-ibiza-story-reveal.jpg"
-          alt="Influenciadora Rivano usando o modelo Ibiza em uma paisagem nevada"
-          width="959"
-          height="1280"
-          loading="lazy"
-          decoding="async"
-        />
+        <picture>
+          <source media="(min-width: 1024px)" srcset="/editorial/rivano-ibiza-hero-wide.webp" width="2480" height="1472" />
+          <img
+            class="featured-product-story-image"
+            src="/editorial/rivano-ibiza-hero-portrait.webp"
+            alt="Modelo Rivano usando os óculos Ibiza em uma paisagem de montanha com neve"
+            width="1646"
+            height="3480"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
 
         <div class="featured-product-identity" aria-label={`Modelo em destaque: ${ibizaProductName}`}>
           <h2>{ibizaProductName}</h2>
@@ -580,13 +583,13 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .featured-product-story {
-    background: #dfe1e1;
+    background: var(--rivano-off-white);
     margin-top: 20px;
     position: relative;
   }
 
   .featured-product-story-stage {
-    background: #dfe1e1;
+    background: var(--rivano-off-white);
     height: clamp(680px, 94svh, 860px);
     isolation: isolate;
     overflow: hidden;
@@ -596,7 +599,8 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     width: 100%;
   }
 
-  .featured-product-story-image {
+  .featured-product-story-stage picture {
+    display: block;
     inset: 0;
     position: absolute;
   }
@@ -605,7 +609,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     display: block;
     height: 100%;
     object-fit: cover;
-    object-position: 49% 46%;
+    object-position: 50% 32%;
     width: 100%;
   }
 
