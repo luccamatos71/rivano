@@ -344,6 +344,21 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
           Ver todos os modelos
         </a>
       </div>
+
+      <figure class="rivano-break">
+        <picture>
+          <source media="(min-width: 768px)" srcset="/editorial/lifestyle/rivano-break-wide.webp" width="1800" height="1013" />
+          <img
+            class="rivano-break-photo"
+            src="/editorial/lifestyle/rivano-break-portrait.webp"
+            alt="Óculos Rivano brancos sobre uma revista, ao lado de bolsa de palha e chapéu na areia"
+            width="1080"
+            height="1440"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      </figure>
     </section>
 
     <section class="brand-story-section" aria-label="O espírito Rivano">
@@ -1510,7 +1525,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   .rivano-fits {
     background: var(--rivano-off-white);
     color: var(--rivano-brown);
-    padding: 64px 0 48px;
+    padding: 64px 0 0;
   }
 
   .rivano-fits-intro {
@@ -1663,6 +1678,30 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   .rivano-fits-outro-marker {
     display: block;
     flex: none;
+  }
+
+  /* Quebra fotografica — clone da transicao "texto -> fotografia
+     full-width" da mesma pagina de referencia. Medidas reais:
+     48px de respiro depois do texto (constante em mobile e desktop),
+     largura cheia sem margem lateral no mobile, proporcao 3:4;
+     em >=768px a margem de 24px do container entra e a proporcao vira
+     16:9, como a referencia faz nesse mesmo bloco.
+     Fotografia pura: sem texto, overlay, borda ou raio. */
+  .rivano-break {
+    margin: 48px 0 0;
+  }
+
+  .rivano-break picture {
+    display: block;
+  }
+
+  .rivano-break-photo {
+    aspect-ratio: 3 / 4;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    object-position: 50% 50%;
+    width: 100%;
   }
 
   .brand-story-section {
@@ -1950,7 +1989,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
        passa a valer 6 unidades — a dominante cede largura e duas
        menores extras aparecem, como no desktop da referencia. */
     .rivano-fits {
-      padding: 104px 0 72px;
+      padding: 104px 0 24px;
     }
 
     /* No desktop a referencia mantem a mesma tipografia e apenas afasta
@@ -1969,6 +2008,14 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
     .rivano-fits-outro-text {
       font-size: 14px;
+    }
+
+    .rivano-break {
+      margin: 48px 24px 0;
+    }
+
+    .rivano-break-photo {
+      aspect-ratio: 16 / 9;
     }
 
     .rivano-fits-intro {
