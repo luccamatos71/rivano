@@ -5,7 +5,6 @@ import productsData from "../data/products.json";
 
 const allProducts = productsData as Product[];
 const editorialProducts = allProducts.slice(0, 4).map(toCardProduct);
-const secondaryProducts = allProducts.slice(6, 10).map(toCardProduct);
 const summerSelectionSlugs = ["rivano-saint-tropez", "rivano-tropea", "rivano-mykonos", "rivano-positano"] as const;
 const summerSelectionProducts = summerSelectionSlugs.map((slug) => {
   const product = allProducts.find((item) => item.slug === slug);
@@ -16,7 +15,6 @@ const summerSelectionProducts = summerSelectionSlugs.map((slug) => {
 
   return product;
 });
-const homePrototypePrice = 139.9;
 const ibizaProduct = allProducts.find((product) => product.slug === "rivano-ibiza");
 
 if (!ibizaProduct) {
@@ -26,14 +24,6 @@ if (!ibizaProduct) {
 const ibizaProductHref = `/produtos/${ibizaProduct.slug}`;
 const ibizaProductName = ibizaProduct.name.replace(/^Rivano\s+/i, "");
 
-const societyImages = Array.from({ length: 8 }, (_, index) => {
-  const imageIndex = String(index + 1).padStart(2, "0");
-
-  return {
-    alt: `Rivano Society editorial ${index + 1}`,
-    src: `/editorial/society/society-${imageIndex}.webp`,
-  };
-});
 ---
 
 <BaseLayout
@@ -104,7 +94,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
                 />
               </span>
               <span class="editorial-product-name">{product.name.replace(/^Rivano\s+/i, "")}</span>
-              <span class="editorial-product-price">{formatPriceBRL(homePrototypePrice)}</span>
+              <span class="editorial-product-price">{formatPriceBRL(product.price)}</span>
             </a>
           ))
         }
@@ -134,7 +124,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
           <div class="featured-product-commerce-details">
             <div>
               <p class="featured-product-commerce-name">{ibizaProductName}</p>
-              <p class="featured-product-commerce-price">{formatPriceBRL(homePrototypePrice)}</p>
+              <p class="featured-product-commerce-price">{formatPriceBRL(ibizaProduct.price)}</p>
             </div>
             <a class="featured-product-commerce-link" href={ibizaProductHref}>
               <span>Ver modelo</span>
@@ -334,92 +324,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       </figure>
     </section>
 
-    <section class="brand-story-section" aria-label="O espírito Rivano">
-      <div class="brand-story-inner">
-        <div class="brand-story-copy" data-reveal>
-          <p class="brand-story-label">O espírito Rivano</p>
-          <h2 class="brand-story-title">Feita para o sol que fica.</h2>
-          <p class="brand-story-text">Da cidade à beira-mar, a Rivano traduz o verão como presença: leve, elegante e impossível de apressar.</p>
-          <a class="brand-story-link" href="/catalogo">Conhecer a marca</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="latest-rays-section" aria-labelledby="ultimos-raios">
-      <div class="latest-rays-header" data-reveal>
-        <p class="latest-rays-label">Curadoria Rivano</p>
-        <h2 id="ultimos-raios" class="display-md latest-rays-title">Últimos raios</h2>
-        <p class="latest-rays-subtitle">Armações escolhidas para acompanhar a luz até o fim do dia.</p>
-      </div>
-      <div class="latest-rays-track" data-reveal data-reveal-delay="90">
-        {
-          secondaryProducts.map((product, index) => (
-            <a class="latest-ray-item" href={`/produtos/${product.slug}`} aria-label={`Ver ${product.name}`}>
-              <span class="latest-ray-frame">
-                <img
-                  class="latest-ray-image"
-                  src={product.image}
-                  alt={product.name}
-                  loading="eager"
-                  decoding="async"
-                />
-              </span>
-              <span class="latest-ray-name">{product.name}</span>
-              <span class="latest-ray-price">{formatPriceBRL(product.price)}</span>
-            </a>
-          ))
-        }
-      </div>
-      <a class="latest-rays-link" href="/catalogo">Ver catálogo completo</a>
-    </section>
-
-    <section class="rivano-society-section" aria-labelledby="rivano-society-title">
-      <div class="rivano-society-header" data-reveal>
-        <p class="rivano-society-label">Society</p>
-        <h2 id="rivano-society-title" class="display-md rivano-society-title">The Rivano Society</h2>
-        <p class="rivano-society-subtitle">Um ver&atilde;o visto por quem vive a Rivano.</p>
-      </div>
-
-      <div class="rivano-society-track-mobile">
-        {
-          societyImages.map((image) => (
-            <figure class="rivano-society-item">
-              <img
-                class="rivano-society-image"
-                src={image.src}
-                alt={image.alt}
-                loading="eager"
-                decoding="async"
-              />
-            </figure>
-          ))
-        }
-      </div>
-
-      <div class="rivano-society-track-desktop-wrap">
-        <div class="rivano-society-track-desktop">
-          {[0, 1].map((groupIndex) => (
-            <div class="rivano-society-desktop-group" aria-hidden={groupIndex === 1 ? "true" : undefined}>
-              {societyImages.map((image) => (
-                <figure class="rivano-society-item">
-                  <img
-                    class="rivano-society-image"
-                    src={image.src}
-                    alt={image.alt}
-                    loading={groupIndex === 0 ? "eager" : "lazy"}
-                    decoding="async"
-                  />
-                </figure>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div class="rivano-society-cta-wrap">
-        <a class="rivano-society-cta" href="/catalogo">Ver cole&ccedil;&atilde;o</a>
-      </div>
-    </section>
   </div>
 </BaseLayout>
 
@@ -475,7 +379,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
 <style>
   .rivano-home {
-    background: var(--rivano-off-white);
+    background: #fff;
     color: var(--rivano-brown);
     --summer-notes-inset-left: 4.2vw;
     overflow-x: clip;
@@ -539,8 +443,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     z-index: 3;
   }
 
-  .selection-label,
-  .brand-story-label {
+  .selection-label {
     font-family: var(--font-sans);
     font-weight: 400;
     text-transform: uppercase;
@@ -581,6 +484,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
   .featured-product-story {
     background: #fff;
+    padding-bottom: 56px;
     padding-top: 20px;
     position: relative;
   }
@@ -625,8 +529,8 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     display: grid;
     grid-template-columns: 1fr;
     left: 0;
-    min-height: calc(70px + env(safe-area-inset-bottom));
-    padding: 12px 18px calc(10px + env(safe-area-inset-bottom));
+    min-height: calc(84px + env(safe-area-inset-bottom));
+    padding: 18px 18px calc(16px + env(safe-area-inset-bottom));
     position: absolute;
     right: 0;
     width: auto;
@@ -838,7 +742,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .rivano-travel-manifesto {
-    background: var(--rivano-off-white);
+    background: #fff;
     color: #171816;
     overflow: hidden;
     padding: clamp(52px, 7svh, 70px) 14px calc(clamp(58px, 8svh, 82px) - 16px);
@@ -1046,7 +950,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .summer-selection {
-    background: var(--rivano-off-white);
+    background: #fff;
     color: var(--rivano-brown);
     padding: 0 16px 96px;
   }
@@ -1118,153 +1022,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     margin-top: 3px;
   }
 
-  .latest-rays-section {
-    background: var(--rivano-off-white);
-    padding: 64px 0;
-  }
-
-  .latest-rays-header {
-    margin-bottom: 32px;
-    padding: 0 24px;
-  }
-
-  .latest-rays-label {
-    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
-    font-family: var(--font-sans);
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.16em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  .latest-rays-title {
-    color: var(--rivano-brown);
-    font-family: var(--font-serif);
-    font-weight: 300;
-    letter-spacing: 0;
-    margin-top: 12px;
-    max-width: 560px;
-  }
-
-  .latest-rays-subtitle {
-    color: color-mix(in srgb, var(--rivano-brown) 60%, transparent);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.7;
-    margin-top: 16px;
-    max-width: 360px;
-  }
-
-  .latest-rays-track {
-    align-items: flex-start;
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    padding: 0 24px;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-  }
-
-  .latest-rays-track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .latest-ray-item {
-    align-self: flex-start;
-    color: var(--rivano-brown);
-    display: block;
-    flex: 0 0 74vw;
-    margin-top: 0;
-    min-width: 0;
-    scroll-snap-align: start;
-  }
-
-  .latest-ray-frame {
-    align-items: center;
-    aspect-ratio: 1 / 1;
-    background: color-mix(in srgb, var(--rivano-off-white) 74%, var(--rivano-beige));
-    border: 1px solid color-mix(in srgb, var(--rivano-beige) 60%, var(--rivano-off-white));
-    border-radius: 8px;
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--rivano-brown) 5%, transparent);
-    display: flex;
-    justify-content: center;
-    overflow: hidden;
-    padding: 24px;
-    transition:
-      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    width: 100%;
-  }
-
-  .latest-ray-item:hover .latest-ray-frame {
-    box-shadow: 0 14px 36px color-mix(in srgb, var(--rivano-brown) 13%, transparent);
-    transform: translateY(-5px);
-  }
-
-  .latest-ray-image {
-    display: block;
-    filter: contrast(1.03) saturate(0.98);
-    height: 100%;
-    mix-blend-mode: multiply;
-    object-fit: contain;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    width: auto;
-    max-height: none;
-    max-width: 92%;
-  }
-
-  .latest-ray-item:hover .latest-ray-image {
-    transform: scale(1.03);
-  }
-
-  .latest-ray-name {
-    color: var(--rivano-brown);
-    display: block;
-    font-family: var(--font-serif);
-    font-size: 17px;
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 1.12;
-    margin-top: 11px;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    transition: text-decoration-color 0.3s ease-out, color 0.25s ease-out;
-  }
-
-  .latest-ray-item:hover .latest-ray-name {
-    color: var(--rivano-brown-mid);
-    text-decoration-color: color-mix(in srgb, var(--rivano-brown-mid) 55%, transparent);
-  }
-
-  .latest-ray-price {
-    color: color-mix(in srgb, var(--rivano-brown) 56%, transparent);
-    display: block;
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 300;
-    line-height: 1.35;
-    margin-top: 4px;
-  }
-
-  .latest-rays-link {
-    align-items: center;
-    border-bottom: 1px solid currentColor;
-    color: var(--rivano-brown);
-    display: inline-flex;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    line-height: 1.2;
-    margin: 32px 0 0 24px;
-    min-height: 44px;
-    text-transform: uppercase;
-  }
-
   /* ── Rivano Society — clone estrutural do bloco entre "Summer in the
      city" e "Jacket in denim" na pagina Paulas Ibiza da loewe.com.
      Numeros medidos na implementacao real, em 390px e em 1440px:
@@ -1279,7 +1036,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
      desktop (dominante + 4 menores), como na referencia. O peso da
      secao vem da escala da fotografia, nao de massa de cor. */
   .rivano-fits {
-    background: var(--rivano-off-white);
+    background: #fff;
     color: var(--rivano-brown);
     padding: 64px 0 0;
   }
@@ -1288,7 +1045,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     padding: 0 24px 28px;
   }
 
-  /* Mesmo vocabulario de .brand-story-label e .latest-rays-label. */
+  /* Marcador editorial: mesmo vocabulario dos labels da home. */
   .rivano-fits-eyebrow {
     color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
     font-family: var(--font-sans);
@@ -1301,7 +1058,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   /* Serif do sistema, como toda headline editorial da home
-     (.brand-story-title, .latest-rays-title, .rivano-society-title).
+     serif do sistema, escala menor que a headline principal.
      A escala acompanha a viewport para manter cada frase inteira. */
   .rivano-fits-title {
     color: var(--rivano-brown);
@@ -1460,165 +1217,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     width: 100%;
   }
 
-  .brand-story-section {
-    background: var(--rivano-off-white);
-    padding: 72px 24px;
-  }
-
-  .brand-story-copy {
-    max-width: 360px;
-  }
-
-  .brand-story-label {
-    color: var(--rivano-muted);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    line-height: 1.35;
-  }
-
-  .brand-story-title {
-    color: var(--rivano-brown);
-    font-family: var(--font-serif);
-    font-size: clamp(44px, 12vw, 68px);
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 0.92;
-    margin-top: 12px;
-    max-width: 340px;
-  }
-
-  .brand-story-text {
-    color: color-mix(in srgb, var(--rivano-brown) 64%, transparent);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.7;
-    margin-top: 18px;
-    max-width: 330px;
-  }
-
-  .brand-story-link {
-    align-items: center;
-    border-bottom: 1px solid currentColor;
-    color: var(--rivano-brown);
-    display: inline-flex;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-    line-height: 1.2;
-    margin-top: 24px;
-    min-height: 44px;
-    text-transform: uppercase;
-  }
-
-  .rivano-society-section {
-    background: var(--rivano-brown);
-    color: var(--rivano-off-white);
-    overflow: hidden;
-    padding: 72px 0;
-  }
-
-  .rivano-society-header {
-    padding: 0 24px;
-  }
-
-  .rivano-society-label {
-    color: color-mix(in srgb, var(--rivano-off-white) 45%, transparent);
-    font-family: var(--font-sans);
-    font-size: 10px;
-    font-weight: 400;
-    letter-spacing: 0.16em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  .rivano-society-title {
-    color: var(--rivano-off-white);
-    font-family: var(--font-serif);
-    font-weight: 300;
-    letter-spacing: 0;
-    margin-top: 12px;
-  }
-
-  .rivano-society-subtitle {
-    color: color-mix(in srgb, var(--rivano-off-white) 65%, transparent);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.7;
-    margin-top: 16px;
-    max-width: 360px;
-  }
-
-  .rivano-society-track-mobile {
-    display: flex;
-    gap: 12px;
-    margin-top: 36px;
-    overflow-x: auto;
-    padding: 0 24px;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-  }
-
-  .rivano-society-track-mobile::-webkit-scrollbar {
-    display: none;
-  }
-
-  .rivano-society-item {
-    aspect-ratio: 4 / 5;
-    margin: 0;
-    overflow: hidden;
-  }
-
-  .rivano-society-track-mobile .rivano-society-item {
-    flex: 0 0 72vw;
-    scroll-snap-align: start;
-  }
-
-  .rivano-society-track-desktop-wrap {
-    display: none;
-  }
-
-  .rivano-society-image {
-    display: block;
-    height: 100%;
-    object-fit: cover;
-    width: 100%;
-  }
-
-  .rivano-society-cta-wrap {
-    margin-top: 32px;
-    padding: 0 24px;
-  }
-
-  .rivano-society-cta {
-    align-items: center;
-    border-bottom: 1px solid color-mix(in srgb, var(--rivano-off-white) 58%, transparent);
-    color: var(--rivano-off-white);
-    display: inline-flex;
-    font-family: var(--font-sans);
-    font-size: 11px;
-    font-weight: 400;
-    letter-spacing: 0.14em;
-    line-height: 1.2;
-    min-height: 44px;
-    text-transform: uppercase;
-  }
-
-  .rivano-society-cta:hover {
-    color: color-mix(in srgb, var(--rivano-off-white) 78%, transparent);
-  }
-
-  @keyframes society-track-loop {
-    from {
-      transform: translate3d(0, 0, 0);
-    }
-
-    to {
-      transform: translate3d(-50%, 0, 0);
-    }
-  }
   @media (min-width: 768px) {
     .campaign-hero {
       height: 100vh;
@@ -1796,147 +1394,6 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       display: block;
     }
 
-    .brand-story-section {
-      padding: 128px 40px;
-    }
-
-    .brand-story-inner {
-      margin: 0 auto;
-      max-width: 920px;
-    }
-
-    .brand-story-copy {
-      max-width: 760px;
-    }
-
-    .brand-story-title {
-      font-size: clamp(58px, 5vw, 92px);
-      max-width: 520px;
-    }
-
-    .latest-rays-section {
-      padding: 96px 40px;
-    }
-
-    .latest-rays-header {
-      margin: 0 auto 48px;
-      max-width: 1280px;
-      padding: 0;
-    }
-
-    .latest-rays-header > * {
-      max-width: 560px;
-    }
-
-    .latest-rays-track {
-      display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      margin: 0 auto;
-      max-width: 1280px;
-      overflow: visible;
-      padding: 0;
-      scroll-snap-type: none;
-    }
-
-    .latest-ray-item {
-      flex: initial;
-      min-width: 0;
-    }
-
-    .latest-ray-item:nth-child(2) {
-      margin-top: 32px;
-    }
-
-    .latest-ray-item:nth-child(4) {
-      margin-top: 40px;
-    }
-
-    .latest-ray-item:nth-child(3) {
-      margin-top: 0;
-    }
-
-    .latest-ray-image {
-      height: 94%;
-      max-width: 84%;
-    }
-
-    .latest-rays-link {
-      display: flex;
-      margin: 64px auto 0;
-      width: fit-content;
-    }
-
-    .rivano-society-section {
-      padding: 112px 0;
-    }
-
-    .rivano-society-header {
-      margin-bottom: 48px;
-      max-width: 720px;
-      padding: 0 40px;
-    }
-
-    .rivano-society-title {
-      font-size: clamp(56px, 5.6vw, 84px);
-      line-height: 0.92;
-      max-width: 620px;
-    }
-
-    .rivano-society-subtitle {
-      max-width: 520px;
-    }
-
-    .rivano-society-track-mobile {
-      display: none;
-    }
-
-    .rivano-society-track-desktop-wrap {
-      display: block;
-      overflow: hidden;
-      padding: 0 40px;
-      width: 100%;
-    }
-
-    .rivano-society-track-desktop {
-      animation: society-track-loop 92s linear infinite;
-      display: flex;
-      width: max-content;
-      will-change: transform;
-    }
-
-    .rivano-society-track-desktop-wrap:hover .rivano-society-track-desktop {
-      animation-play-state: paused;
-    }
-
-    .rivano-society-desktop-group {
-      align-items: flex-start;
-      display: flex;
-      gap: 16px;
-      padding: 0 16px 0 0;
-    }
-
-    .rivano-society-desktop-group .rivano-society-item {
-      flex: 0 0 clamp(260px, 21vw, 320px);
-      width: clamp(260px, 21vw, 320px);
-    }
-
-    .rivano-society-desktop-group .rivano-society-item:nth-child(2) {
-      margin-top: 32px;
-    }
-
-    .rivano-society-desktop-group .rivano-society-item:nth-child(4) {
-      margin-top: 20px;
-    }
-
-    .rivano-society-desktop-group .rivano-society-item:nth-child(6) {
-      margin-top: 40px;
-    }
-
-    .rivano-society-cta-wrap {
-      margin-top: 56px;
-      padding: 0 40px;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1947,8 +1404,5 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       transform: none;
     }
 
-    .rivano-society-track-desktop {
-      animation: none;
-    }
   }
 </style>
