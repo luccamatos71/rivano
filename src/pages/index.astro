@@ -1500,32 +1500,36 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   .rivano-fits {
     background: var(--rivano-off-white);
     color: var(--rivano-brown);
-    padding: 56px 0 40px;
+    padding: 64px 0 72px;
   }
 
   .rivano-fits-intro {
-    padding: 0 24px 20px;
+    padding: 0 24px 28px;
   }
 
+  /* Mesmo vocabulario de .brand-story-label e .latest-rays-label. */
   .rivano-fits-eyebrow {
-    color: color-mix(in srgb, var(--rivano-brown) 52%, transparent);
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
     font-family: var(--font-sans);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 400;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     line-height: 1.35;
-    margin: 0 0 14px;
+    margin: 0;
     text-transform: uppercase;
   }
 
+  /* Serif do sistema, como toda headline editorial da home
+     (.brand-story-title, .latest-rays-title, .rivano-society-title).
+     A escala acompanha a viewport para manter cada frase inteira. */
   .rivano-fits-title {
     color: var(--rivano-brown);
-    font-family: var(--font-sans);
-    font-size: 20px;
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    line-height: 1.3;
-    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(26px, 8vw, 40px);
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.05;
+    margin: 12px 0 0;
   }
 
   /* Cada frase e uma unidade: a quebra cai ENTRE as frases, nunca
@@ -1541,17 +1545,19 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     }
   }
 
+  /* Mesmo vocabulario de .latest-rays-link, incluindo a area de toque. */
   .rivano-fits-cta {
-    border-bottom: 1px solid color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    align-items: center;
+    border-bottom: 1px solid currentColor;
     color: var(--rivano-brown);
-    display: inline-block;
+    display: inline-flex;
     font-family: var(--font-sans);
     font-size: 11px;
     font-weight: 400;
-    letter-spacing: 0.07em;
-    line-height: 1.45;
-    margin-top: 18px;
-    padding-bottom: 2px;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    margin-top: 20px;
+    min-height: 44px;
     text-decoration: none;
     text-transform: uppercase;
   }
@@ -1899,15 +1905,16 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
        passa a valer 6 unidades — a dominante cede largura e duas
        menores extras aparecem, como no desktop da referencia. */
     .rivano-fits {
-      padding: 88px 0 64px;
+      padding: 104px 0 112px;
     }
 
     .rivano-fits-intro {
-      padding: 0 24px 24px;
+      padding: 0 24px 36px;
     }
 
     .rivano-fits-title {
-      font-size: 24px;
+      font-size: clamp(40px, 4.4vw, 62px);
+      margin-top: 14px;
     }
 
     .rivano-fits-duo,
