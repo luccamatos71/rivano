@@ -1,16 +1,187 @@
-<footer id="sobre" class="border-t border-[var(--rivano-beige)] bg-[var(--rivano-off-white)]">
-  <div class="page-wrap py-12 md:py-16">
-    <p class="logo-wordmark mb-4 text-[28px]">RIVANO</p>
-    <p class="max-w-[460px] text-[var(--rivano-brown)]">
-      Nascida em Salvador. Inspirada no verão europeu.
-    </p>
-    <a
-      href="https://instagram.com/userivano"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mt-6 inline-flex min-h-[44px] items-center text-[11px] uppercase tracking-[0.2em] text-[var(--rivano-muted)] transition-colors duration-normal hover:text-[var(--rivano-brown-mid)]"
-    >
-      Instagram
-    </a>
+---
+// Rodapé definitivo. Vocabulário tirado do próprio site: wordmark em
+// Cormorant, links em DM Sans 11px com tracking largo, réguas finas em
+// --rivano-beige. Fundo branco como o canvas da home — nada de faixa
+// creme entre a fotografia final e o rodapé.
+const navegar = [
+  { texto: "Todos os modelos", href: "/catalogo" },
+  { texto: "Para ela", href: "/catalogo?para=ela" },
+  { texto: "Para ele", href: "/catalogo?para=ele" },
+];
+
+const contato = [
+  { texto: "WhatsApp", href: "https://wa.me/5571993135522" },
+  { texto: "Instagram", href: "https://instagram.com/userivano" },
+];
+
+const ano = new Date().getFullYear();
+---
+
+<footer id="sobre" class="rivano-footer">
+  <div class="rivano-footer-inner">
+    <div class="rivano-footer-brand">
+      <p class="rivano-footer-wordmark">Rivano</p>
+      <p class="rivano-footer-tagline">Nascida em Salvador. Inspirada no verão europeu.</p>
+    </div>
+
+    <nav class="rivano-footer-cols" aria-label="Links do rodapé">
+      <div class="rivano-footer-col">
+        <p class="rivano-footer-label">Navegar</p>
+        <ul class="rivano-footer-list">
+          {
+            navegar.map((item) => (
+              <li>
+                <a class="rivano-footer-link" href={item.href}>{item.texto}</a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="rivano-footer-col">
+        <p class="rivano-footer-label">Contato</p>
+        <ul class="rivano-footer-list">
+          {
+            contato.map((item) => (
+              <li>
+                <a
+                  class="rivano-footer-link"
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {item.texto}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </nav>
+
+    <p class="rivano-footer-legal">© {ano} Rivano</p>
   </div>
 </footer>
+
+<style>
+  .rivano-footer {
+    background: #fff;
+    color: var(--rivano-brown);
+  }
+
+  .rivano-footer-inner {
+    padding: 72px 24px 40px;
+  }
+
+  .rivano-footer-wordmark {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .rivano-footer-tagline {
+    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.6;
+    margin: 14px 0 0;
+    max-width: 260px;
+  }
+
+  /* Régua fina, mesma linguagem de divisor já usada no site. */
+  .rivano-footer-cols {
+    border-top: 1px solid var(--rivano-beige);
+    display: grid;
+    gap: 36px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 48px;
+    padding-top: 36px;
+  }
+
+  .rivano-footer-label {
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+  }
+
+  .rivano-footer-list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .rivano-footer-link {
+    align-items: center;
+    color: var(--rivano-brown);
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    min-height: 40px;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color var(--transition-normal);
+  }
+
+  .rivano-footer-link:hover {
+    color: var(--rivano-brown-mid);
+  }
+
+  .rivano-footer-legal {
+    border-top: 1px solid var(--rivano-beige);
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    margin: 40px 0 0;
+    padding-top: 28px;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 768px) {
+    .rivano-footer-inner {
+      display: grid;
+      gap: 0 64px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      margin: 0 auto;
+      max-width: 1280px;
+      padding: 104px 40px 48px;
+    }
+
+    .rivano-footer-brand {
+      max-width: 320px;
+    }
+
+    /* No desktop a marca fica à esquerda e os dois grupos à direita, na
+       mesma régua horizontal — sem multiplicar colunas. */
+    .rivano-footer-cols {
+      border-top: 0;
+      display: flex;
+      gap: 88px;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .rivano-footer-legal {
+      grid-column: 1 / -1;
+      margin-top: 96px;
+    }
+  }
+</style>
