@@ -249,7 +249,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       <div class="rivano-fits-header">
         <div>
           <p class="rivano-fits-eyebrow">Rivano Society</p>
-          <h2 id="rivano-fits-title" class="rivano-fits-title">Seen on you. Somewhere under the sun.</h2>
+          <h2 id="rivano-fits-title" class="rivano-fits-title"><span class="rivano-fits-phrase">Seen on you.</span> <span class="rivano-fits-phrase">Somewhere under the sun.</span></h2>
         </div>
         <a class="rivano-fits-cta rivano-fits-cta--header" href="/catalogo">See the Society</a>
       </div>
@@ -1457,9 +1457,9 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
      celulas 4:5, headline 24px com text-indent 50px, labels brancos
      sobre gradiente, CTA sublinhado centralizado no mobile. */
   .rivano-fits {
-    background: var(--rivano-off-white);
-    color: var(--rivano-brown);
-    padding: 44px 0;
+    background: var(--rivano-brown);
+    color: var(--rivano-off-white);
+    padding: 64px 0 68px;
   }
 
   .rivano-fits-header {
@@ -1469,24 +1469,51 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     padding: 0 24px 28px;
   }
 
+  /* O intervalo nasce do marcador, nao de padding na secao: o eyebrow
+     fecha seu proprio bloco e so entao a headline comeca. */
   .rivano-fits-eyebrow {
+    color: color-mix(in srgb, var(--rivano-off-white) 62%, transparent);
     font-family: var(--font-sans);
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    line-height: 1.3;
-    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+    margin: 0 0 18px;
     text-transform: uppercase;
   }
 
   .rivano-fits-title {
+    color: var(--rivano-off-white);
     font-family: var(--font-sans);
     font-size: 24px;
     font-weight: 500;
     letter-spacing: -0.02em;
-    line-height: 1.1;
+    line-height: 1.25;
     margin: 0;
     text-indent: 50px;
+  }
+
+  /* Cada frase e uma unidade tipografica: a quebra acontece ENTRE as
+     frases, nunca dentro de "Somewhere under the sun.". Abaixo de
+     360px a frase volta a quebrar naturalmente para nao estourar. */
+  .rivano-fits-phrase {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  /* Ate 389px a frase inteira nao cabe em 24px: cede 3px de escala
+     para manter "Somewhere under the sun." em uma linha so, em vez de
+     parti-la. Abaixo de 340px nem isso resolve e ela volta a quebrar. */
+  @media (max-width: 389px) {
+    .rivano-fits-title {
+      font-size: 21px;
+    }
+  }
+
+  @media (max-width: 339px) {
+    .rivano-fits-phrase {
+      white-space: normal;
+    }
   }
 
   .rivano-fits-grid {
@@ -1554,8 +1581,8 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
 
   .rivano-fits-cta {
-    border-bottom: 1px solid currentColor;
-    color: var(--rivano-brown);
+    border-bottom: 1px solid color-mix(in srgb, var(--rivano-off-white) 70%, transparent);
+    color: var(--rivano-off-white);
     font-family: var(--font-sans);
     font-size: 11px;
     font-weight: 400;
@@ -1853,6 +1880,14 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 
     /* ≥768: layout desktop da referencia — colunas 55/45, linhas
        fixas de 300px, CTA migra do rodape para o topo direito. */
+    .rivano-fits {
+      padding: 96px 0 100px;
+    }
+
+    .rivano-fits-eyebrow {
+      margin-bottom: 22px;
+    }
+
     .rivano-fits-grid {
       gap: 20px;
       grid-template-columns: 55fr 45fr;
