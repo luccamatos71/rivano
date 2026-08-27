@@ -6,14 +6,19 @@ interface Props {
 
 const { logo, hasAnnouncementBar = true } = Astro.props as Props;
 const pathname = Astro.url.pathname;
+const isHome = pathname === "/";
 const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/produtos/");
 ---
 
 <header
   class:list={[
-    "navbar sticky z-[100] border-b border-[var(--rivano-beige)] bg-[var(--rivano-off-white)] px-5 sm:px-10",
-    hasAnnouncementBar ? "top-[48px] sm:top-[32px]" : "top-0",
+    "navbar z-[100] border-b px-5 sm:px-10",
+    isHome
+      ? "home-header fixed inset-x-0 top-0 border-transparent bg-transparent"
+      : "sticky border-[var(--rivano-beige)] bg-[var(--rivano-off-white)]",
+    !isHome && (hasAnnouncementBar ? "top-[48px] sm:top-[32px]" : "top-0"),
   ]}
+  data-home-header={isHome ? "true" : undefined}
 >
   <div class="navbar-content mx-auto flex h-[60px] max-w-[1280px] items-center justify-between sm:grid sm:h-[90px] sm:grid-cols-3">
     <nav class="nav-menu hidden items-center gap-8 sm:flex" aria-label="Coleções">
@@ -36,7 +41,7 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
         logo ? (
           <img src={logo} alt="Rivano" class="logo h-10 w-auto" />
         ) : (
-          <span class="font-['Cormorant_Garamond'] text-[27px] font-normal uppercase leading-none tracking-[0.16em] text-[var(--rivano-brown)] sm:text-[30px]">
+          <span class="navbar-wordmark font-['Cormorant_Garamond'] text-[27px] font-normal uppercase leading-none tracking-[0.16em] text-[var(--rivano-brown)] sm:text-[30px]">
             Rivano
           </span>
         )
@@ -55,7 +60,7 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
     <button
       id="nav-menu-toggle"
       type="button"
-      class="inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] sm:hidden"
+      class="nav-menu-toggle inline-flex min-h-[44px] items-center font-['DM_Sans'] text-[12px] font-normal uppercase tracking-[0.12em] text-[var(--rivano-brown)] sm:hidden"
       aria-controls="mobile-nav"
       aria-expanded="false"
     >
@@ -107,9 +112,50 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
   navDrawer?.addEventListener("click", (event) => {
     if (event.target === navDrawer) closeNavigation();
   });
+
+  const homeHeader = document.querySelector("[data-home-header]");
+
+  if (homeHeader) {
+    const updateHomeHeader = () => {
+      homeHeader.classList.toggle("is-scrolled", window.scrollY > 24);
+    };
+
+    updateHomeHeader();
+    window.addEventListener("scroll", updateHomeHeader, { passive: true });
+  }
 </script>
 
 <style>
+  .home-header {
+    transition:
+      background-color 220ms ease-out,
+      border-color 220ms ease-out,
+      backdrop-filter 220ms ease-out;
+  }
+
+  .home-header .nav-link-slide,
+  .home-header .navbar-wordmark,
+  .home-header .nav-menu-toggle {
+    color: var(--rivano-brown);
+    transition: color 220ms ease-out;
+  }
+
+  .home-header .nav-link-slide::after {
+    background: currentColor;
+  }
+
+  .home-header.is-scrolled {
+    background: color-mix(in srgb, var(--rivano-off-white) 94%, transparent);
+    border-color: color-mix(in srgb, var(--rivano-brown) 12%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  .home-header.is-scrolled .nav-link-slide,
+  .home-header.is-scrolled .navbar-wordmark,
+  .home-header.is-scrolled .nav-menu-toggle {
+    color: var(--rivano-brown);
+  }
+
   /* Desktop nav underline */
   .nav-link-slide {
     position: relative;
@@ -158,5 +204,14 @@ const isCatalog = pathname.startsWith("/catalogo") || pathname.startsWith("/prod
 
   .mobile-nav-overlay[aria-hidden="false"] .mobile-nav-drawer {
     transform: translateX(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-header,
+    .home-header .nav-link-slide,
+    .home-header .navbar-wordmark,
+    .home-header .nav-menu-toggle {
+      transition: none;
+    }
   }
 </style>

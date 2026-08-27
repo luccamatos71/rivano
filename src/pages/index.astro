@@ -6,6 +6,49 @@ import productsData from "../data/products.json";
 const allProducts = productsData as Product[];
 const editorialProducts = allProducts.slice(0, 4).map(toCardProduct);
 const secondaryProducts = allProducts.slice(6, 10).map(toCardProduct);
+const summerSelectionSlugs = ["rivano-saint-tropez", "rivano-tropea", "rivano-mykonos", "rivano-positano"] as const;
+const summerSelectionProducts = summerSelectionSlugs.map((slug) => {
+  const product = allProducts.find((item) => item.slug === slug);
+
+  if (!product) {
+    throw new Error(`Produto ${slug} não encontrado em products.json`);
+  }
+
+  return product;
+});
+const homePrototypePrice = 139.9;
+const ibizaProduct = allProducts.find((product) => product.slug === "rivano-ibiza");
+
+if (!ibizaProduct) {
+  throw new Error("Produto Rivano Ibiza não encontrado em products.json");
+}
+
+const ibizaProductHref = `/produtos/${ibizaProduct.slug}`;
+const ibizaProductName = ibizaProduct.name.replace(/^Rivano\s+/i, "");
+
+// PLACEHOLDER — a copy editorial final ainda será definida.
+// Uma linha por <span>: trocar o conteúdo deste array troca a headline inteira.
+const lifestyleHeadlineLines = ["O sol", "encontra", "quem sai", "de casa."];
+
+// Sequência editorial da faixa. A primeira entra como foto dominante em repouso;
+// a última é clonada como recorte de entrada na borda esquerda.
+const lifestyleImages = [
+  { file: 1, alt: "Óculos Rivano redondos em passeio de barco" },
+  { file: 2, alt: "Look de verão com óculos Rivano entre palmeiras" },
+  { file: 3, alt: "Óculos Rivano brancos no fim de tarde na marina" },
+  { file: 4, alt: "Retrato com óculos Rivano de lente âmbar" },
+  { file: 10, alt: "Óculos Rivano brancos apoiados sobre uma bolsa" },
+  { file: 5, alt: "Óculos Rivano sob a sombra da folhagem" },
+  { file: 6, alt: "Óculos Rivano no fim de tarde na rua" },
+  { file: 8, alt: "Óculos Rivano em uma noite ao ar livre" },
+  { file: 7, alt: "Óculos Rivano com casaco de inverno" },
+  { file: 9, alt: "Óculos Rivano em dia frio de neblina" },
+].map(({ file, alt }) => ({
+  alt,
+  src: `/editorial/lifestyle/rivano-lifestyle-${String(file).padStart(2, "0")}.webp`,
+}));
+
+const lifestyleLeadIn = lifestyleImages[lifestyleImages.length - 1];
 
 const societyImages = Array.from({ length: 8 }, (_, index) => {
   const imageIndex = String(index + 1).padStart(2, "0");
@@ -25,107 +68,250 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
 >
   <div class="rivano-home">
     <section class="campaign-hero" aria-label="Campanha Rivano verão 2025">
-      <video class="campaign-video" src="/banners/hero.mov" autoplay muted loop playsinline></video>
+    <img
+      class="campaign-motion-fallback"
+      src="/banners/hero-mobile-fallback.webp"
+      alt=""
+      aria-hidden="true"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+      <video
+        class="campaign-image"
+        data-hero-video
+        autoplay
+        muted
+        defaultMuted
+    loop
+    playsinline
+    webkit-playsinline="true"
+    disablepictureinpicture
+        preload="auto"
+        poster="/banners/hero-mobile-poster.webp"
+        width="720"
+        height="1364"
+        aria-label="Mulher usando óculos Rivano"
+      >
+        <source src="/banners/hero-mobile.mp4" type="video/mp4" />
+      </video>
       <div class="campaign-gradient" aria-hidden="true"></div>
-      <div class="campaign-content">
-        <p class="campaign-kicker">Rivano 2025</p>
+      <div class="campaign-content opening-entrance">
         <h1 class="campaign-title">Verão no olhar.</h1>
         <div class="campaign-actions" aria-label="Ações da campanha">
-          <a class="campaign-cta campaign-cta--primary" href="/catalogo">Ver coleção</a>
-          <a
-            class="campaign-cta campaign-cta--secondary"
-            href="https://wa.me/5571993135522"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            WhatsApp
-          </a>
+          <a class="campaign-cta" href="/catalogo">Ver modelos</a>
         </div>
       </div>
     </section>
 
-    <section class="post-hero-editorial" aria-label="Editorial Rivano">
-      <div class="post-hero-inner">
-        <div class="post-hero-image-wrap" data-reveal>
-          <img src="/editorial/verao.png" alt="Óculos Rivano em composição de verão" class="post-hero-image" loading="eager" decoding="async" />
-        </div>
-        <div class="post-hero-copy" data-reveal data-reveal-delay="120">
-          <p class="post-hero-label">Editorial</p>
-          <h2 class="post-hero-title">Óculos para viver o verão.</h2>
-          <p class="post-hero-text">Uma coleção pensada para luz, pele, mar e cidade.</p>
-          <nav class="post-hero-links" aria-label="Coleções editoriais">
-            <a href="/catalogo?para=ela">Ela</a>
-            <a href="/catalogo?para=ele">Ele</a>
-            <a href="/catalogo">Todos</a>
-          </nav>
-        </div>
+    <section class="editorial-products opening-products" aria-labelledby="selecao-rivano">
+      <div class="editorial-products-header opening-products-header">
+        <p class="selection-label">Rivano eyewear</p>
+        <h2 id="selecao-rivano" class="sr-only">Modelos em destaque</h2>
       </div>
-    </section>
-
-    <section class="editorial-products" aria-labelledby="selecao-rivano">
-      <div class="editorial-products-header" data-reveal>
-        <p class="selection-label">Seleção Rivano</p>
-        <h2 id="selecao-rivano" class="selection-title">O verão permanece.</h2>
-        <p class="selection-text">Modelos feitos para acompanhar a luz, a cidade e os dias sem pressa.</p>
-      </div>
-      <div class="editorial-products-track" data-reveal data-reveal-delay="100">
+      <div class="editorial-products-track opening-products-track" aria-label="Modelos em destaque">
         {
           editorialProducts.map((product, index) => (
-            <a class="editorial-product" href={`/produtos/${product.slug}`} aria-label={`Ver ${product.name}`}>
+            <a
+              class="editorial-product"
+              data-product={product.slug}
+              href={`/produtos/${product.slug}`}
+              aria-label={`Ver ${product.name}`}
+            >
               <span class="editorial-product-frame">
                 <img
                   class="editorial-product-image"
                   src={product.image}
                   alt={product.name}
-                  loading="eager"
+                  loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
                 />
               </span>
-              <span class="editorial-product-name">{product.name}</span>
-              <span class="editorial-product-price">{formatPriceBRL(product.price)}</span>
+              <span class="editorial-product-name">{product.name.replace(/^Rivano\s+/i, "")}</span>
+              <span class="editorial-product-price">{formatPriceBRL(homePrototypePrice)}</span>
             </a>
           ))
         }
       </div>
       <div class="editorial-products-link-wrap">
-        <a class="editorial-text-link" href="/catalogo">Ver catálogo</a>
+        <a class="editorial-text-link" href="/catalogo">Todos os modelos</a>
       </div>
     </section>
 
-    <section class="sun-curation" aria-label="Curadoria Rivano">
-      <div class="sun-curation-inner">
-        <article class="sun-curation-item sun-curation-item--dela" data-reveal>
-          <div class="sun-curation-image-wrap">
-            <img src="/editorial/ela.png" alt="Mulher com lenço usando óculos Rivano sob céu azul" class="sun-curation-image" loading="lazy" decoding="async" />
-          </div>
-          <div class="sun-curation-copy">
-            <p class="curation-label">Curadoria</p>
-            <h2 class="curation-title">Sol dela</h2>
-            <p class="curation-text">Frames leves para dias longos, luz bonita e presença sem esforço.</p>
-            <a class="curation-link" href="/catalogo?para=ela">Ver seleção</a>
-          </div>
-        </article>
+    <section class="featured-product-story" data-featured-story aria-label="Campanha interativa do modelo Ibiza">
+      <div class="featured-product-story-stage" data-story-stage style="--story-divider: 62%;">
+        <img
+          class="featured-product-story-image featured-product-story-image--reveal"
+          src="/editorial/rivano-ibiza-story-reveal.jpg"
+          alt="Influenciadora Rivano usando o modelo Ibiza em uma paisagem nevada"
+          width="959"
+          height="1280"
+          loading="lazy"
+          decoding="async"
+        />
 
-        <article class="sun-curation-item sun-curation-item--dele" data-reveal data-reveal-delay="80">
-          <div class="sun-curation-image-wrap">
-            <img src="/editorial/ele.png" alt="Homem usando óculos redondo Rivano em close sob céu azul" class="sun-curation-image" loading="lazy" decoding="async" />
+        <div class="featured-product-story-overlay" data-story-overlay aria-hidden="true">
+          <img
+            class="featured-product-story-image featured-product-story-image--entry"
+            src="/editorial/rivano-ibiza-story-entry.jpg"
+            alt=""
+            width="959"
+            height="1280"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+        <div class="featured-product-identity" aria-label={`Modelo em destaque: ${ibizaProductName}`}>
+          <h2>{ibizaProductName}</h2>
+        </div>
+
+        <button
+          class="featured-product-divider"
+          data-story-divider
+          type="button"
+          role="slider"
+          aria-label="Revelar outra fotografia da campanha Ibiza"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="62"
+          aria-valuetext="62 por cento revelado"
+        >
+          <span class="featured-product-divider-rule" aria-hidden="true"></span>
+          <span class="featured-product-divider-grip" aria-hidden="true"><i></i><i></i><i></i></span>
+        </button>
+
+        <div class="featured-product-commerce" aria-label={`Informações do modelo ${ibizaProductName}`}>
+          <div class="featured-product-commerce-details">
+            <div>
+              <p class="featured-product-commerce-name">{ibizaProductName}</p>
+              <p class="featured-product-commerce-price">{formatPriceBRL(homePrototypePrice)}</p>
+            </div>
+            <a class="featured-product-commerce-link" href={ibizaProductHref}>
+              <span>Ver modelo</span>
+              <svg viewBox="0 0 18 8" aria-hidden="true">
+                <path d="M0 4h16M12.5.5 16 4l-3.5 3.5" fill="none" stroke="currentColor" stroke-linecap="square" />
+              </svg>
+            </a>
           </div>
-          <div class="sun-curation-copy">
-            <p class="curation-label">Curadoria</p>
-            <h2 class="curation-title">Sol dele</h2>
-            <p class="curation-text">Linhas limpas, lentes marcantes e o verão como estado de espírito.</p>
-            <a class="curation-link" href="/catalogo?para=ele">Ver seleção</a>
-          </div>
-        </article>
+        </div>
       </div>
     </section>
 
-    <section class="manifesto-section" aria-label="Manifesto Rivano">
-      <div class="manifesto-inner" data-reveal="fade">
-        <p class="manifesto-label">Manifesto</p>
-        <h2 class="manifesto-title">O verão permanece.</h2>
-        <p class="manifesto-text">Na pele, na luz, no olhar.</p>
-        <p class="manifesto-signature">Rivano</p>
+    <section class="rivano-travel-manifesto" aria-labelledby="rivano-travel-manifesto-title">
+      <h2 id="rivano-travel-manifesto-title" class="sr-only">Em algum lugar sob o sol</h2>
+      <p class="rivano-travel-manifesto-copy">
+        <span class="rivano-travel-manifesto-line--ibiza">Ibiza at 6pm.</span>
+        <span class="rivano-travel-manifesto-line--capri">Capri after <em>lunch.</em></span>
+        <span class="rivano-travel-manifesto-line--boat">The last boat.</span>
+        <span class="rivano-travel-manifesto-line--mykonos">Mykonos until</span>
+        <em class="rivano-travel-manifesto-line--sunset">sunset.</em>
+        <span class="rivano-travel-manifesto-line--dinner">Dinner at ten.</span>
+        <span class="rivano-travel-manifesto-line--saint">Saint-Tropez</span>
+        <span class="rivano-travel-manifesto-line--dark">after dark.</span>
+        <span class="rivano-travel-manifesto-line--swim">One more <em>swim.</em></span>
+        <span class="rivano-travel-manifesto-line--somewhere">Somewhere</span>
+        <em class="rivano-travel-manifesto-line--under">under the sun.</em>
+      </p>
+    </section>
+
+    <section class="rivano-summer-notes" aria-label="Rivano Summer Notes">
+      <div class="rivano-summer-notes-stage">
+        <img
+          src="/editorial/rivano-summer-notes-final.webp"
+          alt="Arte editorial Último barco, com óculos Rivano, laranja sanguínea e copo âmbar"
+          class="rivano-summer-notes-image"
+          width="1122"
+          height="1402"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <figure class="rivano-summer-notes-inset" aria-hidden="true">
+          <img
+            src="/editorial/rivano-summer-notes.webp"
+            alt=""
+            width="1122"
+            height="1402"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+      </div>
+    </section>
+
+    <section class="summer-selection" aria-labelledby="summer-selection-title">
+      <header class="summer-selection-header">
+        <h2 id="summer-selection-title">Seleção de verão</h2>
+      </header>
+      <div class="summer-selection-grid">
+        {
+          summerSelectionProducts.map((product) => {
+            const modelName = product.name.replace(/^Rivano\s+/i, "").replaceAll("-", " ");
+
+            return (
+              <a class="summer-selection-product" href={`/produtos/${product.slug}`} aria-label={`Ver ${product.name}`}>
+                <span class="summer-selection-product-stage">
+                  <img
+                    src={`/products/${product.slug}/editorial-grid.webp`}
+                    alt={product.name}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </span>
+                <span class="summer-selection-product-name">{modelName}</span>
+                <span class="summer-selection-product-price">{formatPriceBRL(product.price)}</span>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <section class="rivano-lifestyle" aria-labelledby="rivano-lifestyle-title">
+      <p class="rivano-lifestyle-label">Rivano em movimento</p>
+
+      <div class="rivano-lifestyle-body">
+        <div
+          class="rivano-lifestyle-strip"
+          role="group"
+          aria-label="Fotos de quem usa Rivano"
+          tabindex="0"
+        >
+          <ul class="rivano-lifestyle-track">
+            <li class="rivano-lifestyle-item rivano-lifestyle-item--lead" aria-hidden="true">
+              <img
+                class="rivano-lifestyle-image"
+                src={lifestyleLeadIn.src}
+                alt=""
+                width="1080"
+                height="1350"
+                loading="lazy"
+                decoding="async"
+              />
+            </li>
+            {
+              lifestyleImages.map((image) => (
+                <li class="rivano-lifestyle-item">
+                  <img
+                    class="rivano-lifestyle-image"
+                    src={image.src}
+                    alt={image.alt}
+                    width="1080"
+                    height="1350"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <h2 id="rivano-lifestyle-title" class="rivano-lifestyle-title" data-reveal="fade">
+          {lifestyleHeadlineLines.map((line) => <span class="rivano-lifestyle-line">{line}</span>)}
+        </h2>
       </div>
     </section>
 
@@ -218,92 +404,253 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   </div>
 </BaseLayout>
 
+<script is:inline>
+  const heroVideo = document.querySelector("[data-hero-video]");
+  const campaignHero = document.querySelector(".campaign-hero");
+  const openingProducts = document.querySelector(".opening-products");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const startHeroVideo = () => {
+    if (!(heroVideo instanceof HTMLVideoElement)) return;
+
+    heroVideo.muted = true;
+    heroVideo.defaultMuted = true;
+    heroVideo.setAttribute("muted", "");
+    heroVideo.play().catch(() => undefined);
+  };
+
+  const revealHeroVideo = () => campaignHero?.classList.add("is-video-playing");
+
+  heroVideo?.addEventListener("playing", revealHeroVideo);
+  startHeroVideo();
+  ["loadedmetadata", "loadeddata", "canplay", "playing"].forEach((eventName) => {
+    heroVideo?.addEventListener(eventName, startHeroVideo, { once: true });
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") startHeroVideo();
+  });
+  if (heroVideo instanceof HTMLVideoElement && !heroVideo.paused && heroVideo.readyState >= 2) {
+    revealHeroVideo();
+  }
+
+  if (openingProducts) {
+    const revealProducts = () => openingProducts.classList.add("is-revealed");
+
+    if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+      revealProducts();
+    } else {
+      const openingProductsObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) return;
+          revealProducts();
+          openingProductsObserver.disconnect();
+        },
+        { threshold: 0.18 },
+      );
+
+      openingProductsObserver.observe(openingProducts);
+    }
+  }
+
+  const featuredStory = document.querySelector("[data-featured-story]");
+
+  if (featuredStory instanceof HTMLElement && !featuredStory.dataset.storyInitialized) {
+    featuredStory.dataset.storyInitialized = "true";
+    const storyStage = featuredStory.querySelector("[data-story-stage]");
+    const divider = featuredStory.querySelector("[data-story-divider]");
+    if (storyStage instanceof HTMLElement && divider instanceof HTMLButtonElement) {
+      const clamp = (value, minimum = 0, maximum = 100) => Math.min(Math.max(value, minimum), maximum);
+      let currentPosition = Number.parseFloat(divider.getAttribute("aria-valuenow") || "62");
+      let queuedPosition = currentPosition;
+      let animationFrame = 0;
+      let activePointer = null;
+      let startX = 0;
+      let startY = 0;
+      let gesture = null;
+
+      const applyPosition = (position) => {
+        currentPosition = clamp(position);
+        storyStage.style.setProperty("--story-divider", `${currentPosition}%`);
+        divider.setAttribute("aria-valuenow", String(Math.round(currentPosition)));
+        divider.setAttribute("aria-valuetext", `${Math.round(currentPosition)} por cento revelado`);
+      };
+
+      const queuePosition = (position) => {
+        queuedPosition = clamp(position);
+        if (animationFrame) return;
+
+        animationFrame = window.requestAnimationFrame(() => {
+          animationFrame = 0;
+          applyPosition(queuedPosition);
+        });
+      };
+
+      const positionFromPointer = (clientX) => {
+        const bounds = storyStage.getBoundingClientRect();
+        if (!bounds.width) return currentPosition;
+        return ((clientX - bounds.left) / bounds.width) * 100;
+      };
+
+      divider.addEventListener("pointerdown", (event) => {
+        activePointer = event.pointerId;
+        startX = event.clientX;
+        startY = event.clientY;
+        gesture = "pending";
+        divider.setPointerCapture(event.pointerId);
+      });
+
+      divider.addEventListener("pointermove", (event) => {
+        if (event.pointerId !== activePointer || !gesture) return;
+
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+
+        if (gesture === "pending") {
+          if (Math.hypot(deltaX, deltaY) < 5) return;
+          gesture = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
+
+          if (gesture === "vertical") {
+            if (divider.hasPointerCapture(event.pointerId)) divider.releasePointerCapture(event.pointerId);
+            return;
+          }
+        }
+
+        if (gesture !== "horizontal") return;
+        event.preventDefault();
+        storyStage.classList.add("is-dragging");
+        queuePosition(positionFromPointer(event.clientX));
+      });
+
+      const finishDrag = (event) => {
+        if (event.pointerId !== activePointer) return;
+        if (animationFrame) {
+          window.cancelAnimationFrame(animationFrame);
+          animationFrame = 0;
+          applyPosition(queuedPosition);
+        }
+
+        if (divider.hasPointerCapture(event.pointerId)) divider.releasePointerCapture(event.pointerId);
+        activePointer = null;
+        gesture = null;
+        storyStage.classList.remove("is-dragging");
+      };
+
+      divider.addEventListener("pointerup", finishDrag);
+      divider.addEventListener("pointercancel", finishDrag);
+      divider.addEventListener("lostpointercapture", () => {
+        activePointer = null;
+        gesture = null;
+        storyStage.classList.remove("is-dragging");
+      });
+
+      divider.addEventListener("keydown", (event) => {
+        const keyboardSteps = {
+          ArrowLeft: -5,
+          ArrowRight: 5,
+          Home: -100,
+          End: 100,
+        };
+        const step = keyboardSteps[event.key];
+        if (step === undefined) return;
+
+        event.preventDefault();
+        applyPosition(step === -100 ? 0 : step === 100 ? 100 : currentPosition + step);
+      });
+
+      applyPosition(currentPosition);
+    }
+  }
+</script>
+
 <style>
   .rivano-home {
     background: var(--rivano-off-white);
     color: var(--rivano-brown);
-    overflow-x: hidden;
+    --summer-notes-inset-left: 4.2vw;
+    overflow-x: clip;
   }
 
   .campaign-hero {
-    background: color-mix(in srgb, var(--rivano-brown) 86%, black);
-    height: calc(100svh - 60px);
+    background: #e5e8e9;
+    height: 100svh;
+    min-height: 640px;
     overflow: hidden;
     position: relative;
     width: 100vw;
   }
 
-  .campaign-video {
+  .campaign-motion-fallback,
+  .campaign-image {
+    background: #e5e8e9;
     display: block;
     height: 100%;
+    left: 0;
     object-fit: cover;
+    object-position: center;
+    position: absolute;
+    top: 0;
     width: 100vw;
   }
 
+  .campaign-motion-fallback {
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+
+  .campaign-image {
+    opacity: 0;
+    transition: opacity 180ms ease-out;
+    z-index: 1;
+  }
+
+  .campaign-hero.is-video-playing .campaign-image {
+    opacity: 1;
+  }
+
   .campaign-gradient {
-    background:
-      radial-gradient(circle at 50% 14%, color-mix(in srgb, black 22%, transparent) 0%, transparent 58%),
-      linear-gradient(
-        0deg,
-        color-mix(in srgb, black 74%, transparent) 0%,
-        color-mix(in srgb, var(--rivano-brown) 48%, transparent) 54%,
-        transparent 100%
-      );
+    background: linear-gradient(0deg, rgba(9, 12, 13, 0.72) 0%, rgba(9, 12, 13, 0.2) 36%, transparent 64%);
     bottom: 0;
     height: 52%;
     left: 0;
     pointer-events: none;
     position: absolute;
     right: 0;
+    z-index: 2;
   }
 
   .campaign-content {
     bottom: 0;
     left: 0;
-    padding: 24px 24px calc(32px + env(safe-area-inset-bottom));
+    padding: 24px 20px calc(32px + env(safe-area-inset-bottom));
     position: absolute;
     width: 100%;
-    z-index: 1;
+    z-index: 3;
   }
 
-  .campaign-kicker,
-  .post-hero-label,
   .selection-label,
-  .curation-label,
-  .manifesto-label,
-  .manifesto-text,
-  .manifesto-signature,
   .brand-story-label {
     font-family: var(--font-sans);
     font-weight: 400;
     text-transform: uppercase;
   }
 
-  .campaign-kicker {
-    color: color-mix(in srgb, var(--rivano-off-white) 70%, transparent);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    line-height: 1.35;
-    margin-bottom: 12px;
-  }
-
   .campaign-title {
     color: var(--rivano-off-white);
-    font-family: var(--font-serif);
-    font-size: clamp(56px, 16vw, 76px);
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 0.92;
+    font-family: var(--font-sans);
+    font-size: clamp(46px, 12.4vw, 58px);
+    font-weight: 400;
+    letter-spacing: -0.065em;
+    line-height: 0.88;
     margin: 0;
-    max-width: 340px;
+    max-width: 260px;
   }
 
   .campaign-actions {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 20px;
-    margin-top: 24px;
+    margin-top: 22px;
   }
 
   .campaign-cta {
@@ -313,215 +660,328 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     font-family: var(--font-sans);
     font-size: 11px;
     font-weight: 400;
-    justify-content: center;
-    letter-spacing: 0.14em;
+    border-bottom: 1px solid color-mix(in srgb, var(--rivano-off-white) 82%, transparent);
+    letter-spacing: 0.1em;
     line-height: 1.2;
-    min-height: 44px;
+    min-height: 40px;
+    padding-bottom: 2px;
     text-transform: uppercase;
   }
 
-  .campaign-cta--primary {
-    border: 1px solid color-mix(in srgb, var(--rivano-off-white) 72%, transparent);
-    padding: 0 22px;
+  .featured-product-story {
+    background: #dfe1e1;
+    margin-top: 20px;
+    position: relative;
   }
 
-  .campaign-cta--primary:hover {
-    background: color-mix(in srgb, var(--rivano-off-white) 12%, transparent);
-  }
-
-  .campaign-cta--secondary {
-    opacity: 0.7;
-    padding: 0;
-  }
-
-  .post-hero-editorial {
-    background: var(--rivano-off-white);
-  }
-
-  .post-hero-image-wrap {
-    aspect-ratio: 4 / 5;
+  .featured-product-story-stage {
+    --story-divider: 62%;
+    background: #dfe1e1;
+    height: clamp(680px, 94svh, 860px);
+    isolation: isolate;
     overflow: hidden;
+    position: relative;
+    touch-action: pan-y;
+    user-select: none;
     width: 100%;
   }
 
-  .post-hero-image {
+  .featured-product-story-image,
+  .featured-product-story-overlay {
+    inset: 0;
+    position: absolute;
+  }
+
+  .featured-product-story-image {
     display: block;
     height: 100%;
     object-fit: cover;
     width: 100%;
   }
 
-  .post-hero-copy {
-    padding: 32px 24px 48px;
+  .featured-product-story-image--entry {
+    object-position: 47% 46%;
+    transform: translate3d(0, -4.5%, 0) scale(1.115);
   }
 
-  .post-hero-label {
-    color: var(--rivano-muted);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    line-height: 1.35;
+  .featured-product-story-image--reveal {
+    object-position: 49% 46%;
+    transform: translate3d(0, -3.5%, 0) scale(1.11);
   }
 
-  .post-hero-title {
-    color: var(--rivano-brown);
-    font-family: var(--font-serif);
-    font-size: clamp(38px, 11vw, 56px);
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 0.95;
-    margin-top: 14px;
-    max-width: 340px;
+  .featured-product-story-overlay {
+    clip-path: inset(0 calc(100% - var(--story-divider)) 0 0);
+    overflow: hidden;
+    pointer-events: none;
+    will-change: clip-path;
+    z-index: 1;
   }
 
-  .post-hero-text {
-    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+  .featured-product-identity {
+    color: #202320;
+    left: 18px;
+    pointer-events: none;
+    position: absolute;
+    top: clamp(38px, 6svh, 54px);
+    transition: opacity 180ms ease;
+    z-index: 3;
+  }
+
+  .featured-product-identity h2 {
     font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.65;
-    margin-top: 16px;
-    max-width: 320px;
-  }
-
-  .post-hero-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0 20px;
-    margin-top: 24px;
-  }
-
-  .post-hero-links a {
-    align-items: center;
-    border-bottom: 1px solid currentColor;
-    color: var(--rivano-brown);
-    display: inline-flex;
-    font-family: var(--font-sans);
-    font-size: 11px;
+    font-size: clamp(44px, 13vw, 58px);
     font-weight: 400;
-    letter-spacing: 0.14em;
-    line-height: 1.2;
-    min-height: 44px;
+    letter-spacing: -0.075em;
+    line-height: 0.82;
+    margin: 0;
     text-transform: uppercase;
   }
 
-  .editorial-products {
-    background: var(--rivano-off-white);
-    padding: 56px 0 64px;
+  .featured-product-divider {
+    -webkit-tap-highlight-color: transparent;
+    background: transparent;
+    border: 0;
+    cursor: ew-resize;
+    height: 100%;
+    left: var(--story-divider);
+    margin: 0;
+    outline-offset: -7px;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    touch-action: pan-y;
+    width: 54px;
+    z-index: 5;
   }
 
-  .editorial-products-header {
-    margin-bottom: 28px;
-    padding: 0 24px;
+  .featured-product-divider-rule {
+    background: rgba(24, 28, 27, 0.9);
+    box-shadow: 1px 0 0 rgba(249, 247, 241, 0.5);
+    height: 100%;
+    left: 50%;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    width: 1px;
+  }
+
+  .featured-product-divider-grip {
+    align-items: center;
+    background: rgba(24, 28, 27, 0.94);
+    border: 1px solid rgba(24, 28, 27, 0.98);
+    box-sizing: border-box;
+    color: #f5f1e8;
+    display: flex;
+    filter: drop-shadow(0 1px 1px rgba(22, 24, 25, 0.25));
+    flex-direction: column;
+    gap: 3px;
+    height: 26px;
+    justify-content: center;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: opacity 160ms ease, transform 160ms ease;
+    width: 15px;
+  }
+
+  .featured-product-divider-grip i {
+    background: currentColor;
+    display: block;
+    height: 1px;
+    opacity: 0.9;
+    width: 5px;
+  }
+
+  .featured-product-story-stage.is-dragging .featured-product-divider-grip {
+    opacity: 0.82;
+    transform: translate(-50%, -50%) scaleX(0.9) scaleY(1.04);
+  }
+
+  .featured-product-commerce-link:focus-visible {
+    outline: 1px solid #1d211f;
+    outline-offset: 4px;
+  }
+
+  .featured-product-divider:focus-visible {
+    outline: 0;
+  }
+
+  .featured-product-divider:focus-visible .featured-product-divider-grip {
+    outline: 1px solid #f8f8f5;
+    outline-offset: 4px;
+  }
+
+  .featured-product-commerce {
+    align-items: stretch;
+    background: #f3efe5;
+    border-top: 1px solid rgba(29, 33, 31, 0.66);
+    bottom: 0;
+    box-sizing: border-box;
+    color: #1d211f;
+    display: grid;
+    grid-template-columns: 1fr;
+    left: 0;
+    min-height: calc(70px + env(safe-area-inset-bottom));
+    padding: 12px 18px calc(10px + env(safe-area-inset-bottom));
+    position: absolute;
+    right: 0;
+    width: auto;
+    z-index: 6;
+  }
+
+  .featured-product-commerce-details {
+    align-items: end;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0;
+  }
+
+  .featured-product-commerce-name,
+  .featured-product-commerce-price {
+    font-family: var(--font-sans);
+    margin: 0;
+  }
+
+  .featured-product-commerce-name {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .featured-product-commerce-price {
+    color: rgba(29, 33, 31, 0.72);
+    font-size: 10px;
+    line-height: 1.3;
+    margin-top: 3px;
+  }
+
+  .featured-product-commerce-link {
+    align-items: center;
+    border-bottom: 0;
+    border-left: 1px solid rgba(29, 33, 31, 0.44);
+    color: #1d211f;
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 500;
+    gap: 8px;
+    letter-spacing: 0.09em;
+    line-height: 1.2;
+    align-self: end;
+    margin: 0;
+    min-height: 42px;
+    padding: 0 0 0 20px;
+    text-transform: uppercase;
+  }
+
+  .featured-product-commerce-link span {
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 3px;
+  }
+
+  .featured-product-commerce-link svg {
+    height: 8px;
+    width: 18px;
+  }
+
+
+  .opening-products {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0, #fff 88px);
+    margin-top: -42px;
+    padding: 74px 0 56px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .opening-products-header {
+    margin-bottom: 14px;
+    padding: 0 16px;
   }
 
   .selection-label {
-    color: var(--rivano-muted);
-    font-size: 10px;
-    letter-spacing: 0.18em;
+    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+    font-size: 9px;
+    letter-spacing: 0.15em;
     line-height: 1.35;
   }
 
   .selection-title {
     color: var(--rivano-brown);
     font-family: var(--font-serif);
-    font-size: clamp(42px, 12vw, 62px);
+    font-size: clamp(38px, 11vw, 56px);
     font-weight: 300;
     letter-spacing: 0;
     line-height: 0.92;
-    margin-top: 12px;
-    max-width: 360px;
+    margin-top: 10px;
+    max-width: 290px;
   }
 
-  .selection-text {
-    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.65;
-    margin-top: 16px;
-    max-width: 320px;
-  }
-
-  .editorial-products-track {
-    align-items: flex-start;
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    padding: 0 24px;
-    scrollbar-width: none;
-    scroll-snap-type: x mandatory;
-  }
-
-  .editorial-products-track::-webkit-scrollbar {
-    display: none;
+  .opening-products-track {
+    display: grid;
+    gap: 22px 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 0 16px;
   }
 
   .editorial-product {
-    align-self: flex-start;
     color: var(--rivano-brown);
-    flex: 0 0 74vw;
     margin-top: 0;
     min-height: 44px;
     min-width: 0;
-    scroll-snap-align: start;
   }
 
   .editorial-product-frame {
     align-items: center;
-    aspect-ratio: 1 / 1;
-    background: color-mix(in srgb, var(--rivano-off-white) 74%, var(--rivano-beige));
-    border: 1px solid color-mix(in srgb, var(--rivano-beige) 60%, var(--rivano-off-white));
-    border-radius: 8px;
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--rivano-brown) 5%, transparent);
+    aspect-ratio: 4 / 3;
+    background: transparent;
     display: flex;
     justify-content: center;
     overflow: hidden;
-    padding: 24px;
-    transition:
-      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 0;
     width: 100%;
-  }
-
-  .editorial-product:hover .editorial-product-frame {
-    box-shadow: 0 14px 36px color-mix(in srgb, var(--rivano-brown) 13%, transparent);
-    transform: translateY(-5px);
   }
 
   .editorial-product-image {
     display: block;
-    filter: contrast(1.03) saturate(0.98);
+    filter: contrast(1.04) saturate(0.98);
     height: 100%;
     mix-blend-mode: multiply;
-    object-fit: contain;
-    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    width: auto;
-    max-height: none;
-    max-width: 92%;
+    object-fit: cover;
+    width: 100%;
   }
 
-  .editorial-product:hover .editorial-product-image {
+  .editorial-product[data-product="rivano-balos"] .editorial-product-image {
+    object-position: center 52%;
+    transform: scale(1.1);
+  }
+
+  .editorial-product[data-product="rivano-amalfi"] .editorial-product-image {
+    object-position: center 51%;
     transform: scale(1.03);
+  }
+
+  .editorial-product[data-product="rivano-palermo"] .editorial-product-image {
+    object-position: center 51%;
+    transform: scale(1.05);
+  }
+
+  .editorial-product[data-product="rivano-verona1"] .editorial-product-image {
+    object-position: center 50%;
+    transform: scale(0.98);
   }
 
   .editorial-product-name {
     display: block;
-    font-family: var(--font-serif);
-    font-size: 17px;
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 1.12;
-    margin-top: 11px;
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    transition: text-decoration-color 0.3s ease-out, color 0.25s ease-out;
-  }
-
-  .editorial-product:hover .editorial-product-name {
-    color: var(--rivano-brown-mid);
-    text-decoration-color: color-mix(in srgb, var(--rivano-brown-mid) 55%, transparent);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.35;
+    margin-top: 9px;
   }
 
   .editorial-product-price {
@@ -531,15 +991,14 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     font-size: 12px;
     font-weight: 300;
     line-height: 1.35;
-    margin-top: 4px;
+    margin-top: 3px;
   }
 
   .editorial-products-link-wrap {
-    margin: 28px 24px 0;
+    margin: 24px 16px 0;
   }
 
-  .editorial-text-link,
-  .curation-link {
+  .editorial-text-link {
     align-items: center;
     border-bottom: 1px solid currentColor;
     color: var(--rivano-brown);
@@ -553,64 +1012,308 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     text-transform: uppercase;
   }
 
-  .sun-curation {
-    background: var(--rivano-beige);
+  .opening-entrance {
+    animation: opening-copy-in 560ms 80ms both cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .sun-curation-item {
-    border-top: 1px solid color-mix(in srgb, var(--rivano-off-white) 62%, transparent);
+  .opening-products .editorial-product {
+    opacity: 0;
+    transform: translateY(14px);
   }
 
-  .sun-curation-item:first-child {
-    border-top: 0;
+  .opening-products.is-revealed .editorial-product {
+    animation: opening-product-in 520ms both cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .sun-curation-image-wrap {
-    aspect-ratio: 4 / 5;
+  @keyframes opening-copy-in {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes opening-product-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .rivano-travel-manifesto {
+    background: var(--rivano-off-white);
+    color: #171816;
     overflow: hidden;
+    padding: clamp(52px, 7svh, 70px) 14px calc(clamp(58px, 8svh, 82px) - 16px);
+  }
+
+  .rivano-travel-manifesto-copy {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-sans);
+    font-size: clamp(43px, 11.3vw, 52px);
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.075em;
+    line-height: 0.82;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .rivano-travel-manifesto-copy > span,
+  .rivano-travel-manifesto-copy > em {
+    display: block;
+    max-width: 100%;
+    white-space: nowrap;
+  }
+
+  .rivano-travel-manifesto-copy em {
+    font-family: var(--font-serif);
+    font-size: 1.08em;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -0.055em;
+    line-height: 0.8;
+    text-transform: none;
+  }
+
+  .rivano-travel-manifesto-line--capri {
+    font-size: 0.94em;
+    margin-left: 8.5vw;
+  }
+
+  .rivano-travel-manifesto-line--capri em,
+  .rivano-travel-manifesto-line--swim em {
+    font-size: 1.14em;
+    margin-left: 3px;
+  }
+
+  .rivano-travel-manifesto-line--boat {
+    font-size: 0.79em;
+    letter-spacing: -0.055em;
+    margin-left: 8%;
+    margin-top: -2px;
+  }
+
+  .rivano-travel-manifesto-line--mykonos {
+    margin-top: 3px;
+  }
+
+  .rivano-travel-manifesto-line--sunset {
+    font-size: 1.18em;
+    margin-left: 52%;
+    margin-top: -3px;
+  }
+
+  .rivano-travel-manifesto-line--dinner {
+    font-size: 0.76em;
+    letter-spacing: -0.055em;
+    margin-left: 38%;
+    margin-top: 0;
+  }
+
+  .rivano-travel-manifesto-line--saint {
+    font-size: 0.98em;
+    margin-top: 3px;
+  }
+
+  .rivano-travel-manifesto-line--dark {
+    font-size: 0.93em;
+    margin-left: 35%;
+    margin-top: -2px;
+  }
+
+  .rivano-travel-manifesto-line--swim {
+    font-size: 0.82em;
+    margin-left: 7%;
+    margin-top: 0;
+  }
+
+  .rivano-travel-manifesto-line--somewhere {
+    font-size: 0.95em;
+    margin-left: 13%;
+    margin-top: clamp(12px, 2svh, 18px);
+  }
+
+  .rivano-travel-manifesto-line--under {
+    font-size: 1.2em;
+    margin-left: 24%;
+    margin-top: -5px;
+  }
+
+  .rivano-summer-notes {
+    background: var(--rivano-off-white);
+    padding: 0 0 clamp(86px, 15vw, 118px);
+  }
+
+  .rivano-summer-notes-stage {
+    aspect-ratio: 0.8;
+    isolation: isolate;
+    overflow: visible;
+    position: relative;
     width: 100%;
   }
 
-  .sun-curation-image {
+  .rivano-summer-notes-image {
     display: block;
     height: 100%;
     object-fit: cover;
+    object-position: 50% 52%;
     width: 100%;
   }
 
-  .sun-curation-copy {
-    padding: 28px 24px 56px;
-  }
-
-  .curation-label {
-    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    line-height: 1.35;
-  }
-
-  .curation-title {
+  .rivano-summer-notes-title {
     color: var(--rivano-brown);
-    font-family: var(--font-serif);
-    font-size: clamp(46px, 13vw, 68px);
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 0.9;
-    margin-top: 10px;
+    left: 0;
+    position: absolute;
+    top: 11.5%;
+    width: 100%;
+    z-index: 1;
   }
 
-  .curation-text {
-    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+  .rivano-summer-notes-statement {
     font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.65;
-    margin-top: 14px;
-    max-width: 320px;
+    font-size: clamp(32px, 8.6vw, 36px);
+    font-weight: 400;
+    letter-spacing: -0.075em;
+    line-height: 0.8;
+    margin: 0;
   }
 
-  .curation-link {
-    margin-top: 20px;
+  .rivano-summer-notes-statement span {
+    display: block;
+    width: fit-content;
+  }
+
+  .rivano-summer-notes-statement span:first-child {
+    margin-left: 6.2vw;
+  }
+
+  .rivano-summer-notes-statement span:last-child {
+    margin-left: 19vw;
+    margin-top: 25px;
+  }
+
+  .rivano-summer-notes-intervention {
+    font-family: var(--font-serif);
+    font-size: clamp(20px, 5.2vw, 23px);
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: -0.055em;
+    line-height: 0.84;
+    margin: 0;
+    position: absolute;
+    top: 30px;
+    left: 10vw;
+  }
+
+  .rivano-summer-notes-inset {
+    aspect-ratio: 3 / 4;
+    bottom: clamp(-76px, -18vw, -62px);
+    left: var(--summer-notes-inset-left);
+    margin: 0;
+    overflow: visible;
+    position: absolute;
+    width: clamp(116px, 32vw, 144px);
+    z-index: 2;
+  }
+
+  .rivano-summer-notes-inset img {
+    display: block;
+    height: 100%;
+    object-fit: cover;
+    object-position: 65% 60%;
+    width: 100%;
+  }
+
+  .rivano-summer-notes-annotation {
+    bottom: 11.5%;
+    color: var(--rivano-off-white);
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-sans);
+    font-size: 9px;
+    font-weight: 400;
+    letter-spacing: 0.13em;
+    line-height: 1.25;
+    margin: 0;
+    position: absolute;
+    right: 7.4vw;
+    text-align: right;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+
+  .rivano-summer-notes-annotation span + span {
+    margin-top: 3px;
+  }
+
+  .summer-selection {
+    background: var(--rivano-off-white);
+    color: var(--rivano-brown);
+    padding: 0 16px 96px;
+  }
+
+  .summer-selection-header {
+    margin: 0 0 34px;
+    padding-left: calc(var(--summer-notes-inset-left) - 16px);
+  }
+
+  .summer-selection-header h2 {
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.25;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .summer-selection-grid {
+    display: grid;
+    gap: 60px 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .summer-selection-product {
+    color: inherit;
+    display: block;
+    min-width: 0;
+    text-decoration: none;
+  }
+
+  .summer-selection-product-stage {
+    align-items: center;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .summer-selection-product-stage img {
+    display: block;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+    width: 92%;
+  }
+
+  .summer-selection-product-name,
+  .summer-selection-product-price {
+    display: block;
+    font-family: var(--font-sans);
+  }
+
+  .summer-selection-product-name {
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    line-height: 1.35;
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  .summer-selection-product-price {
+    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+    font-size: 11px;
+    font-weight: 300;
+    line-height: 1.35;
+    margin-top: 3px;
   }
 
   .latest-rays-section {
@@ -760,49 +1463,86 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     text-transform: uppercase;
   }
 
-  .manifesto-section {
-    background: var(--rivano-brown);
-    color: var(--rivano-off-white);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 72svh;
-    padding: 72px 24px;
+  /* ── Rivano em movimento ─────────────────────────────────
+     Faixa horizontal de fotografia lifestyle: uma foto dominante,
+     vizinhas cortadas nas duas bordas, headline logo abaixo.
+     --lifestyle-lead é o quanto a foto de entrada fica cortada
+     pela borda esquerda. */
+  .rivano-lifestyle {
+    --lifestyle-lead: 70vw;
+    background: var(--rivano-off-white);
+    color: var(--rivano-brown);
+    overflow: clip;
+    padding: 72px 0 92px;
   }
 
-  .manifesto-label {
-    color: color-mix(in srgb, var(--rivano-off-white) 52%, transparent);
+  .rivano-lifestyle-label {
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-family: var(--font-sans);
     font-size: 10px;
-    letter-spacing: 0.18em;
-    line-height: 1.35;
-  }
-
-  .manifesto-title {
-    color: var(--rivano-off-white);
-    font-family: var(--font-serif);
-    font-size: clamp(64px, 19vw, 96px);
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 0.82;
-    margin-top: 20px;
-    max-width: 360px;
-  }
-
-  .manifesto-text {
-    color: color-mix(in srgb, var(--rivano-off-white) 74%, transparent);
-    font-size: 12px;
+    font-weight: 400;
     letter-spacing: 0.16em;
-    line-height: 1.6;
-    margin-top: 28px;
-    max-width: 260px;
+    line-height: 1.35;
+    margin: 0 0 24px;
+    padding-left: var(--summer-notes-inset-left);
+    text-transform: uppercase;
   }
 
-  .manifesto-signature {
-    color: color-mix(in srgb, var(--rivano-off-white) 56%, transparent);
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    line-height: 1.35;
-    margin-top: 56px;
+  .rivano-lifestyle-strip {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .rivano-lifestyle-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .rivano-lifestyle-track {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: max-content;
+  }
+
+  .rivano-lifestyle-item {
+    flex: 0 0 75vw;
+    scroll-snap-align: center;
+  }
+
+  /* Recorte de entrada: clone da última foto, cortado pela borda.
+     A área cortada fica fora do alcance da rolagem, então nenhuma
+     das dez fotos reais deixa de ser acessível. */
+  .rivano-lifestyle-item--lead {
+    margin-left: calc(-1 * var(--lifestyle-lead));
+    scroll-snap-align: none;
+  }
+
+  .rivano-lifestyle-image {
+    aspect-ratio: 281 / 400;
+    display: block;
+    height: auto;
+    object-fit: cover;
+    object-position: center 38%;
+    width: 100%;
+  }
+
+  .rivano-lifestyle-title {
+    font-family: var(--font-sans);
+    font-size: clamp(46px, 13.6vw, 68px);
+    font-weight: 500;
+    letter-spacing: -0.055em;
+    line-height: 0.92;
+    margin: 20px 0 0;
+    padding: 0 16px 0 calc(var(--summer-notes-inset-left) + 9vw);
+  }
+
+  .rivano-lifestyle-line {
+    display: block;
   }
 
   .brand-story-section {
@@ -966,7 +1706,7 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
   }
   @media (min-width: 768px) {
     .campaign-hero {
-      height: calc(100vh - 90px);
+      height: 100vh;
     }
 
     .campaign-content {
@@ -978,34 +1718,14 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       max-width: 560px;
     }
 
-    .post-hero-editorial {
-      padding: 96px 40px;
-    }
-
-    .post-hero-inner {
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-      margin: 0 auto;
-      max-width: 1440px;
-    }
-
-    .post-hero-image-wrap {
-      grid-column: 1 / 8;
-    }
-
-    .post-hero-copy {
-      align-self: center;
-      grid-column: 8 / 13;
-      padding: 0 0 0 56px;
-    }
-
-    .post-hero-title {
-      font-size: clamp(52px, 5vw, 86px);
-      max-width: 520px;
-    }
-
     .editorial-products {
       padding: 96px 40px;
+    }
+
+    .opening-products {
+      background: linear-gradient(180deg, transparent 0, #fff 144px);
+      margin-top: -112px;
+      padding: 176px 40px 96px;
     }
 
     .editorial-products-header {
@@ -1029,25 +1749,14 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       scroll-snap-type: none;
     }
 
-    .editorial-product {
-      flex: initial;
-    }
-
-    .editorial-product:nth-child(2) {
-      margin-top: 32px;
-    }
-
-    .editorial-product:nth-child(4) {
-      margin-top: 40px;
-    }
-
-    .editorial-product:nth-child(3) {
+    .opening-products .editorial-product {
+      animation: none;
       margin-top: 0;
     }
 
-    .editorial-product-image {
-      height: 94%;
-      max-width: 84%;
+    .opening-products .editorial-product-image {
+      height: 100%;
+      max-width: none;
     }
 
     .editorial-products-link-wrap {
@@ -1055,66 +1764,93 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
       max-width: 1280px;
     }
 
-    .sun-curation {
-      padding: 96px 40px;
+    .rivano-travel-manifesto {
+      padding: 144px 40px 156px;
     }
 
-    .sun-curation-inner {
-      margin: 0 auto;
-      max-width: 1440px;
-    }
-
-    .sun-curation-item {
-      border-top: 0;
-      display: grid;
-      grid-template-columns: repeat(12, minmax(0, 1fr));
-    }
-
-    .sun-curation-item--dela .sun-curation-image-wrap {
-      grid-column: 1 / 8;
-    }
-
-    .sun-curation-item--dela .sun-curation-copy {
-      grid-column: 8 / 13;
-      padding: 0 0 0 56px;
-    }
-
-    .sun-curation-item--dele {
-      margin-top: 80px;
-    }
-
-    .sun-curation-item--dele .sun-curation-copy {
-      grid-column: 1 / 6;
-      grid-row: 1;
-      padding: 0 56px 0 0;
-    }
-
-    .sun-curation-item--dele .sun-curation-image-wrap {
-      grid-column: 6 / 13;
-      grid-row: 1;
-    }
-
-    .sun-curation-copy {
-      align-self: center;
-    }
-
-    .curation-title {
-      font-size: clamp(52px, 5vw, 86px);
-    }
-
-    .manifesto-section {
-      min-height: 78vh;
-      padding: 144px 40px;
-    }
-
-    .manifesto-inner {
+    .rivano-travel-manifesto-copy {
+      font-size: clamp(68px, 8.5vw, 132px);
       margin: 0 auto;
       max-width: 1280px;
     }
 
-    .manifesto-title {
-      font-size: clamp(100px, 11vw, 168px);
-      max-width: 980px;
+    .rivano-summer-notes {
+      padding-bottom: 170px;
+    }
+
+    .rivano-summer-notes-stage {
+      aspect-ratio: 1.55;
+      margin: 0 auto;
+      max-width: 1440px;
+    }
+
+    .rivano-summer-notes-title {
+      left: 5%;
+      top: 9%;
+    }
+
+    .rivano-summer-notes-statement {
+      font-size: clamp(58px, 7vw, 104px);
+    }
+
+    .rivano-summer-notes-intervention {
+      font-size: clamp(32px, 3.2vw, 48px);
+      left: 10vw;
+      top: clamp(48px, 5vw, 76px);
+    }
+
+    .rivano-summer-notes-inset {
+      bottom: -112px;
+      left: 5%;
+      width: clamp(176px, 17vw, 250px);
+    }
+
+    .rivano-summer-notes-annotation {
+      bottom: 10%;
+      right: 5%;
+    }
+
+    .summer-selection {
+      padding: 0 40px 144px;
+    }
+
+    .summer-selection-header,
+    .summer-selection-grid {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 1280px;
+    }
+
+    .summer-selection-grid {
+      gap: 72px 28px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    /* Tablet: a composição continua empilhada — a coluna da headline
+       só nasce em 1024px, onde há largura para as linhas inteiras. */
+    .rivano-lifestyle {
+      --lifestyle-lead: 12vw;
+      padding: 104px 0 116px;
+    }
+
+    .rivano-lifestyle-label {
+      margin-bottom: 30px;
+      padding-left: 40px;
+    }
+
+    .rivano-lifestyle-item {
+      flex: 0 0 min(46vw, 380px);
+    }
+
+    .rivano-lifestyle-image {
+      aspect-ratio: 356 / 450;
+    }
+
+    .rivano-lifestyle-title {
+      font-size: clamp(64px, 9vw, 96px);
+      line-height: 0.94;
+      margin: 26px 0 0;
+      padding: 0 40px 0 calc(40px + 6vw);
     }
 
     .brand-story-section {
@@ -1260,7 +1996,51 @@ const societyImages = Array.from({ length: 8 }, (_, index) => {
     }
   }
 
+  @media (min-width: 1024px) {
+    .rivano-lifestyle {
+      --lifestyle-lead: 15vw;
+      padding: 128px 0 136px;
+    }
+
+    /* A faixa ocupa a esquerda e é cortada pela coluna da headline,
+       que fica alinhada pela base — a tensão vem da adjacência.
+       Copy nova precisa caber em linhas curtas: cada <span> é uma
+       linha e uma linha longa demais volta a quebrar sozinha. */
+    .rivano-lifestyle-body {
+      align-items: end;
+      display: grid;
+      grid-template-columns: minmax(0, 68fr) minmax(0, 32fr);
+    }
+
+    .rivano-lifestyle-item {
+      flex: 0 0 min(26vw, 380px);
+    }
+
+    .rivano-lifestyle-title {
+      font-size: clamp(58px, 6.2vw, 100px);
+      line-height: 0.95;
+      margin: 0;
+      padding: 0 24px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .featured-product-story-overlay {
+      will-change: auto;
+    }
+
+    .featured-product-identity,
+    .featured-product-divider-grip {
+      transition: none;
+    }
+
+    .opening-entrance,
+    .opening-products .editorial-product {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
     .rivano-society-track-desktop {
       animation: none;
     }
