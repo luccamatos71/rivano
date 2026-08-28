@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   buildSrcset,
+  getDisplayName,
   getImageSets,
   getProductDescription,
   pickRelatedProducts,
@@ -43,6 +44,7 @@ const { product } = Astro.props as { product: Product };
 const imageSets = getImageSets(product.images);
 const firstImage = imageSets[0];
 const relatedProducts = pickRelatedProducts(allProducts, product.slug, 4).map(toCardProduct);
+const displayName = getDisplayName(product.name);
 const productDescription = getProductDescription(product);
 const currentStock = product.stock ?? 0;
 const isPurchasable = product.available === true && currentStock > 0;
@@ -186,161 +188,71 @@ function formattedRelatedPrice(value: number): string {
 <BaseLayout title={`${product.name} | Rivano`} description={productDescription} showBottomBar={false}>
   <script type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
   <article class="pdp-page">
-    <section class="pdp-main" aria-label={`Detalhes de ${product.name}`}>
+    <section class="pdp-main" aria-label={`Detalhes de ${displayName}`}>
       <div class="pdp-gallery">
         {imageSets.length > 0 ? (
           <>
-            <div class="mobile-gallery" data-carousel aria-label={`Galeria de imagens de ${product.name}`}>
+            <div class="pdp-media" data-carousel aria-label={`Fotos de ${displayName}`}>
               {imageSets.map((imageSet, index) => (
-                <figure class="mobile-slide" data-slide={index}>
+                <figure class="pdp-media-slide" data-slide={index}>
                   <img
                     src={`/${imageSet.src}`}
                     srcset={buildSrcset(imageSet)}
-                    sizes="100vw"
-                    alt={`${product.name} - foto ${index + 1}`}
-                    class="mobile-gallery-image"
+                    sizes="(min-width: 1024px) 50vw, 100vw"
+                    alt={`${displayName} — foto ${index + 1}`}
+                    class="pdp-media-image"
                     loading={index === 0 ? "eager" : "lazy"}
                     fetchpriority={index === 0 ? "high" : undefined}
                     decoding="async"
-                    width="900"
-                    height="1200"
+                    width="1024"
+                    height="1365"
                   />
-                  {index === 0 && (
-                    <div class="gallery-overlay" aria-hidden="true">
-                      <div class="gallery-gradient"></div>
-                      <div class="gallery-product-info">
-                        <span class="gallery-product-name">{product.name}</span>
-                        <span class="gallery-product-price">{formattedPrice}</span>
-                      </div>
-                    </div>
-                  )}
                 </figure>
               ))}
             </div>
 
             {imageSets.length > 1 && (
-              <div class="gallery-dots" data-dots>
+              <div class="pdp-media-pagination" data-dots aria-hidden="true">
                 {imageSets.map((_, index) => (
-                  <button
-                    type="button"
-                    class="gallery-dot-button"
-                    data-dot={index}
-                    aria-label={`Mostrar foto ${index + 1}`}
-                    aria-current={index === 0 ? "true" : "false"}
-                  >
-                    <span class:list={["gallery-dot", index === 0 && "is-active"]} data-dot-indicator></span>
-                  </button>
+                  <span class:list={["pdp-media-tick", index === 0 && "is-active"]} data-dot-indicator></span>
                 ))}
               </div>
             )}
-
-            <div class="desktop-gallery" aria-label={`Galeria de imagens de ${product.name}`}>
-              <figure class="desktop-main-frame">
-                <img
-                  src={`/${firstImage.src}`}
-                  srcset={buildSrcset(firstImage)}
-                  sizes="(min-width: 768px) 58vw, 100vw"
-                  alt={`${product.name} - foto 1`}
-                  class="desktop-main-image"
-                  data-main-image
-                  loading="eager"
-                  fetchpriority="high"
-                  decoding="async"
-                  width="900"
-                  height="1200"
-                />
-              </figure>
-
-              {imageSets.length > 1 && (
-                <div class="thumbnail-row" aria-label="Escolha uma foto">
-                  {imageSets.map((imageSet, index) => (
-                    <button
-                      type="button"
-                      class:list={["thumbnail-button", index === 0 && "is-active"]}
-                      data-thumb={index}
-                      data-thumb-src={`/${imageSet.src}`}
-                      data-thumb-srcset={buildSrcset(imageSet)}
-                      data-thumb-alt={`${product.name} - foto ${index + 1}`}
-                      aria-label={`Ver foto ${index + 1}`}
-                      aria-current={index === 0 ? "true" : "false"}
-                    >
-                      <img
-                        src={`/${imageSet.src}`}
-                        srcset={buildSrcset(imageSet)}
-                        sizes="72px"
-                        alt=""
-                        class="thumbnail-image"
-                        loading={index < 6 ? "eager" : "lazy"}
-                        decoding="async"
-                        width="144"
-                        height="192"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
           </>
         ) : (
-          <div class="gallery-empty">Imagem indisponível</div>
+          <div class="gallery-empty">Imagem indispon&iacute;vel</div>
         )}
       </div>
 
       <aside class="product-panel">
-        <nav class="product-breadcrumb" aria-label="Caminho do produto">
-          <a href="/">In&iacute;cio</a>
-          <span aria-hidden="true">/</span>
-          <a href="/catalogo">Cat&aacute;logo</a>
-          <span aria-hidden="true">/</span>
-          <span>{product.name}</span>
-        </nav>
-
-        <div class="product-heading">
-          <h1 class="display-md product-title">{product.name}</h1>
-          <p class="product-price-main">{formattedPrice}</p>
+        <div class="pdp-identity">
+          <h1 class="pdp-name">{displayName}</h1>
+          <p class="pdp-price">{formattedPrice}</p>
         </div>
 
-        <p class="product-microcopy">Design leve, prote&ccedil;&atilde;o UV400 e presen&ccedil;a para os dias de sol.</p>
-        <p class:list={["product-availability", !isPurchasable && "is-unavailable"]}>{availabilityText}</p>
-
         {displayVariants.length > 0 && (
-          <div class="variant-selector" aria-label="Sele&ccedil;&atilde;o de varia&ccedil;&atilde;o">
-            <p class="panel-label">Varia&ccedil;&atilde;o</p>
-            <div class="variant-options">
-              {displayVariants.map((variant, index) => (
-                <button
-                  type="button"
-                  class:list={[
-                    "variant-option",
-                    index === selectedVariantIndex && variant.stock > 0 && "is-active",
-                    variant.stock <= 0 && "is-disabled",
-                  ]}
-                  aria-label={`Selecionar ${variant.name}`}
-                  aria-pressed={index === selectedVariantIndex && variant.stock > 0 ? "true" : "false"}
-                  data-variant-option
-                  data-whatsapp-message={variant.message}
-                  disabled={variant.stock <= 0}
-                >
-                  {variant.colorValue && <span class="variant-swatch" style={`background: ${variant.colorValue};`}></span>}
-                  <span>{variant.name}</span>
-                </button>
-              ))}
-            </div>
+          <div class="pdp-variants" aria-label="Varia&ccedil;&otilde;es dispon&iacute;veis">
+            {displayVariants.map((variant, index) => (
+              <button
+                type="button"
+                class:list={[
+                  "pdp-variant",
+                  index === selectedVariantIndex && variant.stock > 0 && "is-active",
+                  variant.stock <= 0 && "is-disabled",
+                ]}
+                aria-pressed={index === selectedVariantIndex && variant.stock > 0 ? "true" : "false"}
+                data-variant-option
+                data-whatsapp-message={variant.message}
+                disabled={variant.stock <= 0}
+              >
+                {variant.name}
+              </button>
+            ))}
           </div>
         )}
 
-        <a class:list={["whatsapp-cta", !isPurchasable && "is-secondary"]} href={whatsappUrl} data-primary-cta data-whatsapp-link>
-          {ctaLabel}
-        </a>
 
-        <p class="purchase-support">Atendimento humano para confirmar disponibilidade e frete.</p>
 
-        <div class="trust-strip" aria-label="Confian&ccedil;a Rivano">
-          <span><strong>01</strong> Prote&ccedil;&atilde;o UV400</span>
-          <span><strong>02</strong> Case e flanela</span>
-          <span><strong>03</strong> Troca em at&eacute; 30 dias</span>
-          <span><strong>04</strong> Garantia contra defeitos</span>
-        </div>
 
         <StockUrgency stock={currentStock} />
 
@@ -414,8 +326,20 @@ function formattedRelatedPrice(value: number): string {
             </div>
           </details>
         </div>
+        <div class="pdp-buy">
+          <a
+            class:list={["pdp-cta", !isPurchasable && "is-secondary"]}
+            href={whatsappUrl}
+            data-primary-cta
+            data-whatsapp-link
+          >
+            {isPurchasable ? "Comprar" : "Consultar reposi\u00e7\u00e3o"}
+          </a>
+        </div>
+
       </aside>
     </section>
+
 
     <FaceGuide whatsappUrl={whatsappUrl} productName={product.name} />
 
@@ -482,13 +406,6 @@ function formattedRelatedPrice(value: number): string {
     )}
   </article>
 
-  <div class="mobile-sticky-cta" data-mobile-sticky-cta hidden>
-    <div class="mobile-sticky-copy">
-      <p>{product.name}</p>
-      <span>{formattedPrice}</span>
-    </div>
-    <a class="mobile-sticky-link" href={whatsappUrl} data-whatsapp-link>{ctaLabel}</a>
-  </div>
 
   {firstImage && (
     <div class="desktop-sticky-bar" data-sticky-bar hidden>
@@ -517,11 +434,18 @@ function formattedRelatedPrice(value: number): string {
 
   <style>
     .pdp-page {
-      background: var(--rivano-off-white);
+      background: #fff;
       color: var(--rivano-brown);
-      overflow-x: hidden;
+      overflow-x: clip;
     }
 
+    /* ── Bloco 01 do PDP — arquitetura global, data-driven.
+       Decodificada de chimi-online.com/p/04-black-24 em 390x844:
+       midia 4:5 logo abaixo do header, nome e preco na mesma linha,
+       opcoes compactas, CTA em wrapper sticky no rodape.
+       Adaptacoes de fato: o catalogo Rivano so tem ratios 2:3 e 3:4,
+       entao o quadro comum e 3:4 — corta menos o packshot 2:3 do que
+       o 4:5 da referencia. Nenhuma regra por slug. */
     .pdp-main {
       display: flex;
       flex-direction: column;
@@ -532,136 +456,155 @@ function formattedRelatedPrice(value: number): string {
       width: 100%;
     }
 
-    .mobile-gallery {
+    .pdp-media {
       display: flex;
-      margin-left: calc(50% - 50vw);
+      gap: 0;
       overflow-x: auto;
+      overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       scrollbar-width: none;
-      width: 100vw;
+      -webkit-overflow-scrolling: touch;
     }
 
-    .mobile-gallery::-webkit-scrollbar,
-    .related-track::-webkit-scrollbar {
+    .pdp-media::-webkit-scrollbar {
       display: none;
     }
 
-    .mobile-slide {
-      align-items: flex-start;
-      background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
-      display: flex;
-      flex: 0 0 100vw;
-      justify-content: center;
+    .pdp-media-slide {
+      flex: 0 0 100%;
       margin: 0;
-      min-height: 88svh;
-      overflow: hidden;
-      position: relative;
-      scroll-snap-align: start;
+      scroll-snap-align: center;
     }
 
-    .desktop-main-image,
-    .related-image {
-      aspect-ratio: 3 / 4;
-      display: block;
-      height: 100%;
-      mix-blend-mode: multiply;
-      object-fit: contain;
-      padding: 30px;
-      width: 100%;
-    }
-
-    .mobile-gallery-image {
+    /* Quadro comum a todo o catalogo. cover mantem o enquadramento
+       previsivel entre produtos; nas fotos 2:3 a perda cai nas faixas
+       de fundo, sem tocar o produto. */
+    .pdp-media-image {
       aspect-ratio: 3 / 4;
       display: block;
       height: auto;
-      mix-blend-mode: multiply;
       object-fit: cover;
+      object-position: center;
       width: 100%;
     }
 
-    .gallery-overlay {
-      inset: 0;
-      pointer-events: none;
-      position: absolute;
-    }
-
-    .gallery-gradient {
-      background: linear-gradient(
-        0deg,
-        color-mix(in srgb, var(--rivano-off-white) 85%, transparent) 0%,
-        color-mix(in srgb, var(--rivano-off-white) 18%, transparent) 60%,
-        transparent 100%
-      );
-      bottom: 0;
-      height: 52%;
-      left: 0;
-      position: absolute;
-      right: 0;
-    }
-
-    .gallery-product-info {
-      bottom: 0;
+    /* Paginacao: reguas finas, uma por foto real do produto. */
+    .pdp-media-pagination {
       display: flex;
-      flex-direction: column;
       gap: 4px;
-      left: 0;
-      padding: 20px 24px 28px;
-      position: absolute;
-      right: 0;
+      justify-content: center;
+      padding: 14px 0 0;
     }
 
-    .gallery-product-name {
+    .pdp-media-tick {
+      background: color-mix(in srgb, var(--rivano-brown) 22%, transparent);
+      display: block;
+      height: 1px;
+      transition: background var(--transition-normal);
+      width: 22px;
+    }
+
+    .pdp-media-tick.is-active {
+      background: var(--rivano-brown);
+    }
+
+    .pdp-identity {
+      align-items: baseline;
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      padding-top: 26px;
+    }
+
+    .pdp-name {
       color: var(--rivano-brown);
-      font-family: var(--font-serif);
-      font-size: 38px;
-      font-weight: 300;
-      letter-spacing: 0;
-      line-height: 0.95;
-    }
-
-    .gallery-product-price {
-      color: color-mix(in srgb, var(--rivano-brown) 70%, transparent);
       font-family: var(--font-sans);
       font-size: 15px;
-      font-weight: 300;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      line-height: 1.3;
+      margin: 0;
+      text-transform: uppercase;
     }
 
-    .gallery-dots {
-      align-items: center;
+    .pdp-price {
+      color: var(--rivano-brown);
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.3;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    /* So renderiza quando o produto tem variante real. */
+    .pdp-variants {
       display: flex;
-      gap: 6px;
-      justify-content: center;
-      padding: 12px 24px 0;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 18px;
     }
 
-    .gallery-dot-button {
-      align-items: center;
+    .pdp-variant {
       background: transparent;
-      border: 0;
+      border: 1px solid color-mix(in srgb, var(--rivano-brown) 28%, transparent);
+      color: var(--rivano-brown);
       cursor: pointer;
-      display: inline-flex;
-      justify-content: center;
-      min-height: 44px;
-      min-width: 44px;
-      padding: 8px;
+      font-family: var(--font-sans);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      min-height: 40px;
+      padding: 0 16px;
+      text-transform: uppercase;
+      transition: border-color var(--transition-normal), color var(--transition-normal);
     }
 
-    .gallery-dot {
-      background: transparent;
-      border: 1px solid color-mix(in srgb, var(--rivano-brown) 35%, transparent);
-      border-radius: 50%;
-      display: block;
-      height: 16px;
-      width: 16px;
-    }
-
-    .gallery-dot.is-active {
-      background: var(--rivano-brown);
+    .pdp-variant.is-active {
       border-color: var(--rivano-brown);
     }
 
-    .desktop-gallery {
-      display: none;
+    .pdp-variant.is-disabled {
+      color: color-mix(in srgb, var(--rivano-brown) 38%, transparent);
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    /* O CTA acompanha a rolagem, como na referencia: a acao de compra
+       nunca sai da tela. O fundo proprio evita que a foto passe atras. */
+    .pdp-buy {
+      background: #fff;
+      bottom: 0;
+      padding: 18px 0 calc(14px + env(safe-area-inset-bottom));
+      position: sticky;
+      z-index: 4;
+    }
+
+    .pdp-cta {
+      align-items: center;
+      background: var(--rivano-brown);
+      color: #fff;
+      display: flex;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 400;
+      justify-content: center;
+      letter-spacing: 0.14em;
+      line-height: 1.2;
+      min-height: 48px;
+      text-align: center;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: opacity var(--transition-normal);
+      width: 100%;
+    }
+
+    .pdp-cta.is-secondary {
+      background: color-mix(in srgb, var(--rivano-brown) 88%, var(--rivano-muted));
+    }
+
+    .pdp-cta:hover {
+      opacity: 0.86;
     }
 
     .gallery-empty {
@@ -682,88 +625,8 @@ function formattedRelatedPrice(value: number): string {
     .product-panel {
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      padding: 30px 24px 56px;
-    }
-
-    .product-breadcrumb {
-      align-items: center;
-      color: color-mix(in srgb, var(--rivano-brown) 42%, transparent);
-      display: flex;
-      flex-wrap: wrap;
-      font-family: var(--font-sans);
-      font-size: 10px;
-      gap: 8px;
-      letter-spacing: 0.08em;
-      line-height: 1.3;
-      text-transform: uppercase;
-    }
-
-    .product-breadcrumb a {
-      align-items: center;
-      display: inline-flex;
-      min-height: 44px;
-      text-decoration: none;
-      transition: opacity var(--transition-normal);
-    }
-
-    .product-breadcrumb a:hover {
-      opacity: 0.75;
-    }
-
-    .product-heading {
-      display: none;
-    }
-
-    .product-title {
-      color: var(--rivano-brown);
-      font-family: var(--font-serif);
-      font-size: 46px;
-      font-weight: 300;
-      letter-spacing: 0;
-      line-height: 0.95;
-    }
-
-    .product-price-main {
-      color: var(--rivano-brown);
-      font-family: var(--font-sans);
-      font-size: 21px;
-      font-weight: 400;
-      line-height: 1.2;
-    }
-
-    .product-microcopy,
-    .purchase-support {
-      color: color-mix(in srgb, var(--rivano-brown) 66%, transparent);
-      font-family: var(--font-sans);
-      font-size: 14px;
-      font-weight: 300;
-      line-height: 1.7;
-      max-width: 360px;
-    }
-
-    .product-availability {
-      color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
-      font-family: var(--font-sans);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      line-height: 1.4;
-      text-transform: uppercase;
-    }
-
-    .product-availability::before {
-      background: currentColor;
-      border-radius: 50%;
-      content: "";
-      display: inline-block;
-      height: 6px;
-      margin-right: 8px;
-      vertical-align: 1px;
-      width: 6px;
-    }
-
-    .product-availability.is-unavailable {
-      color: color-mix(in srgb, var(--rivano-brown) 38%, transparent);
+      gap: 0;
+      padding: 0 24px 40px;
     }
 
     .panel-label {
@@ -777,115 +640,8 @@ function formattedRelatedPrice(value: number): string {
       text-transform: uppercase;
     }
 
-    .variant-options {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .variant-option {
-      align-items: center;
-      background: transparent;
-      border: 1px solid color-mix(in srgb, var(--rivano-brown) 18%, transparent);
-      color: var(--rivano-brown);
-      cursor: pointer;
-      display: inline-flex;
-      font-family: var(--font-sans);
-      font-size: 11px;
-      gap: 8px;
-      justify-content: center;
-      letter-spacing: 0.08em;
-      line-height: 1.2;
-      min-height: 44px;
-      padding: 0 14px;
-      text-transform: uppercase;
-      transition: border-color var(--transition-normal), opacity var(--transition-normal);
-    }
-
-    .variant-option.is-active {
-      border-color: var(--rivano-brown);
-    }
-
-    .variant-option.is-disabled {
-      cursor: not-allowed;
-      opacity: 0.38;
-      text-decoration: line-through;
-    }
-
-    .variant-swatch {
-      border: 1px solid color-mix(in srgb, var(--rivano-brown) 28%, transparent);
-      border-radius: 50%;
-      display: block;
-      height: 15px;
-      width: 15px;
-    }
-
-    .whatsapp-cta,
-    .mobile-sticky-link,
-    .sticky-whatsapp-link {
-      align-items: center;
-      background: var(--rivano-brown);
-      color: var(--rivano-off-white);
-      display: inline-flex;
-      font-family: var(--font-sans);
-      font-size: 11px;
-      font-weight: 400;
-      justify-content: center;
-      letter-spacing: 0.12em;
-      line-height: 1.2;
-      min-height: 44px;
-      padding: 0 22px;
-      text-align: center;
-      text-transform: uppercase;
-      transition: opacity var(--transition-normal);
-    }
-
-    .whatsapp-cta {
-      margin-top: 4px;
-      min-height: 56px;
-      width: 100%;
-    }
-
-    .whatsapp-cta.is-secondary {
-      background: color-mix(in srgb, var(--rivano-brown) 88%, var(--rivano-muted));
-    }
-
-    .whatsapp-cta:hover,
-    .mobile-sticky-link:hover,
     .sticky-whatsapp-link:hover {
       opacity: 0.86;
-    }
-
-    .purchase-support {
-      font-size: 12px;
-      margin-top: -6px;
-    }
-
-    .trust-strip {
-      background: color-mix(in srgb, var(--rivano-beige) 45%, transparent);
-      border-bottom: 1px solid color-mix(in srgb, var(--rivano-brown) 12%, transparent);
-      border-top: 1px solid color-mix(in srgb, var(--rivano-brown) 12%, transparent);
-      display: grid;
-      gap: 14px 16px;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      padding: 18px;
-    }
-
-    .trust-strip span {
-      color: color-mix(in srgb, var(--rivano-brown) 72%, transparent);
-      font-family: var(--font-sans);
-      font-size: 10px;
-      font-weight: 400;
-      letter-spacing: 0.08em;
-      line-height: 1.45;
-      text-transform: uppercase;
-    }
-
-    .trust-strip strong {
-      color: color-mix(in srgb, var(--rivano-brown) 38%, transparent);
-      display: block;
-      font-weight: 400;
-      margin-bottom: 4px;
     }
 
     .technical-accordion {
@@ -1096,29 +852,8 @@ function formattedRelatedPrice(value: number): string {
       margin-top: 4px;
     }
 
-    .mobile-sticky-cta {
-      align-items: center;
-      background: var(--rivano-off-white);
-      border-top: 1px solid var(--rivano-beige);
-      bottom: 0;
-      display: flex;
-      gap: 14px;
-      justify-content: space-between;
-      left: 0;
-      min-height: 60px;
-      padding: 10px 16px calc(12px + env(safe-area-inset-bottom));
-      position: fixed;
-      width: 100%;
-      z-index: 130;
-    }
-
-    .mobile-sticky-cta[hidden],
     .desktop-sticky-bar[hidden] {
       display: none;
-    }
-
-    .mobile-sticky-copy {
-      min-width: 0;
     }
 
     .mobile-sticky-copy p,
@@ -1143,13 +878,6 @@ function formattedRelatedPrice(value: number): string {
       margin-top: 2px;
     }
 
-    .mobile-sticky-link {
-      flex: 1;
-      font-size: 10px;
-      max-width: 180px;
-      padding: 0 14px;
-    }
-
     .desktop-sticky-bar {
       display: none;
     }
@@ -1168,99 +896,20 @@ function formattedRelatedPrice(value: number): string {
         grid-column: 1 / span 7;
       }
 
-      .mobile-gallery,
-      .gallery-dots,
-      .mobile-sticky-cta {
-        display: none;
-      }
-
-      .desktop-gallery {
-        display: block;
-      }
-
-      .desktop-main-frame {
-        align-items: center;
-        aspect-ratio: 3 / 4;
-        background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
-        display: flex;
-        justify-content: center;
-        margin: 0;
-        overflow: hidden;
-      }
-
-      .desktop-main-image {
-        padding: 48px;
-        transition: opacity 200ms ease-out;
-      }
-
-      .thumbnail-row {
-        display: flex;
-        gap: 10px;
-        margin-top: 14px;
-        overflow-x: auto;
-        padding: 4px 2px;
-        scrollbar-width: thin;
-      }
-
-      .thumbnail-button {
-        aspect-ratio: 3 / 4;
-        background: color-mix(in srgb, var(--rivano-off-white) 82%, var(--rivano-beige));
-        border: 0;
-        cursor: pointer;
-        flex: 0 0 72px;
-        min-height: 96px;
-        opacity: 0.5;
-        padding: 0;
-        transition: opacity var(--transition-normal), outline-color var(--transition-normal);
-        width: 72px;
-      }
-
-      .thumbnail-button.is-active {
-        opacity: 1;
-        outline: 1px solid var(--rivano-brown);
-        outline-offset: 2px;
-      }
-
-      .thumbnail-button:hover {
-        opacity: 1;
-      }
-
-      .thumbnail-image {
-        aspect-ratio: 3 / 4;
-        display: block;
-        height: 100%;
-        mix-blend-mode: multiply;
-        object-fit: contain;
-        padding: 10px;
-        width: 100%;
-      }
-
       .product-panel {
         align-self: start;
-        gap: 18px;
+        gap: 0;
         grid-column: 8 / span 5;
         padding: 12px 0 0 24px;
         position: sticky;
         top: 32px;
       }
 
-      .product-title {
-        font-size: 64px;
-        max-width: 520px;
-      }
-
-      .product-microcopy {
-        max-width: 420px;
-      }
-
-      .trust-strip {
-        gap: 12px;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        padding: 16px 14px;
-      }
-
-      .trust-strip span {
-        font-size: 9px;
+      /* O painel inteiro ja acompanha a rolagem no desktop; o CTA volta
+         ao fluxo dentro dele. */
+      .pdp-buy {
+        padding: 24px 0 0;
+        position: static;
       }
 
       .assisted-section {
@@ -1351,11 +1000,6 @@ function formattedRelatedPrice(value: number): string {
         min-height: 44px;
       }
 
-      .product-heading {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
     }
   </style>
 
@@ -1469,7 +1113,7 @@ function formattedRelatedPrice(value: number): string {
     });
 
     const primaryCta = document.querySelector("[data-primary-cta]");
-    const stickyTargets = Array.from(document.querySelectorAll("[data-sticky-bar], [data-mobile-sticky-cta]"));
+    const stickyTargets = Array.from(document.querySelectorAll("[data-sticky-bar]"));
 
     if (primaryCta && stickyTargets.length > 0 && "IntersectionObserver" in window) {
       const setStickyVisibility = (show) => {

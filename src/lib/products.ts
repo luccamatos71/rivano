@@ -50,6 +50,15 @@ export type CardProduct = {
 
 const imageIndexRegex = /\/(\d+)-(\d+)\.webp$/i;
 
+/**
+ * Nome de exibição: o dataset guarda "Rivano Ibiza", mas as superfícies de
+ * produto mostram só o modelo. Vale para todo o catálogo — os 16 produtos
+ * usam o mesmo prefixo. Sem tratamento por slug.
+ */
+export function getDisplayName(name: string): string {
+  return name.replace(/^Rivano\s+/i, "").trim() || name;
+}
+
 export function formatPriceBRL(value: number): string {
   const hasDecimals = value % 1 !== 0;
   return new Intl.NumberFormat("pt-BR", {
