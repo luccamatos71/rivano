@@ -1,0 +1,227 @@
+---
+// Bloco global de descoberta do PDP. Arquitetura tirada da pagina
+// "Find your shape" da chimi-online.com: rotulo pequeno, uma linha de
+// apoio, e listas de opcoes em links de texto separadas por respiro —
+// sem card, pill, icone ou ilustracao.
+//
+// As opcoes NAO sao escritas a mao: saem da contagem real do catalogo.
+// Um eixo so aparece se tiver ao menos duas opcoes com produto.
+import productsData from "../data/products.json";
+import type { Product } from "../lib/products";
+
+const products = productsData as Product[];
+
+type Opcao = {
+  rotulo: string;
+  href: string;
+  total: number;
+};
+
+/** Conta quantos produtos um filtro de formato realmente devolve.
+ *  O catalogo trata "qualquer" como compativel com todo formato. */
+function contarFormato(valores: string[]): number {
+  return products.filter((p) => {
+    const shapes = p.faceShape ?? [];
+    return shapes.includes("qualquer") || valores.some((v) => shapes.includes(v));
+  }).length;
+}
+
+function contarVibe(valor: string): number {
+  return products.filter((p) => (p.vibe ?? []).includes(valor)).length;
+}
+
+// Formato: no dataset atual "oval" e "redondo" sempre andam juntos —
+// separa-los daria dois links com o mesmo resultado. Ficam num rotulo so.
+const formatos: Opcao[] = [
+  { rotulo: "Oval ou redondo", href: "/catalogo?face=oval", total: contarFormato(["oval", "redondo"]) },
+  { rotulo: "Quadrado", href: "/catalogo?face=quadrado", total: contarFormato(["quadrado"]) },
+].filter((o) => o.total > 0);
+
+// Estilo: particao limpa do catalogo, sem sobreposicao.
+const estilos: Opcao[] = [
+  { rotulo: "Discreto", href: "/catalogo?vibe=discreto", total: contarVibe("discreto") },
+  { rotulo: "Marcante", href: "/catalogo?vibe=marcante", total: contarVibe("marcante") },
+].filter((o) => o.total > 0);
+
+const eixos = [
+  { titulo: "Pelo estilo", opcoes: estilos },
+  { titulo: "Pelo formato do rosto", opcoes: formatos },
+].filter((eixo) => eixo.opcoes.length > 1);
+---
+
+{
+  eixos.length > 0 && (
+    <section class="guia" aria-labelledby="guia-titulo">
+      <div class="guia-inner">
+        <p class="guia-eyebrow">Guia Rivano</p>
+        <h2 id="guia-titulo" class="guia-title">Encontre o seu.</h2>
+        <p class="guia-lead">Cada modelo veste de um jeito. Comece por onde fizer mais sentido para você.</p>
+
+        <div class="guia-eixos">
+          {eixos.map((eixo) => (
+            <div class="guia-eixo">
+              <p class="guia-eixo-titulo">{eixo.titulo}</p>
+              <ul class="guia-lista">
+                {eixo.opcoes.map((opcao) => (
+                  <li>
+                    <a class="guia-opcao" href={opcao.href}>
+                      <span class="guia-opcao-rotulo">{opcao.rotulo}</span>
+                      <span class="guia-opcao-total">{opcao.total}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <a class="guia-todos" href="/catalogo">Ver todos os modelos</a>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  /* Respiro amplo separa o bloco da area de compra — a mudanca de ritmo
+     e feita pelo espaco, nao por faixa de cor ou divisor grosso. */
+  .guia {
+    background: #fff;
+    color: var(--rivano-brown);
+    padding: 72px 0 80px;
+  }
+
+  .guia-inner {
+    padding: 0 24px;
+  }
+
+  .guia-eyebrow {
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .guia-title {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-size: clamp(28px, 8vw, 38px);
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.1;
+    margin: 14px 0 0;
+  }
+
+  .guia-lead {
+    color: color-mix(in srgb, var(--rivano-brown) 70%, transparent);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 300;
+    line-height: 1.6;
+    margin: 14px 0 0;
+    max-width: 34ch;
+  }
+
+  .guia-eixos {
+    display: grid;
+    gap: 40px;
+    margin-top: 44px;
+  }
+
+  .guia-eixo-titulo {
+    border-bottom: 1px solid var(--rivano-beige);
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    margin: 0;
+    padding-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .guia-lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Cada opcao e uma linha inteira: alvo de toque generoso, contagem
+     real do catalogo alinhada a direita. */
+  .guia-opcao {
+    align-items: baseline;
+    border-bottom: 1px solid color-mix(in srgb, var(--rivano-beige) 60%, transparent);
+    color: var(--rivano-brown);
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    min-height: 56px;
+    padding: 18px 0 14px;
+    text-decoration: none;
+    transition: color var(--transition-normal);
+  }
+
+  .guia-opcao:hover {
+    color: var(--rivano-brown-mid);
+  }
+
+  .guia-opcao-rotulo {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+
+  .guia-opcao-total {
+    color: color-mix(in srgb, var(--rivano-brown) 40%, transparent);
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+
+  .guia-todos {
+    align-items: center;
+    border-bottom: 1px solid currentColor;
+    color: var(--rivano-brown);
+    display: inline-flex;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    margin-top: 40px;
+    min-height: 44px;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  @media (min-width: 768px) {
+    .guia {
+      padding: 104px 0 112px;
+    }
+
+    .guia-inner {
+      margin: 0 auto;
+      max-width: 1280px;
+      padding: 0 40px;
+    }
+
+    .guia-title {
+      font-size: clamp(38px, 3.4vw, 48px);
+    }
+
+    /* Os dois eixos lado a lado; o texto de entrada segue a esquerda. */
+    .guia-eixos {
+      gap: 64px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 56px;
+      max-width: 860px;
+    }
+  }
+</style>

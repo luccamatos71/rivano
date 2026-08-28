@@ -13,6 +13,7 @@ import {
 } from "../../lib/products";
 import productsData from "../../data/products.json";
 import StockUrgency from "../../components/StockUrgency.astro";
+import DiscoveryGuide from "../../components/DiscoveryGuide.astro";
 import FaceGuide from "../../components/FaceGuide.astro";
 import WhatsAppJourney from "../../components/WhatsAppJourney.astro";
 import MidPageCTA from "../../components/MidPageCTA.astro";
@@ -66,7 +67,6 @@ const unavailableWhatsappMessage = `Ol\u00e1! Tenho interesse no ${product.name}
 const whatsappMessage = isPurchasable ? availableWhatsappMessage : unavailableWhatsappMessage;
 const whatsappUrl = `https://wa.me/5571993135522?text=${encodeURIComponent(whatsappMessage)}`;
 const detailsEntries = Object.entries(product.description.details ?? {});
-const sizeGuideLines = sectionLines(product.description.fit);
 const selectedVariantIndex =
   product.variants.findIndex((variant) => variant.stock > 0) >= 0
     ? product.variants.findIndex((variant) => variant.stock > 0)
@@ -281,24 +281,6 @@ function formattedRelatedPrice(value: number): string {
             </div>
           </details>
 
-          <details class="accordion-item">
-            <summary>
-              <span>Como fica no rosto</span>
-              <span class="accordion-symbol" aria-hidden="true">
-                <span class="symbol-plus">+</span>
-                <span class="symbol-minus">&minus;</span>
-              </span>
-            </summary>
-            <div class="accordion-body">
-              {sizeGuideLines.length > 0 ? (
-                <div class="accordion-copy">
-                  {sizeGuideLines.map((line) => <p>{line}</p>)}
-                </div>
-              ) : (
-                <p>{incompleteCopy}</p>
-              )}
-            </div>
-          </details>
 
           <details class="accordion-item">
             <summary>
@@ -340,6 +322,8 @@ function formattedRelatedPrice(value: number): string {
       </aside>
     </section>
 
+
+    <DiscoveryGuide />
 
     <FaceGuide whatsappUrl={whatsappUrl} productName={product.name} />
 
