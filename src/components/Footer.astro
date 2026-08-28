@@ -19,11 +19,6 @@ const ano = new Date().getFullYear();
 
 <footer id="sobre" class="rivano-footer">
   <div class="rivano-footer-inner">
-    <div class="rivano-footer-brand">
-      <p class="rivano-footer-wordmark">Rivano</p>
-      <p class="rivano-footer-tagline">Nascida em Salvador. Inspirada no verão europeu.</p>
-    </div>
-
     <nav class="rivano-footer-cols" aria-label="Links do rodapé">
       <div class="rivano-footer-col">
         <p class="rivano-footer-label">Navegar</p>
@@ -70,38 +65,14 @@ const ano = new Date().getFullYear();
   }
 
   .rivano-footer-inner {
-    padding: 72px 24px 40px;
-  }
-
-  .rivano-footer-wordmark {
-    color: var(--rivano-brown);
-    font-family: var(--font-serif);
-    font-size: 26px;
-    font-weight: 400;
-    letter-spacing: 0.16em;
-    line-height: 1;
-    margin: 0;
-    text-transform: uppercase;
-  }
-
-  .rivano-footer-tagline {
-    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
-    font-family: var(--font-sans);
-    font-size: 13px;
-    font-weight: 300;
-    line-height: 1.6;
-    margin: 14px 0 0;
-    max-width: 260px;
+    padding: 64px 24px 40px;
   }
 
   /* Régua fina, mesma linguagem de divisor já usada no site. */
   .rivano-footer-cols {
-    border-top: 1px solid var(--rivano-beige);
     display: grid;
     gap: 36px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-top: 48px;
-    padding-top: 36px;
   }
 
   .rivano-footer-label {
@@ -157,31 +128,20 @@ const ano = new Date().getFullYear();
 
   @media (min-width: 768px) {
     .rivano-footer-inner {
-      display: grid;
-      gap: 0 64px;
-      grid-template-columns: minmax(0, 1fr) auto;
       margin: 0 auto;
       max-width: 1280px;
-      padding: 104px 40px 48px;
+      padding: 96px 40px 48px;
     }
 
-    .rivano-footer-brand {
-      max-width: 320px;
-    }
-
-    /* No desktop a marca fica à esquerda e os dois grupos à direita, na
-       mesma régua horizontal — sem multiplicar colunas. */
+    /* Os dois grupos lado a lado à esquerda; a régua e a linha legal
+       fecham o rodapé na largura inteira. */
     .rivano-footer-cols {
-      border-top: 0;
       display: flex;
       gap: 88px;
-      margin-top: 0;
-      padding-top: 0;
     }
 
     .rivano-footer-legal {
-      grid-column: 1 / -1;
-      margin-top: 96px;
+      margin-top: 80px;
     }
   }
 </style>
