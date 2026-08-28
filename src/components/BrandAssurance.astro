@@ -1,0 +1,181 @@
+---
+// Bloco 03 do PDP — valor de marca + confiança de compra.
+//
+// Gramática extraída das referências, não a marca delas:
+// Jacques Marie Mage — rótulo minúsculo em caixa alta sobre um valor
+// grande em serif; ritmo vertical largo para conteúdo pequeno; réguas
+// finas como única separação; zero ícone.
+// Matsuda — contraste extremo de escala (declaração grande vs. dado
+// minúsculo) e informação organizada em duas colunas.
+//
+// As quatro garantias são informação comercial global — valem para todo
+// o catálogo, não dependem de produto. Nenhuma imagem.
+const garantias = [
+  { rotulo: "Frete", valor: "Grátis", detalhe: "Para todo o Brasil" },
+  { rotulo: "Trocas", valor: "30 dias", detalhe: "A partir do recebimento" },
+  { rotulo: "Garantia", valor: "3 meses", detalhe: "Contra defeitos" },
+  { rotulo: "Atendimento", valor: "Direto", detalhe: "Pelo WhatsApp" },
+];
+---
+
+<section class="marca" aria-labelledby="marca-titulo">
+  <div class="marca-inner">
+    <div class="marca-declaracao">
+      <p class="marca-eyebrow">Rivano</p>
+      <h2 id="marca-titulo" class="marca-titulo">
+        <span>Feito para ir</span>
+        <span>com você.</span>
+      </h2>
+    </div>
+
+    <dl class="marca-garantias">
+      {
+        garantias.map((item) => (
+          <div class="marca-item">
+            <dt class="marca-rotulo">{item.rotulo}</dt>
+            <dd class="marca-valor">{item.valor}</dd>
+            <dd class="marca-detalhe">{item.detalhe}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  /* A mudança de ritmo vem do respiro e da escala, não de faixa de cor:
+     o canvas segue o mesmo branco dos blocos 01 e 02. */
+  .marca {
+    background: #fff;
+    color: var(--rivano-brown);
+    padding: 8px 0 88px;
+  }
+
+  .marca-inner {
+    padding: 0 24px;
+  }
+
+  .marca-eyebrow {
+    color: color-mix(in srgb, var(--rivano-brown) 45%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  /* A declaração é o único elemento grande do bloco — o contraste com os
+     rótulos de 10px é o que cria o momento editorial. */
+  .marca-titulo {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-size: clamp(38px, 11vw, 52px);
+    font-weight: 300;
+    letter-spacing: -0.005em;
+    line-height: 1.02;
+    margin: 18px 0 0;
+  }
+
+  .marca-titulo span {
+    display: block;
+  }
+
+  .marca-garantias {
+    border-top: 1px solid var(--rivano-beige);
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 44px 0 0;
+  }
+
+  /* Cada par ocupa uma célula com respiro largo — o vazio em volta é o
+     que faz a informação parecer especificação, não selo. */
+  .marca-item {
+    border-bottom: 1px solid color-mix(in srgb, var(--rivano-beige) 55%, transparent);
+    padding: 26px 0 28px;
+  }
+
+  .marca-item:nth-child(odd) {
+    padding-right: 20px;
+  }
+
+  .marca-rotulo {
+    color: color-mix(in srgb, var(--rivano-brown) 42%, transparent);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    line-height: 1.35;
+    margin: 0;
+    text-transform: uppercase;
+  }
+
+  .marca-valor {
+    color: var(--rivano-brown);
+    font-family: var(--font-serif);
+    font-size: 26px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.15;
+    margin: 10px 0 0;
+  }
+
+  .marca-detalhe {
+    color: color-mix(in srgb, var(--rivano-brown) 62%, transparent);
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 6px 0 0;
+  }
+
+  @media (min-width: 768px) {
+    .marca {
+      padding: 24px 0 120px;
+    }
+
+    .marca-inner {
+      margin: 0 auto;
+      max-width: 1280px;
+      padding: 0 40px;
+    }
+
+    /* Assimetria: a declaração ocupa a zona esquerda e as garantias a
+       direita, sem centralizar nada. */
+    .marca-inner {
+      align-items: start;
+      display: grid;
+      gap: 0 80px;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
+
+    .marca-titulo {
+      font-size: clamp(52px, 5vw, 72px);
+      margin-top: 20px;
+    }
+
+    .marca-garantias {
+      margin-top: 12px;
+    }
+
+    .marca-item {
+      padding: 30px 0 34px;
+    }
+
+    .marca-item:nth-child(odd) {
+      padding-right: 32px;
+    }
+
+    .marca-valor {
+      font-size: 30px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .marca-inner {
+      gap: 0 120px;
+    }
+  }
+</style>
