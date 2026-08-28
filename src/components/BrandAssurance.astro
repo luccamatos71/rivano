@@ -50,12 +50,18 @@ const servicos = [
 </section>
 
 <style>
-  /* Superfície cheia no marrom da identidade — a mudança de campo é o
-     que anuncia o capítulo novo. Sem faixa de transição: o bloco começa
-     e termina na própria cor. */
+  /* Superfície cheia — a mudança de campo é o que anuncia o capítulo
+     novo. Sem faixa de transição: o bloco começa e termina na cor.
+     Marrom de superfície exclusivo desta seção — mais quente e com o
+     dobro de croma do marrom institucional (38% contra 22%), para o
+     bloco virar interrupcao cromatica de fato. NAO altera
+     --rivano-brown: header, CTA e demais superficies aprovadas seguem
+     intactos. Contraste com o marfim: 8,36:1. */
   .servico {
-    background: var(--rivano-brown);
-    color: var(--rivano-off-white);
+    --servico-superficie: #633c2d;
+    --servico-tinta: var(--rivano-off-white);
+    background: var(--servico-superficie);
+    color: var(--servico-tinta);
     padding: 52px 0 56px;
   }
 
@@ -64,7 +70,7 @@ const servicos = [
   }
 
   .servico-kicker {
-    color: color-mix(in srgb, var(--rivano-off-white) 48%, transparent);
+    color: color-mix(in srgb, var(--servico-tinta) 64%, transparent);
     font-family: var(--font-sans);
     font-size: 10px;
     font-weight: 400;
@@ -84,7 +90,7 @@ const servicos = [
      A régua é clara sobre o escuro — mesma linguagem, campo invertido. */
   .servico-item {
     align-items: baseline;
-    border-top: 1px solid color-mix(in srgb, var(--rivano-off-white) 20%, transparent);
+    border-top: 1px solid color-mix(in srgb, var(--servico-tinta) 26%, transparent);
     display: grid;
     gap: 0 20px;
     grid-template-columns: 30px minmax(0, 1fr);
@@ -92,13 +98,13 @@ const servicos = [
   }
 
   .servico-item:last-child {
-    border-bottom: 1px solid color-mix(in srgb, var(--rivano-off-white) 20%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--servico-tinta) 26%, transparent);
   }
 
   /* O número é dispositivo gráfico de indexação, não passo de fluxo:
      fica recuado em opacidade para não competir com a informação. */
   .servico-num {
-    color: color-mix(in srgb, var(--rivano-off-white) 38%, transparent);
+    color: color-mix(in srgb, var(--servico-tinta) 54%, transparent);
     font-family: var(--font-sans);
     font-size: 11px;
     font-weight: 400;
@@ -111,7 +117,7 @@ const servicos = [
   }
 
   .servico-rotulo {
-    color: color-mix(in srgb, var(--rivano-off-white) 58%, transparent);
+    color: color-mix(in srgb, var(--servico-tinta) 72%, transparent);
     display: block;
     font-family: var(--font-sans);
     font-size: 10px;
@@ -122,7 +128,7 @@ const servicos = [
   }
 
   .servico-valor {
-    color: var(--rivano-off-white);
+    color: var(--servico-tinta);
     display: block;
     font-family: var(--font-sans);
     font-size: 17px;
@@ -133,7 +139,7 @@ const servicos = [
   }
 
   .servico-nota {
-    color: color-mix(in srgb, var(--rivano-off-white) 52%, transparent);
+    color: color-mix(in srgb, var(--servico-tinta) 64%, transparent);
     display: block;
     font-family: var(--font-sans);
     font-size: 12px;
@@ -160,7 +166,7 @@ const servicos = [
     /* No desktop o índice vira faixa horizontal: quatro colunas com a
        mesma régua superior, lidas de uma vez. */
     .servico-lista {
-      border-top: 1px solid color-mix(in srgb, var(--rivano-off-white) 20%, transparent);
+      border-top: 1px solid color-mix(in srgb, var(--servico-tinta) 26%, transparent);
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
